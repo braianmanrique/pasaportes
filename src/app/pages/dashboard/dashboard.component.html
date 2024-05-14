@@ -1,1 +1,7 @@
-<p>dashboard works!</p>
+<div *ngIf="userLoginOn">
+    <p>
+        Nombre: {{userData?.name}}
+    </p>
+    <p>Email: {{userData?.email}}</p>
+
+</div>

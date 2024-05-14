@@ -9,18 +9,20 @@ import { UsuarioService } from '../../services/usuario.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  
   public formSubmitted = false;
   public loginForm :FormGroup = this.fb.group({
-    email: ['bm', [Validators.required, Validators.email]],
-    password: ['123', Validators.required],
+    username: ['usuario1', [Validators.required, Validators.email]],
+    password: ['contraseña1', Validators.required],
     remember: [false]
   })
   loginError: string = 'hola';
+ 
   constructor(private router: Router, private fb : FormBuilder, private loginService: UsuarioService){
 
   }
 
-login() {
+loginUser() {
   this.loginService.loginUsuario(this.loginForm.value).subscribe({
       next: (UserData) => {
         console.log(UserData)
@@ -35,6 +37,20 @@ login() {
         this.loginForm.reset();
       }
   })
+}
+
+login() {
+  this.loginService.login(this.loginForm.value).subscribe(success => {
+    if (success) {
+      // Redirigir a la página de inicio después del login exitoso
+      // Aquí puedes usar el enrutamiento de Angular o realizar alguna acción
+      this.router.navigateByUrl('/');
+      // this.loginForm.reset();
+      console.log("Login exitoso");
+    } else {
+      console.log("Nombre de usuario o contraseña incorrectos");
+    }
+  });
 }
 
 }

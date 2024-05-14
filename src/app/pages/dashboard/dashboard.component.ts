@@ -31,6 +31,8 @@ export class DashboardComponent {
 
     this.loginService.currentUserData.subscribe({
       next:(userData) => {
+        console.log(userData,'userLoginOn')
+
         this.userData = userData;
       }
     })

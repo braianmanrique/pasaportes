@@ -1,7 +1,4 @@
-{
-    "nombre": "",
-    "password": "12345",
-    "id" : "1",
-    "lastname": "manrique",
-    "email": "admin"
-}
+[
+    {"username": "usuario1", "password": "contraseña1", "type" : "admin"},
+    {"username": "usuario2", "password": "contraseña2", "type": "functionary"}
+]

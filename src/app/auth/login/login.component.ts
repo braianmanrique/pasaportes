@@ -15,17 +15,25 @@ export class LoginComponent {
     password: ['123', Validators.required],
     remember: [false]
   })
+  loginError: string = 'hola';
   constructor(private router: Router, private fb : FormBuilder, private loginService: UsuarioService){
 
   }
 
 login() {
-  console.log('login')
-  this.router.navigateByUrl('/');
-  this.loginService.loginUsuario(this.loginForm.value).subscribe(resp => {
-
-  }, (err) => {
-
+  this.loginService.loginUsuario(this.loginForm.value).subscribe({
+      next: (UserData) => {
+        console.log(UserData)
+      },
+      error: (errorData) =>{
+        console.error(errorData);
+        this.loginError = errorData;
+      },
+      complete: () => {
+        console.info("Login completed");
+        this.router.navigateByUrl('/');
+        this.loginForm.reset();
+      }
   })
 }
 

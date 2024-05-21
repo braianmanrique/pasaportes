@@ -16,7 +16,7 @@ export class LoginComponent {
     password: ['contraseña1', Validators.required],
     remember: [false]
   })
-  loginError: string = 'hola';
+  loginError: string = '------------------------------';
  
   constructor(private router: Router, private fb : FormBuilder, private loginService: UsuarioService){
 
@@ -52,5 +52,26 @@ login() {
     }
   });
 }
+
+isValidField(field: string){
+  return this.loginForm.controls[field].errors
+}
+getFieldError(field: string):string | null {
+  if(!this.loginForm.controls[field]) return null
+  const  errors = this.loginForm.controls[field].errors || {}
+  
+  for(const key of Object.keys(errors)){
+    switch(key) {
+      case 'required':
+        return  `El ${field} es requerido`
+        case 'email':
+          return  `Formato incorrecto para el email`
+      case 'maxlength':
+          return `Maximo ${errors['maxlength'].requiredLength} caracteres`
+    }
+  }
+  return null
+}
+
 
 }

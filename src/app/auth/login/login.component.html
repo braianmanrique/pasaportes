@@ -1,6 +1,43 @@
-<div>
+<div class="container">
+    <form class="form">
+        <img alt="logo" src="../../../assets/logocgr-v.png" style="height: 10rem;" />
+  
+        <div class="button-microsoft-container">
+           <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="login()">
+              <div class="container-input">
+                 <input type="text" class="p-inputtext-sm " pInputText placeholder="Ingresa tu usuario..."
+                    formControlName="userName" />
+              </div>
+  
+              <div class="container-input">
+                 <input type="password" class="p-inputtext-sm" pInputText placeholder="Ingresa tu contraseña..."
+                    formControlName="password" />
+  
+              </div>
+              <button class="button-microsoft" mat-raised-button style="border: 1px solid white;">
+                 <img alt="logo" src="../../../assets/microsoft.svg" />
+                 <span> Ingresar</span>
+              </button>
+              <div>
+  
+              </div>
+              <div>
+                 <small *ngIf="isValidField('userName') && formSubmitted" class="p-error">
+                    - El usuario es requerido </small>
+              </div>
+              <div>
+                 <small *ngIf="isValidField('password') && formSubmitted" class="p-error">
+                    - La contraseña es requerida </small>
+              </div>
+  
+           </form>
+           <br>
+           <hr>
+        </div>
+     </form>
 
-    <main class="form-signin w-100 m-auto">
+
+    <!-- <main class="form-signin w-100 m-auto">
         <form (ngSubmit)="login()" class="form-material form-horizontal" autocomplete="off" [formGroup]="loginForm">
             <img class="mb-4" src="../../../assets/logo.jpeg" alt="" width="72" height="57">
             <h1 class="h3 mb-3 fw-normal">Bienvenido</h1>
@@ -25,5 +62,50 @@
             <p class="mt-5 mb-3 text-body-secondary">&copy; 2024</p>
             <h4>{{loginError}}</h4>
         </form>
-    </main>
+    </main> -->
 </div>
+
+<!-- <div class="container">
+    <p-toast position="top-left"></p-toast>
+ 
+    <form class="form">
+       <img alt="logo" src="../../../assets/logocgr-v.png" style="height: 10rem;" />
+ 
+       <div class="button-microsoft-container">
+          <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="loginMsal()">
+             <div class="container-input">
+                <input type="text" class="p-inputtext-sm " pInputText placeholder="Ingresa tu usuario..."
+                   formControlName="userName" />
+             </div>
+ 
+             <div class="container-input">
+                <input type="password" class="p-inputtext-sm" pInputText placeholder="Ingresa tu contraseña..."
+                   formControlName="password" />
+ 
+             </div>
+             <button class="button-microsoft" mat-raised-button style="border: 1px solid white;">
+                <img alt="logo" src="../../../assets/microsoft.svg" />
+                <span> Ingresar</span>
+             </button>
+             <div>
+ 
+             </div>
+             <div>
+                <small *ngIf="isValidField('userName') && formSubmitted" class="p-error">
+                   - El usuario es requerido </small>
+             </div>
+             <div>
+                <small *ngIf="isValidField('password') && formSubmitted" class="p-error">
+                   - La contraseña es requerida </small>
+             </div>
+ 
+          </form>
+          <br>
+          <hr>
+       </div>
+    </form>
+ 
+    <div class="side">
+ 
+    </div>
+ </div> -->

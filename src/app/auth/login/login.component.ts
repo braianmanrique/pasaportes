@@ -33,7 +33,7 @@ loginUser() {
       },
       complete: () => {
         console.info("Login completed");
-        this.router.navigateByUrl('/');
+        this.router!.navigateByUrl('/dashboard')
         this.loginForm.reset();
       }
   })

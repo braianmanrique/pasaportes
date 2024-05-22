@@ -6,6 +6,7 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     PagesModule,
     AuthModule,
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

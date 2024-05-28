@@ -26,26 +26,59 @@
     </ul>
 </nav> -->
 
-<nav class="navigation" (click)="toggleMenu()" #navigation>
-    <div class="menuToogle" #menuToggle>
+<nav class="sidenav" (click)="toggleMenu()" [ngClass]="collapsed ?  'sidenav-collapsed': ''">
 
+    <div class="logo-container">
+        <button class="logo" (click)="toggleCollapse()">A</button>
+        <div class="logo-text" *ngIf="collapsed">
+            Agend
+        </div>
+        <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()">
+            <i class="fal fa-times close-icon"></i>
+        </button>
     </div>
-    <ul>
-        <li class="list">
-            <a href="" style="--clr: #f44336;">
-                <span class="icon"></span>
-                <span class="text">Inicio</span>
-            </a>
+    <ul class="sidenav-nav">
+        <li class="sidenav-nav-item" *ngFor="let data of navData">
+            <a class="sidenav-nav-link" [routerLink]="[data.routeLink]" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                <i class="sidenav-link-icon" [class]="data.icon"> </i>
+                <span class="sidenav-link-text" *ngIf="collapsed">
+                    {{data.label}}
+                </span>
 
-        </li>
-        <li class="list">
-            <a href="" style="--clr: #f44336;">
-                <span class="icon"></span>
-                <span class="text">Inicio</span>
             </a>
-
         </li>
     </ul>
+    <!-- <ul>
+        <li class="list active" #listItems>
+            <a href="" style="--clr: #f44336;">
+                <span class="icon"><i class="bi bi-house"></i></span>
+                <span class="text">Inicio</span>
+            </a>
+
+        </li>
+        <li class="list" #listItems>
+            <a href="" style="--clr: #f44336;">
+                <span class="icon"><i class="bi bi-aspect-ratio"></i></span>
+                <span class="text">Inicio</span>
+            </a>
+
+        </li>
+        <li class="list" #listItems>
+            <a href="" style="--clr: #f44336;">
+                <span class="icon"><i class="bi bi-fingerprint"></i></span>
+                <span class="text">Citas</span>
+            </a>
+
+        </li>
+        <li class="list" #listItems>
+            <a href="" style="--clr: #f44336;">
+                <span class="icon"><i class="bi bi-fingerprint"></i></span>
+                <span class="text">Usuarios</span>
+            </a>
+
+        </li>
+    </ul> -->
 </nav>
 
 <!-- https://www.youtube.com/watch?v=m5LvqOVltlA -->

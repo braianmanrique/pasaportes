@@ -1,12 +1,14 @@
 <div class="main">
-    <app-sidebar></app-sidebar>
+    <app-sidebar (onToggleSideNav)="onToggleSideNav($event)"></app-sidebar>
+    <app-body [collapsed]="isSideNavCollapsed" [screenWidth]="screenWidth">
 
-    <div class="cnt-header">
+    </app-body>
+    <!-- <div class="cnt-header" [ngClass]="getBodyClass()">
         <app-header></app-header>
         <div class="dashboard">
             <router-outlet></router-outlet>
         </div>
-    </div>
+    </div> -->
 
 
 </div>

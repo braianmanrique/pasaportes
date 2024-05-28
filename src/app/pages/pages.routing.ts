@@ -4,14 +4,19 @@ import { PagesComponent } from './pages/pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { CitasComponent } from './citas/citas.component';
 
 const routes: Routes = [
     {path: 'dashboard', 
     component: PagesComponent,
     canActivate: [AuthGuard],
      children:[ 
-     { path: '', component: DashboardComponent },
+     { path: '',redirectTo: 'dashboard', pathMatch: 'full'},
+     { path: 'dashboard', component: DashboardComponent },
+
      { path: 'admin', component: AdminComponent  },
+     { path: 'citas', component: CitasComponent  },
+
 
     ]
   },

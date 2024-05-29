@@ -6,8 +6,19 @@ export const navbarData = [
     },
     {
         routeLink : 'citas',
-        icon: 'bi bi-calendar-range',
+        icon: 'bi bi-calendar-event',
         label: 'Citas'
+    },
+    {
+        routeLink : 'citas-prioritarias',
+        icon: 'bi bi-1-square-fill',
+        label: 'Citas Prioritarias'
+    },
+
+    {
+        routeLink : 'formalizadores',
+        icon: 'bi bi-people',
+        label: 'Formalizadores'
     },
 
 ]

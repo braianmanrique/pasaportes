@@ -20,6 +20,8 @@ const routes: Routes = [
      { path: 'citas', component: CitasComponent  },
      { path: 'citas-prioritarias', component: CitasPrioritariasComponent  },
      { path: 'formalizadores', component: FormalizadoresComponent  },
+     { path: 'reportes', component: DashboardComponent },
+
 
 
 

@@ -9,6 +9,8 @@ import { BodyComponent } from './body/body.component';
 import { CitasComponent } from './citas/citas.component';
 import { CitasPrioritariasComponent } from './citas-prioritarias/citas-prioritarias.component';
 import { FormalizadoresComponent } from './formalizadores/formalizadores.component';
+import { MaterialModule } from '../material/material.module';
+import { FormAddEditComponent } from './formalizadores/form-add-edit/form-add-edit.component';
 
 @NgModule({
   declarations: [ 
@@ -18,7 +20,8 @@ import { FormalizadoresComponent } from './formalizadores/formalizadores.compone
     BodyComponent,
     CitasComponent,
     CitasPrioritariasComponent,
-    FormalizadoresComponent
+    FormalizadoresComponent,
+    FormAddEditComponent
   ],
   exports:[ 
     PagesComponent,
@@ -27,7 +30,8 @@ import { FormalizadoresComponent } from './formalizadores/formalizadores.compone
   imports: [
     CommonModule,
     SharedModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MaterialModule
   ]
 })
 export class PagesModule { }

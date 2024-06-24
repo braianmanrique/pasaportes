@@ -20,5 +20,10 @@ export const navbarData = [
         icon: 'bi bi-people',
         label: 'Formalizadores'
     },
+    {
+        routeLink : 'reportes',
+        icon: 'bi bi-people',
+        label: 'Reportes'
+    },
 
 ]

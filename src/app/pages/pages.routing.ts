@@ -7,6 +7,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { CitasComponent } from './citas/citas.component';
 import { CitasPrioritariasComponent } from './citas-prioritarias/citas-prioritarias.component';
 import { FormalizadoresComponent } from './formalizadores/formalizadores.component';
+import { ReportsComponent } from './reports/reports.component';
 
 const routes: Routes = [
     {path: 'dashboard', 
@@ -20,19 +21,10 @@ const routes: Routes = [
      { path: 'citas', component: CitasComponent  },
      { path: 'citas-prioritarias', component: CitasPrioritariasComponent  },
      { path: 'formalizadores', component: FormalizadoresComponent  },
-     { path: 'reportes', component: DashboardComponent },
-
-
-
-
-
+     { path: 'reportes', component: ReportsComponent },
     ]
   },
-    //{ path: 'path/:routeParam', component: MyComponent },
-    //{ path: 'staticPath', component: ... },
-    //{ path: '**', component: ... },
-    //{ path: 'oldPath', redirectTo: '/staticPath' },
-    //{ path: ..., component: ..., data: { message: 'Custom' }
+
 ];
 
 @NgModule({

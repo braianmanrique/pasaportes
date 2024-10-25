@@ -11,6 +11,7 @@ import { CitasPrioritariasComponent } from './citas-prioritarias/citas-prioritar
 import { FormalizadoresComponent } from './formalizadores/formalizadores.component';
 import { MaterialModule } from '../material/material.module';
 import { FormAddEditComponent } from './formalizadores/form-add-edit/form-add-edit.component';
+import { ReportsComponent } from './reports/reports.component';
 
 @NgModule({
   declarations: [ 
@@ -21,7 +22,8 @@ import { FormAddEditComponent } from './formalizadores/form-add-edit/form-add-ed
     CitasComponent,
     CitasPrioritariasComponent,
     FormalizadoresComponent,
-    FormAddEditComponent
+    FormAddEditComponent,
+    ReportsComponent
   ],
   exports:[ 
     PagesComponent,

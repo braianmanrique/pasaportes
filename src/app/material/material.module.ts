@@ -10,8 +10,9 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconButton } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-
-
+import { MatSelectModule } from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker'; 
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -28,20 +29,29 @@ import {MatIconModule} from '@angular/material/icon';
     MatPaginatorModule,
     MatSortModule,
     MatIconButton,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule,
+    MatDatepickerModule
+    
   ],
   exports: [
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
     MatDialogModule,
+    MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
     MatPaginator,
     MatPaginatorModule,
     MatIconButton,
-    MatIconModule
-  ]
+    MatIconModule,
+    MatSelectModule,
+    MatDatepickerModule
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' } // Opcional: Configurar el idioma de la fecha
+  ],
 })
 export class MaterialModule { }

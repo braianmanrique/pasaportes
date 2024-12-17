@@ -12,6 +12,7 @@ import { FormalizadoresComponent } from './formalizadores/formalizadores.compone
 import { MaterialModule } from '../material/material.module';
 import { FormAddEditComponent } from './formalizadores/form-add-edit/form-add-edit.component';
 import { ReportsComponent } from './reports/reports.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ 
@@ -33,7 +34,8 @@ import { ReportsComponent } from './reports/reports.component';
     CommonModule,
     SharedModule,
     AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class PagesModule { }

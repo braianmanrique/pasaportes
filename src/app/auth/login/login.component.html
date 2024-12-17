@@ -3,7 +3,7 @@
       <img alt="logo" src="../../../assets/images/LogoGoberMeta1.png" style="height: 8rem; margin-bottom: 4rem;" />
 
       <div class="button-microsoft-container">
-         <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="loginUser()">
+         <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="onLogin()">
             <div class="container-input">
                <input type="text" class="p-inputtext-sm " pInputText placeholder="Ingresa tu usuario..."
                   formControlName="username" />

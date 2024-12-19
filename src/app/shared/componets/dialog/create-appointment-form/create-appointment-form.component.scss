@@ -1,0 +1,37 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  /* Optimizar espacio en los campos */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  
+  /* Campos */
+  .full-width {
+    width: 100%;
+  }
+  
+  .half-width {
+    flex: 1 1 calc(50% - 0.75rem); /* Campos de la mitad del ancho */
+  }
+  
+  /* Compactar los botones */
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+  
+  /* Asegurar que el diálogo sea más grande y cómodo */
+  .mat-dialog-container {
+    width: 600px;
+    max-width: 90vw;
+    overflow: visible;
+  }
+  

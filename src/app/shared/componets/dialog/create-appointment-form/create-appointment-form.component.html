@@ -1,0 +1,94 @@
+<form
+  [formGroup]="appointmentForm"
+  (ngSubmit)="onSubmit()"
+  class="form-container"
+>
+  <div class="row compact">
+    <!-- Nombre -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" placeholder="Nombre completo" />
+      <mat-error *ngIf="appointmentForm.get('name')?.invalid">
+        Este campo es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Cédula -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Cédula</mat-label>
+      <input
+        matInput
+        formControlName="identification"
+        placeholder="Número de cédula"
+      />
+      <mat-error *ngIf="appointmentForm.get('identification')?.invalid">
+        Este campo es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Celular</mat-label>
+      <input matInput formControlName="phone" placeholder="Celular" />
+    </mat-form-field>
+    <!-- Fecha -->
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Fecha</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="appointmentForm.get('date')?.invalid">
+        Por favor selecciona una fecha
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Género -->
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Género</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option value="1">Mujer</mat-option>
+        <mat-option value="2">Hombre</mat-option>
+      </mat-select>
+      <mat-error *ngIf="appointmentForm.get('gender')?.invalid">
+        Selecciona el género
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Cualidades</mat-label>
+      <mat-select formControlName="cualities">
+        <mat-option *ngFor="let cualidad of listaCualidades" [value]="cualidad.id">
+          {{ cualidad.nombre }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="appointmentForm.get('cualities')?.invalid">
+        Selecciona una cualidad
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Prioridad -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Comunidades</mat-label>
+      <mat-select formControlName="comunity">
+        <mat-option *ngFor="let cualidad of listaComunidades" [value]="cualidad.id">
+          {{ cualidad.nombre }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="appointmentForm.get('comunity')?.invalid">
+        Selecciona una comunidad
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Botones de acción -->
+  <div mat-dialog-actions align="end" class="actions">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="appointmentForm.invalid"
+    >
+      Crear
+    </button>
+  </div>
+</form>

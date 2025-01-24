@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PagesComponent } from './pages/pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -13,8 +13,16 @@ import { MaterialModule } from '../material/material.module';
 import { FormAddEditComponent } from './formalizadores/form-add-edit/form-add-edit.component';
 import { ReportsComponent } from './reports/reports.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { SeleccionarModuloComponent } from './seleccionar-modulo/seleccionar-modulo.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChartsSectionComponentComponent } from './reports/charts-section-component/charts-section-component.component';
+import { AtenderCitaComponent } from './atender-cita/atender-cita.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 @NgModule({
+  schemas: [NO_ERRORS_SCHEMA],
   declarations: [ 
     PagesComponent,
     DashboardComponent,
@@ -24,7 +32,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     CitasPrioritariasComponent,
     FormalizadoresComponent,
     FormAddEditComponent,
-    ReportsComponent
+    ReportsComponent,
+    SeleccionarModuloComponent,
+    ChartsSectionComponentComponent,
+    AtenderCitaComponent
   ],
   exports:[ 
     PagesComponent,
@@ -35,7 +46,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     AppRoutingModule,
     MaterialModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    NgxChartsModule,
+    BrowserAnimationsModule,
+    MatPaginatorModule,
+    MatTableModule,
+    
+  ],
+  providers: [MatDatepickerModule],
 })
 export class PagesModule { }

@@ -1,0 +1,10 @@
+<div class="atender-cita-container">
+    <h2>Atendiendo Cita</h2>
+    <p><strong>Ciudadano:</strong> {{ cita?.nombre_citizen }}</p>
+    <p><strong>Fecha:</strong> {{ cita?.fecha_cita | date:'yyyy-MM-dd HH:mm:ss' }}</p>
+    <p><strong>Estado:</strong> {{ cita?.estado }}</p>
+  
+    <button mat-raised-button color="primary" (click)="finalizarCita()">
+      Finalizar Atención
+    </button>
+  </div>

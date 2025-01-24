@@ -1,27 +1,29 @@
-<!-- <div *ngIf="userLoginOn">
-    <p>
-        Nombre: {{userData?.name}}
-    </p>
-    <p>Email: {{userData?.email}}</p>
-
-
-    <h2>Bienvenido</h2>
-</div> -->
-
-<div>
-    <h2>Bienvenido</h2>
-    <!-- <p>Tipo: {{userData?.type}}</p> -->
-
-    <div class="card">
-        <div class="card-head">Pasaportes </div>
-        <div class="card-body">
-            Modulo de pasaportes
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint id totam dolores exercitationem velit, cum
-            minus, voluptatum voluptas vero est, explicabo saepe ducimus architecto voluptatibus? Quisquam veniam
-            nam omnis placeat.
-        </div>
-
-    </div>
-
- 
+<div class="welcome-section">
+  <h2 class="welcome-title">
+    <mat-icon class="welcome-icon">face</mat-icon>
+    Bienvenido, {{ userName }}
+  </h2>
+  <p class="role-info">Tu rol: <span class="role-highlight">{{ userRole }}</span></p>
 </div>
+
+<div  class="welcome-section">
+
+</div>
+
+  <mat-card *ngIf="userRole === 'administrador_pasaportes'" class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon class="dashboard-icon">work</mat-icon>
+        Módulo de Reportes
+      </mat-card-title>
+      <mat-card-subtitle>Gestión y Control Simplificado</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Accede al modulo de reportes.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="accent"   [routerLink]="'/dashboard/reportes'">Explorar Módulo</button>
+    </mat-card-actions>
+  </mat-card>

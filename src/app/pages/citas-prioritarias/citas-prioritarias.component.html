@@ -1,12 +1,54 @@
-<div class="card">
-    <div class="card-head">Modulo de citas prioritarias</div>
-    <div class="card-body">
+<mat-card class="priority-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon class="card-icon">event</mat-icon>
+      Módulo de Citas Prioritarias
+    </mat-card-title>
+    <mat-card-subtitle
+      >Gestión eficiente de citas prioritarias</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      Aquí puedes crear y gestionar citas prioritarias de manera rápida y
+      sencilla.
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openCreateAppointmentDialog()"
+    >
+      <mat-icon>add</mat-icon>
+      Crear Cita Prioritaria
+    </button>
+  </mat-card-actions>
+</mat-card>
 
-    </div>
-  
-    <div class="card-footer">
-        <button mat-raised-button color="primary" (click)="openCreateAppointmentDialog()">
-            Crear cita prioritaria
-          </button>
-    </div>
-  </div>
+<hr />
+<mat-card class="priority-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon class="card-icon">event</mat-icon>
+      Reasignar citas
+    </mat-card-title>
+    <mat-card-subtitle>Gestión de asignación citas </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      Aquí puedes crear y gestionar citas prioritarias de manera rápida y
+      sencilla.
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openReasignAppointmentDialog()"
+    >
+      <mat-icon>add</mat-icon>
+      Reasignar citas
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -13,9 +13,11 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker'; 
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-
-
-
+import {MatCardModule} from '@angular/material/card'; 
+import {MatGridListModule} from '@angular/material/grid-list'; 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTabsModule} from '@angular/material/tabs'; 
 @NgModule({
   imports: [
     MatSidenavModule,
@@ -31,7 +33,13 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
     MatIconButton,
     MatIconModule,
     MatSelectModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatCardModule,
+    MatGridListModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    MatNativeDateModule,
     
   ],
   exports: [
@@ -48,10 +56,17 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
     MatIconButton,
     MatIconModule,
     MatSelectModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatCardModule,
+    MatGridListModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatTabsModule
+    
   ],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' } // Opcional: Configurar el idioma de la fecha
+    MatDatepickerModule,
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }, // Opcional: Configurar el idioma de la fecha
   ],
 })
 export class MaterialModule { }

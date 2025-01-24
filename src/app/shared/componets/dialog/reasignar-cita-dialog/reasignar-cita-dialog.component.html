@@ -1,0 +1,23 @@
+<!-- reasignar-cita-dialog.component.html -->
+<h1 mat-dialog-title>Reasignar Citas</h1>
+<div mat-dialog-content>
+  <form [formGroup]="reasignarForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Fecha</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fecha" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <h3>Listado de Citas</h3>
+    <mat-list>
+      <mat-list-item *ngFor="let cita of citas">
+        <p>ID Cita: {{ cita.id_cita }} - ID Ciudadano: {{ cita.id_citizen }}</p>
+      </mat-list-item>
+    </mat-list>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="reasignarCitas()">Reasignar</button>
+</div>

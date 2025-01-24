@@ -8,24 +8,46 @@ import { Observable } from 'rxjs';
 export class CitasService {
   private apiUrl =
     'https://backend-auth-log-project.onrender.com/api/usuarios/listar_dates/';
+
+      private citasPrioritarias = 'https://backend-auth-log-project.onrender.com/api/usuarios/listar_citas_prioritarias_asig/'
+  private apiCitas_Ganadero =
+    'https://backend-auth-log-project.onrender.com/api/usuarios/listar_dates_carnet/';
+
   private apiCitaPrioritariaUrl =
     'https://backend-auth-log-project.onrender.com/api/usuarios/crear_cita_prioritaria/';
   private apiCiudadanoUrl =
     'https://backend-auth-log-project.onrender.com/api/usuarios/crear_ciudadano_prioritario/';
 
-    private seleccionarCajaUrl = 'https://backend-auth-log-project.onrender.com/api/usuarios/seleccionar_caja/';
-  private citasPorModuloUrl = 'https://backend-auth-log-project.onrender.com/api/usuarios/citas_por_modulo_caja/';
+  private seleccionarCajaUrl =
+    'https://backend-auth-log-project.onrender.com/api/usuarios/seleccionar_caja/';
+  private citasModuloUrl =
+    'https://backend-auth-log-project.onrender.com/api/usuarios/citas_modulo_caja/';
+
+    private citasPrioritariasModuloUrl =
+    'https://backend-auth-log-project.onrender.com/api/usuarios/listar_citasprioritarias_modulo/';
+
+    private liberarCitasUrl =
+    'https://backend-auth-log-project.onrender.com/api/usuarios/liberar_caja/';
   constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token') || '';
-    return new HttpHeaders({ 'Authorization': `Token ${token}` });
+    return new HttpHeaders({ Authorization: `Token ${token}` });
   }
 
   listarCitas(): Observable<any> {
     const headers = this.getHeaders();
-
     return this.http.get(this.apiUrl, { headers });
+  }
+
+  listarCitasPrioritarias(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(this.citasPrioritarias, { headers });
+  }
+
+  listarCitasCarnet(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(this.apiCitas_Ganadero, { headers });
   }
 
   crearCiudadano(ciudadanoData: any): Observable<any> {
@@ -42,11 +64,88 @@ export class CitasService {
 
   seleccionarCaja(numeroCaja: number): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.post(this.seleccionarCajaUrl, { numero_caja: numeroCaja }, { headers });
+    return this.http.post(
+      this.seleccionarCajaUrl,
+      { numero_caja: numeroCaja },
+      { headers }
+    );
+  }
+  
+  liberarCaja():Observable<any>{
+
+    const headers = this.getHeaders();
+    
+    return this.http.post(this.liberarCitasUrl, {}, {headers})
+
+  }
+  
+  signarModulo(idCita: number, numeroCaja: number): Observable<any> {
+    const headers = this.getHeaders();
+    const body = { numero_caja: numeroCaja };
+    return this.http.put(
+      `https://backend-auth-log-project.onrender.com/api/usuarios/asignar-modulo/${idCita}/`,
+      body,
+      { headers }
+    );
   }
 
-  listarCitasPorCaja(numeroCaja: number): Observable<any> {
+  listarCitasPrioritariasFuncionario():Observable<any>{
     const headers = this.getHeaders();
-    return this.http.get(this.citasPorModuloUrl + '?numero_caja=' + numeroCaja, { headers });
+    return this.http.get(
+      this.citasPrioritariasModuloUrl,
+      { headers }
+    );
+    
+  }
+
+  listarCitasPorCaja(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(
+      this.citasModuloUrl,
+      { headers }
+    );
+
+    
+  }
+
+  actualizarEstadoCita(idCita: number, estado: string): Observable<any> {
+    const headers = this.getHeaders();
+    const body = { estado_ingreso: estado };
+    return this.http.put(
+      `https://backend-auth-log-project.onrender.com/api/usuarios/update_estado_cita/${idCita}/`,
+      body,
+      { headers }
+    );
+  }
+
+  actualizarEstadoCitaPrioritaria(idCita: number, estado: string): Observable<any> {
+    debugger
+    const headers = this.getHeaders();
+    const body = { estado_ingreso: estado };
+    return this.http.put(
+      `https://backend-auth-log-project.onrender.com/api/usuarios/update_estado_cita_prioritaria/${idCita}/`,
+      body,
+      { headers }
+    );
+  }
+
+  actualizarCita(idCita: number, estado: string): Observable<any> {
+    const headers = this.getHeaders();
+    const body = { nuevo_estado: estado };
+    return this.http.post(
+      `https://backend-auth-log-project.onrender.com/api/usuarios/update_atendida_cita_modulo/${idCita}/`,
+      body,
+      { headers }
+    );
+  }
+
+  actualizarEstadoCitaCarnet(idCita: number, estado: string): Observable<any> {
+    const headers = this.getHeaders();
+    const body = { atendida: estado };
+    return this.http.put(
+      `https://backend-auth-log-project.onrender.com/api/usuarios/update_estado_carnet/${idCita}/`,
+      body,
+      { headers }
+    );
   }
 }

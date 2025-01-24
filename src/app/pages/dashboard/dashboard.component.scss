@@ -3,3 +3,109 @@ div{
     padding-top: 3rem;
     padding-left: 3rem;
 }
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #5a67d8; /* Cambia el color si es necesario */
+  }
+  
+  .welcome-section .role-info {
+    font-size: 1.2rem;
+    color: #4a5568;
+    margin-top: 5px;
+  }
+
+  .dashboard-card {
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .welcome-section {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .welcome-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #2b6cb0;
+  }
+  
+  .welcome-icon {
+    font-size: 3rem;
+    color: #63b3ed;
+  }
+  
+  .role-info {
+    font-size: 1.2rem;
+    color: #718096;
+    margin-top: 5px;
+  }
+  
+  .role-highlight {
+    font-weight: bold;
+    color: #4caf50;
+  }
+
+  .dashboard-card {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background-color: #ffffff;
+  }
+  
+  .dashboard-card mat-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    color: #1a202c;
+  }
+  
+  .dashboard-card mat-card-subtitle {
+    font-size: 1rem;
+    color: #718096;
+  }
+  
+  .dashboard-card p {
+    font-size: 1rem;
+    color: #4a5568;
+  }
+  
+  .dashboard-card button {
+    margin-top: 10px;
+  }
+
+  body {
+    background: linear-gradient(135deg, #f3e8ff, #c4f1f9);
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  mat-card {
+    margin-top: 20px;
+  }
+  
+  mat-card-actions {
+    display: flex;
+    justify-content: center;
+  }

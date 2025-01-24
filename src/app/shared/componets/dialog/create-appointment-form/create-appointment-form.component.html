@@ -3,7 +3,7 @@
   (ngSubmit)="onSubmit()"
   class="form-container"
 >
-  <div class="row compact">
+  <div class="row">
     <!-- Nombre -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Nombre</mat-label>
@@ -12,24 +12,39 @@
         Este campo es obligatorio
       </mat-error>
     </mat-form-field>
+  </div>
 
-    <!-- Cédula -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Cédula</mat-label>
-      <input
-        matInput
-        formControlName="identification"
-        placeholder="Número de cédula"
-      />
+  <div class="row">
+    <!-- Tipo de Documento -->
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Tipo de Documento</mat-label>
+      <mat-select formControlName="documentType">
+        <mat-option *ngFor="let tipo of listaTiposDocumento" [value]="tipo.id">
+          {{ tipo.nombre }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="appointmentForm.get('documentType')?.invalid">
+        El tipo de documento es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Número de Documento -->
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Número</mat-label>
+      <input matInput formControlName="identification" placeholder="Número de documento" />
       <mat-error *ngIf="appointmentForm.get('identification')?.invalid">
         Este campo es obligatorio
       </mat-error>
     </mat-form-field>
+  </div>
 
-    <mat-form-field appearance="outline" class="full-width">
+  <div class="row">
+    <!-- Celular -->
+    <mat-form-field appearance="outline" class="half-width">
       <mat-label>Celular</mat-label>
-      <input matInput formControlName="phone" placeholder="Celular" />
+      <input matInput formControlName="phone" placeholder="Número de celular" />
     </mat-form-field>
+
     <!-- Fecha -->
     <mat-form-field appearance="outline" class="half-width">
       <mat-label>Fecha</mat-label>
@@ -37,10 +52,12 @@
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="appointmentForm.get('date')?.invalid">
-        Por favor selecciona una fecha
+        Selecciona una fecha válida
       </mat-error>
     </mat-form-field>
+  </div>
 
+  <div class="row">
     <!-- Género -->
     <mat-form-field appearance="outline" class="half-width">
       <mat-label>Género</mat-label>
@@ -49,11 +66,12 @@
         <mat-option value="2">Hombre</mat-option>
       </mat-select>
       <mat-error *ngIf="appointmentForm.get('gender')?.invalid">
-        Selecciona el género
+        Selecciona un género
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
+    <!-- Cualidades -->
+    <mat-form-field appearance="outline" class="half-width">
       <mat-label>Cualidades</mat-label>
       <mat-select formControlName="cualities">
         <mat-option *ngFor="let cualidad of listaCualidades" [value]="cualidad.id">
@@ -64,13 +82,15 @@
         Selecciona una cualidad
       </mat-error>
     </mat-form-field>
+  </div>
 
-    <!-- Prioridad -->
+  <div class="row">
+    <!-- Comunidades -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Comunidades</mat-label>
       <mat-select formControlName="comunity">
-        <mat-option *ngFor="let cualidad of listaComunidades" [value]="cualidad.id">
-          {{ cualidad.nombre }}
+        <mat-option *ngFor="let comunidad of listaComunidades" [value]="comunidad.id">
+          {{ comunidad.nombre }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="appointmentForm.get('comunity')?.invalid">

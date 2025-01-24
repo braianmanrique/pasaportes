@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Confirmar selección</h1>
+    <div mat-dialog-content>
+      ¿Desea seleccionar el módulo: <strong>{{data.nombre}}</strong>?
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <button mat-button color="primary" (click)="onConfirm()">Confirmar</button>
+    </div>

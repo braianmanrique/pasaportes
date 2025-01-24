@@ -1,0 +1,136 @@
+<div class="office-list">
+  <div class="office-container">
+    <mat-card 
+      *ngFor="let oficina of oficinas" 
+      (click)="openConfirmDialog(oficina)" 
+      class="office-card">
+      <mat-card-title>{{ oficina.nombre }}</mat-card-title>
+    </mat-card>
+  </div>
+</div>
+
+<button mat-icon-button color="primary" (click)="liberarModulo()">
+        
+  Liberar módulo
+   
+ </button>
+
+<div class="m-3" *ngIf="oficinaSeleccionada">
+
+    <div style="display: flex; align-items: center; justify-content: space-between;" *ngIf="oficinaSeleccionada">
+      <h2>Citas {{oficinaSeleccionada.nombre}}</h2>
+      
+   
+
+      <button mat-icon-button (click)="reloadCitas()">
+        
+        <mat-icon>refresh</mat-icon>
+        
+      </button>
+  </div>
+ 
+  <div>
+    <h3>Citas Prioritarias</h3>
+    <table mat-table [dataSource]="citasPrioritarias" class="mat-elevation-z8"  *ngIf="citasPrioritarias.length > 0; else noPrioritarias">
+    
+      <ng-container matColumnDef="nombre_citizen">
+        <th mat-header-cell *matHeaderCellDef>Ciudadano</th>
+        <td mat-cell *matCellDef="let cita">{{ cita.nombre_citizen }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="fec_registro">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let cita">{{ cita.fecha_cita  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="hora">
+        <th mat-header-cell *matHeaderCellDef>Hora</th>
+        <td mat-cell *matCellDef="let cita">{{ cita.hora }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="atendida">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let cita">
+          {{ getAtendidaLabel(cita.atendida) }}
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Acción</th>
+        <td mat-cell *matCellDef="let row">
+    
+          <button mat-icon-button color="primary" (click)="openDialog(row)">
+            <mat-icon>pending_actions</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="3">No hay citas para este módulo</td>
+      </tr>
+    </table>
+    <ng-template #noPrioritarias>
+      <p>No hay citas prioritarias disponibles.</p>
+    </ng-template>
+  </div>
+ 
+
+  <hr>
+  <div>
+    <h3>Citas Normales</h3> 
+    <table mat-table [dataSource]="citas" class="mat-elevation-z8" *ngIf="citas.length > 0; else noNormales">    
+      <ng-container matColumnDef="nombre_citizen">
+        <th mat-header-cell *matHeaderCellDef>Ciudadano</th>
+        <td mat-cell *matCellDef="let cita">{{ cita.nombre_citizen }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="fec_registro">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let cita">{{ cita.fec_registro }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="hora">
+        <th mat-header-cell *matHeaderCellDef>Hora</th>
+        <td mat-cell *matCellDef="let cita">{{ cita.hora }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="atendida">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let cita">
+          {{ getAtendidaLabel(cita.atendida) }}
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Acción</th>
+        <td mat-cell *matCellDef="let row">
+    
+          <!-- <button mat-icon-button color="primary" (click)="openDialog(row)">
+            <mat-icon>pending_actions</mat-icon>
+          </button> -->
+
+          <button 
+      mat-icon-button 
+      color="primary" 
+      (click)="atenderCita(row)">
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="3">No hay citas para este módulo</td>
+      </tr>
+    </table>
+    <ng-template #noNormales>
+      <p>No hay citas normales disponibles.</p>
+    </ng-template>
+  </div>
+  
+</div>

@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Actualizar Estado de Cita</h2>
+<mat-dialog-content>
+  <p><strong>Ciudadano:</strong> {{ data.cita.nombre_citizen }}</p>
+<p><strong>Fecha:</strong> {{ data.cita.fec_registro || data.cita.fecha_cita | date:'longDate' }}</p>
+
+<p><strong>Hora:</strong> {{ data.cita.hora }}</p>
+
+  <mat-form-field>
+    <mat-label>Estado de Ingreso</mat-label>
+    <mat-select [(value)]="estadoIngreso">
+      <mat-option value="I">Ingresado</mat-option>
+        </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="!estadoIngreso" (click)="onSave()">Guardar</button>
+</mat-dialog-actions>

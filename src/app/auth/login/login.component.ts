@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
+import { LoadingService } from '../../services/shared/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -10,9 +11,11 @@ import { UsuarioService } from '../../services/usuario.service';
 })
 export class LoginComponent {
   public formSubmitted = false;
+
+
   public loginForm: FormGroup = this.fb.group({
-    username: ['adminpass1', [Validators.required, Validators.email]],
-    password: ['clave1234', Validators.required],
+    username: ['', [Validators.required]],
+    password: ['', Validators.required],
     remember: [false],
   });
   loginError: string = '------------------------------';
@@ -21,25 +24,31 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private loginService: UsuarioService
+    private loginService: UsuarioService,
+    private loadingService: LoadingService
   ) {}
 
   onLogin() {
-
+    if (this.loginForm.invalid) {
+      return; // No envía el formulario hasta que los campos sean válidos
+    }
     const formData = this.loginForm.value; // Obtén los datos del formulario
     this.loginService.loginUsuario(formData).subscribe({
       next: (response: any) => {
         this.loginService.setLoggedInUser(response);
+        this.loadingService.hide();
         console.log('Login successful:', response);
+      
         localStorage.setItem('userRole', response.rol);
         localStorage.setItem('user', JSON.stringify(response));
         localStorage.setItem('token', response.token);
         this.router.navigateByUrl('/dashboard'); 
-
+       
       },
       error: (error) => {
         console.error('Login failed:', error);
         this.errorMessage = 'Usuario o contraseña incorrectos';
+        this.loadingService.hide(); 
       },
     });
 
@@ -64,4 +73,6 @@ export class LoginComponent {
     }
     return null;
   }
+
+  
 }

@@ -1,0 +1,20 @@
+
+  .card {
+    margin-top: 1rem; // O menos
+  }
+  
+  .card-body {
+    padding: 0.5rem; // Reducir padding interno
+  }
+  
+  mat-form-field {
+    margin: 0.5rem 0 !important; // reducir el margen vertical
+  }
+  
+  .mat-elevation-z8 {
+    margin-top: 0.5rem; // si necesitas reducir espacio entre el formulario y la tabla
+  }
+  
+  table {
+    margin-bottom: 0; // si la tabla agrega margen inferior, lo puedes reducir
+  }

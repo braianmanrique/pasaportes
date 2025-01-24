@@ -21,7 +21,11 @@ export class CreateAppointmentFormComponent {
     { id: 6, nombre: 'Down' },
     { id: 7, nombre: 'Cognitivo' }
   ];
-  
+  listaTiposDocumento = [
+    { id: '1', nombre: 'Cédula de Ciudadanía' },
+    { id: '2', nombre: 'Tarjeta de Identidad' },
+    { id: '3', nombre: 'Registro civil' },
+  ];
   listaComunidades = [
   {id : 1 , nombre: 'Ninguna.'},
    {id:2 ,  nombre:  'Mayoritario.'},
@@ -39,6 +43,7 @@ export class CreateAppointmentFormComponent {
     this.appointmentForm = this.fb.group({
       name: ['', Validators.required],
       phone: ['', Validators.required],
+      documentType: ['', Validators.required],
       identification: ['', Validators.required],
       date: ['', Validators.required],
       gender: ['', Validators.required],
@@ -68,7 +73,6 @@ export class CreateAppointmentFormComponent {
     this.citasService.crearCiudadano(ciudadanoData)
     .subscribe({
       next: (res: any) => {
-        debugger
         const citaData = {
           cedula:  Number(formValue.identification),
           fec_cita: fechaCita
@@ -77,7 +81,6 @@ export class CreateAppointmentFormComponent {
         this.citasService.crearCitaPrioritaria(citaData)
           .subscribe({
             next: (resp: any) => {
-              console.log('Cita prioritaria creada con éxito', resp);
               this.snackBar.open('Cita creada con éxito', 'Cerrar', {
                 duration: 3000, 
                 horizontalPosition: 'right',

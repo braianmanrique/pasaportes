@@ -3,13 +3,13 @@ export const navbarData = [
       routeLink: 'dashboard',
       icon: 'bi bi-calendar-range',
       label: 'Dashboard',
-      roles: ['administrador_pasaportes', 'atencion_pasaporte'],  // Añadir roles
+      roles: ['administrador_pasaportes', 'atencion_pasaporte', 'asignador','administrador_juntas', 'administrador_discapacidad', 'atencion_ganadero','administrador_ganadero','administrador_sistema'],  // Añadir roles
     },
     {
       routeLink: 'citas',
       icon: 'bi bi-calendar-event',
       label: 'Citas',
-      roles: ['asignador'],
+      roles: ['asignador','atencion_ganadero'],
     },
     {
       routeLink: 'citas-modulo',
@@ -33,6 +33,6 @@ export const navbarData = [
       routeLink: 'reportes',
       icon: 'bi bi-people',
       label: 'Reportes',
-      roles: ['administrador_pasaportes', 'administrador_ganadero'],
+      roles: ['administrador_pasaportes', 'administrador_ganadero', 'administrador_juntas','administrador_discapacidad','administrador_sistema'],
     },
   ];

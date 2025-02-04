@@ -18,6 +18,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs'; 
+import {MatCheckboxModule} from '@angular/material/checkbox'; 
 @NgModule({
   imports: [
     MatSidenavModule,
@@ -40,7 +41,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatProgressSpinnerModule,
     MatTabsModule,
     MatNativeDateModule,
-    
+    MatCheckboxModule
   ],
   exports: [
     MatSidenavModule,
@@ -61,7 +62,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatGridListModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatTabsModule
+    MatTabsModule,
+    MatCheckboxModule
     
   ],
   providers: [

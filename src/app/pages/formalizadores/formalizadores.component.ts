@@ -2,62 +2,62 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormAddEditComponent } from './form-add-edit/form-add-edit.component';
 
-import {AfterViewInit, ViewChild} from '@angular/core';
-import {MatSort, MatSortModule} from '@angular/material/sort';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { AfterViewInit, ViewChild } from '@angular/core';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
+import { FormalizadoresService } from '../../services/formalizadores.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface UserData {
   id: string;
   name: string;
   progress: string;
-  fruit: string;
+  email: string;
 }
-const STATE: string[] = [
-  'Activo',
-  'Descanso',
-  'Ausente',
- 
-];
-const NAMES: string[] = [
-  'Braian',
-  'Giovanny',
-  'Fabian',
-  'Andrea',
-  'Amelia',
-  'Jack',
-  'Charlotte',
-  'Theodore',
-  'Isla',
-  'Oliver',
-  'Arthur',
-  'Mia',
-  'Thomas',
-  'Elizabeth',
-];
+const STATE: string[] = ['Activo', 'Descanso', 'Ausente'];
+const NAMES: string[] = [];
 
 @Component({
   selector: 'app-formalizadores',
   templateUrl: './formalizadores.component.html',
-  styleUrl: './formalizadores.component.scss'
+  styleUrl: './formalizadores.component.scss',
 })
 export class FormalizadoresComponent {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<any> ;
+  displayedColumns: string[] = ['id', 'username', 'email', 'role'];
+  dataSource: MatTableDataSource<any>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator ;
-  @ViewChild(MatSort) sort!: MatSort ;
-  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private _dialog: MatDialog){
-    const users = Array.from({length: 20}, (_, k) => createNewUser(k + 1));
-
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+  ngOnInit(): void {
+    this.loadFormalizadores();
   }
- 
+
+  loadFormalizadores(): void {
+    this.formalizadoService.getFormalizadores().subscribe({
+      next: (data) => {
+        this.dataSource.data = data;
+      },
+      error: () => {
+        this.snackBar.open('Error al cargar los formalizadores.', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
+      },
+    });
+  }
+
+  constructor(
+    private _dialog: MatDialog,
+    private formalizadoService: FormalizadoresService,
+    private snackBar: MatSnackBar
+  ) {
+    this.dataSource = new MatTableDataSource(); // Inicializar vacío
+  }
+
   openAddFormalizador() {
     this._dialog.open(FormAddEditComponent);
   }
@@ -75,21 +75,4 @@ export class FormalizadoresComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-  
-
-}
-
-function createNewUser(id: number): UserData {
-  const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
-    ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) +
-    '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 10).toString(),
-    fruit: STATE[Math.round(Math.random() * (STATE.length - 1))],
-  };
 }

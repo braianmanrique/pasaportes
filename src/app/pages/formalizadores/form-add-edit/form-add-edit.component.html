@@ -1,31 +1,44 @@
 <div mat-dialog-title>
-  <h1>Info formalizador</h1>
+  <h1>Info Formalizador</h1>
 </div>
-<form>
+<form [formGroup]="formalizadorForm">
   <div mat-dialog-content class="content">
     <div class="row">
       <mat-form-field appearance="outline">
-        <mat-label>Nombre</mat-label>
-        <input matInput type="text" placeholder="Ingresa tu nombre" />
+        <mat-label>Nombre de Usuario</mat-label>
+        <input matInput formControlName="username" type="text" placeholder="Ingresa tu nombre" />
+        <mat-error *ngIf="formalizadorForm.get('username')?.invalid">Este campo es obligatorio.</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Apellidos</mat-label>
-        <input matInput placeholder="Ingresa el apellido" />
+        <mat-label>Correo</mat-label>
+        <input matInput formControlName="email" type="email" placeholder="Ingresa el correo" />
+        <mat-error *ngIf="formalizadorForm.get('email')?.invalid">Ingresa un correo válido.</mat-error>
       </mat-form-field>
     </div>
     <div class="row">
       <mat-form-field appearance="outline">
-        <mat-label>Correo</mat-label>
-        <input matInput type="email" placeholder="Ingresa el correo" />
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" type="password" placeholder="Ingresa una contraseña" />
+        <mat-error *ngIf="formalizadorForm.get('password')?.invalid">
+          La contraseña debe tener al menos 8 caracteres.
+        </mat-error>
       </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Cargo</mat-label>
-        <input matInput placeholder="Ingresa el apellido" />
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Rol</mat-label>
+        <mat-select formControlName="rol" required>
+          <mat-option value="atencion_pasaporte">Atención Pasaporte</mat-option>
+          <mat-option value="asignador">Asignador</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formalizadorForm.get('rol')?.hasError('required')">
+          Selecciona un rol.
+        </mat-error>
       </mat-form-field>
     </div>
   </div>
   <div mat-dialog-actions class="actions">
-    <button mat-raised-button>Cancelar</button>
-    <button mat-raised-button color="primary">Guardar</button>
+    <button mat-raised-button color="warn" (click)="onCancel()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="formalizadorForm.invalid">
+      Guardar
+    </button>
   </div>
 </form>

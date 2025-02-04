@@ -31,7 +31,6 @@ export class AtenderCitaComponent {
   }
 
   finalizarCita(): void {
-    // Actualizar el estado de la cita como "Finalizada"
     this.citasService.actualizarEstadoCita(this.cita.id_cita, 'Finalizada').subscribe({
       next: () => {
         alert('Cita finalizada correctamente.');

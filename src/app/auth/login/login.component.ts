@@ -19,7 +19,7 @@ export class LoginComponent {
     remember: [false],
   });
   loginError: string = '------------------------------';
-
+  public hidePassword = true;
   errorMessage: string = '';
   constructor(
     private router: Router,
@@ -54,6 +54,9 @@ export class LoginComponent {
 
   }
 
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
+  }
   isValidField(field: string) {
     return this.loginForm.controls[field].errors;
   }

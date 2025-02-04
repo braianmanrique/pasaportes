@@ -1,22 +1,57 @@
-<!-- reasignar-cita-dialog.component.html -->
 <h1 mat-dialog-title>Reasignar Citas</h1>
 <div mat-dialog-content>
   <form [formGroup]="reasignarForm">
+    <!-- Campo para seleccionar la fecha -->
     <mat-form-field appearance="fill">
       <mat-label>Fecha</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="fecha" />
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="fecha"
+        [min]="minDate"
+        [max]="maxDate"
+      />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
+    <!-- Tabla para mostrar las citas -->
     <h3>Listado de Citas</h3>
-    <mat-list>
-      <mat-list-item *ngFor="let cita of citas">
-        <p>ID Cita: {{ cita.id_cita }} - ID Ciudadano: {{ cita.id_citizen }}</p>
-      </mat-list-item>
-    </mat-list>
+    <table mat-table [dataSource]="citas" class="mat-elevation-z8">
+      <!-- Checkbox para seleccionar citas -->
+      <ng-container matColumnDef="checkbox">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="toggleAllCitas($event.checked)">Seleccionar Todos</mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let cita">
+          <mat-checkbox (change)="toggleCitaSelection(cita, $event.checked)"></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- ID Cita -->
+      <ng-container matColumnDef="id_cita">
+        <th mat-header-cell *matHeaderCellDef>ID Cita</th>
+        <td mat-cell *matCellDef="let cita">{{ cita.id_cita }}</td>
+      </ng-container>
+
+      <!-- Nombre -->
+      <ng-container matColumnDef="nombre_citizen">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let cita">{{ cita.nombre_citizen }}</td>
+      </ng-container>
+
+      <!-- Descripción Turno -->
+      <ng-container matColumnDef="turn_desc">
+        <th mat-header-cell *matHeaderCellDef>Descripción Turno</th>
+        <td mat-cell *matCellDef="let cita">{{ cita.turn_desc }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
   </form>
 </div>
+
 <div mat-dialog-actions>
   <button mat-button (click)="cancelar()">Cancelar</button>
   <button mat-raised-button color="primary" (click)="reasignarCitas()">Reasignar</button>

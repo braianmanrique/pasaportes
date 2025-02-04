@@ -40,3 +40,9 @@
   .office-card:hover mat-card-title {
     color: #408b15; /* Cambia el color del texto al hover */
   }
+
+  .mat-row.atendiendo {
+    background-color: #e0f7fa; /* Color de fondo personalizado */
+    font-weight: bold; /* Opcional: Negrita para resaltar */
+    color: #00796b; /* Color del texto */
+  }

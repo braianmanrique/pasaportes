@@ -31,6 +31,7 @@ export class CitasService {
   constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
+
     const token = localStorage.getItem('token') || '';
     return new HttpHeaders({ Authorization: `Token ${token}` });
   }
@@ -108,25 +109,39 @@ export class CitasService {
     
   }
 
-  actualizarEstadoCita(idCita: number, estado: string): Observable<any> {
+  actualizarEstadoCita(idCita: number, atendida: string): Observable<any> {
     const headers = this.getHeaders();
-    const body = { estado_ingreso: estado };
+    const body = {
+
+        "nuevo_estado": atendida
+    
+    }
+    return this.http.post(
+      `https://backend-auth-log-project.onrender.com/api/usuarios/update_atendida_cita_modulo/${idCita}/`,
+      body,
+      { headers }
+    );
+  }
+
+  ingresarCita(idCita: number, atendida: string): Observable<any> {
+    const headers = this.getHeaders();
+    const body = {
+      "estado_ingreso" : atendida
+    }
     return this.http.put(
       `https://backend-auth-log-project.onrender.com/api/usuarios/update_estado_cita/${idCita}/`,
       body,
       { headers }
     );
   }
+  private baseUrl = 'https://backend-auth-log-project.onrender.com/api/usuarios/';
 
-  actualizarEstadoCitaPrioritaria(idCita: number, estado: string): Observable<any> {
-    debugger
-    const headers = this.getHeaders();
-    const body = { estado_ingreso: estado };
-    return this.http.put(
-      `https://backend-auth-log-project.onrender.com/api/usuarios/update_estado_cita_prioritaria/${idCita}/`,
-      body,
-      { headers }
-    );
+  actualizarEstadoCitaPrioritaria(idCita: number, body: any): Observable<any> {
+    const url = `${this.baseUrl}update_atendida_citaprioritaria_modulo/${idCita}/`;
+       const headers = this.getHeaders();
+
+
+    return this.http.put<any>(url, body, { headers });
   }
 
   actualizarCita(idCita: number, estado: string): Observable<any> {
@@ -147,5 +162,14 @@ export class CitasService {
       body,
       { headers }
     );
+
+   
+  }
+
+  reasignarCitas(payload : any){
+    debugger
+    const headers = this.getHeaders();
+
+    return this.http.post('https://backend-auth-log-project.onrender.com/api/usuarios/reagendar_citas/', payload,  { headers })
   }
 }

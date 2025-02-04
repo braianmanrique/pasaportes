@@ -27,9 +27,10 @@ export class AsignarCitaModuloDialogComponentTsComponent {
       return;
     }
 
+    
     if (this.data.tipo !== 'prioritarias') {
       this.citasService
-        .actualizarEstadoCita(this.data.cita.id_cita, this.estadoIngreso)
+        .ingresarCita(this.data.cita.id_cita, this.estadoIngreso)
         .subscribe({
           next: (res) => {
             console.log('Cita ingresada con éxito:', res);

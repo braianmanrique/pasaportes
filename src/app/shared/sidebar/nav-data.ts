@@ -33,6 +33,6 @@ export const navbarData = [
       routeLink: 'reportes',
       icon: 'bi bi-people',
       label: 'Reportes',
-      roles: ['administrador_pasaportes', 'administrador_ganadero', 'administrador_juntas','administrador_discapacidad','administrador_sistema'],
+      roles: ['administrador_pasaportes', 'administrador_ganadero', 'administrador_juntas','administrador_discapacidad','administrador_sistema', 'atencion_pasaporte'],
     },
   ];

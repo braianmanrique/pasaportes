@@ -1,6 +1,8 @@
-<div class="card" style="margin-top: 1rem;" *ngIf="userRole === 'asignador'">
+<div class="card" style="margin-top: 1rem" *ngIf="userRole === 'asignador'">
   <div class="card-head">
-    <div style="display: flex; align-items: center; justify-content: space-between;">
+    <div
+      style="display: flex; align-items: center; justify-content: space-between"
+    >
       <span>Citas Prioritarias</span>
       <button mat-icon-button (click)="reloadCitasPrioritarias()">
         <mat-icon>refresh</mat-icon>
@@ -8,25 +10,38 @@
     </div>
   </div>
   <div class="card-body">
-
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSourcePrioritarias" matSort>
-
         <!-- Turno -->
         <ng-container matColumnDef="turn_desc">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Turno</th>
-          <td mat-cell *matCellDef="let row">{{ row.fecha_cita  | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+          <td mat-cell *matCellDef="let row">
+            {{ row.fecha_cita | date : "yyyy-MM-dd HH:mm:ss" }}
+          </td>
         </ng-container>
 
         <!-- Estado -->
         <ng-container matColumnDef="atendida">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-          <td mat-cell *matCellDef="let element">{{ getAtendidaLabel(element.estado_ingreso) }}</td>
+          <td mat-cell *matCellDef="let element">
+            {{ getAtendidaLabel(element.estado_ingreso) }}
+          </td>
         </ng-container>
 
+        <ng-container matColumnDef="cedula">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cedula</th>
+          <td mat-cell *matCellDef="let row">{{ row.cedula }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="celular">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Celular</th>
+          <td mat-cell *matCellDef="let row">{{ row.celular }}</td>
+        </ng-container>
         <!-- Nombre ciudadano -->
         <ng-container matColumnDef="nombre_citizen">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre ciudadano</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Nombre ciudadano
+          </th>
           <td mat-cell *matCellDef="let row">{{ row.nombre_citizen }}</td>
         </ng-container>
 
@@ -34,7 +49,11 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Acción</th>
           <td mat-cell *matCellDef="let row">
-            <button mat-icon-button color="primary" (click)="openDialog(row,  'prioritarias')">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="openDialog(row, 'prioritarias')"
+            >
               <mat-icon>pending_actions</mat-icon>
             </button>
           </td>
@@ -48,17 +67,16 @@
         </tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of prioritarias"></mat-paginator>
     </div>
   </div>
 </div>
 
-
-
 <!-- Primera tabla: Citas por atender -->
-<div class="card" >
+<div class="card">
   <div class="card-head">
-    <div style="display: flex; align-items: center; justify-content: space-between;">
+    <div
+      style="display: flex; align-items: center; justify-content: space-between"
+    >
       <span>Citas por atender</span>
       <button mat-icon-button (click)="reloadCitas()">
         <mat-icon>refresh</mat-icon>
@@ -66,14 +84,18 @@
     </div>
   </div>
   <div class="card-body">
-    <mat-form-field >
+    <mat-form-field>
       <mat-label>Buscar Cita</mat-label>
-      <input matInput (keyup)="applyFilter($event, dataSource)" placeholder="Ingresa nombre" #input />
+      <input
+        matInput
+        (keyup)="applyFilter($event, dataSource)"
+        placeholder="Ingresa nombre"
+        #input
+      />
     </mat-form-field>
 
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" matSort>
-
         <!-- Turno -->
         <ng-container matColumnDef="turn_desc">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Turno</th>
@@ -83,12 +105,24 @@
         <!-- Estado -->
         <ng-container matColumnDef="atendida">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-          <td mat-cell *matCellDef="let element">{{ getAtendidaLabel(element.estado_ingreso) }}</td>
+          <td mat-cell *matCellDef="let element">
+            {{ getAtendidaLabel(element.estado_ingreso) }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="celular">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Celular</th>
+          <td mat-cell *matCellDef="let row">{{ row.celular }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cedula">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cédula</th>
+          <td mat-cell *matCellDef="let row">{{ row.cedula }}</td>
         </ng-container>
 
         <!-- Nombre ciudadano -->
         <ng-container matColumnDef="nombre_citizen">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre ciudadano</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Nombre ciudadano
+          </th>
           <td mat-cell *matCellDef="let row">{{ row.nombre_citizen }}</td>
         </ng-container>
 
@@ -96,8 +130,21 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Acción</th>
           <td mat-cell *matCellDef="let row">
-            <button mat-icon-button color="primary" (click)="openDialog(row, 'normales')">
-              <mat-icon>pending_actions</mat-icon>
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="openEditDialog(row)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <!-- Botón para Dar Ingreso -->
+            <button
+              mat-icon-button
+              color="accent"
+              (click)="openDialog(row, 'normales')"
+            >
+              <mat-icon>login</mat-icon>
             </button>
           </td>
         </ng-container>
@@ -111,8 +158,7 @@
         <td class="mat-cell" colspan="3">No hay citas</td>
       </table>
 
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    
     </div>
   </div>
 </div>
-

@@ -44,7 +44,7 @@ const routes: Routes = [
       {
         path: 'reportes',
         component: ReportsComponent,
-        data: { roles: [ 'administrador_pasaportes','administrador_juntas','administrador_sistema'] },
+        data: { roles: [ 'administrador_pasaportes','administrador_juntas','administrador_sistema','atencion_pasaporte'] },
       },
     ],
   },

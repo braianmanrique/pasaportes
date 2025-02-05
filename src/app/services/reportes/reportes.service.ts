@@ -122,4 +122,19 @@ export class ReportesService {
     );
   }
   
+  getCitasPrioritariasDia(fecha: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/reporte_citas_prioritarias_atendidas_formalizador_dia_pasaportes/?fecha=${fecha}`);
+  }
+
+  getCitasAtendidasDia(fecha: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/reporte_citas_atendidas_formalizador_dia_pasaportes/?fecha=${fecha}`);
+  }
+
+  getCitasPrioritariasMes(fecha: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/reporte_citas_prioritarias_atendidas_formalizador_mes_pasaportes/?fecha=${fecha}`);
+  }
+
+  getCitasAtendidasMes(fecha: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/reporte_citas_atendidas_formalizador_mes_pasaportes/?fecha=${fecha}`);
+  }
 }

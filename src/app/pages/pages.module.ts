@@ -21,6 +21,8 @@ import { AtenderCitaComponent } from './atender-cita/atender-cita.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ReporteAdminPasaportesComponent } from './reports/reporte-admin-pasaportes/reporte-admin-pasaportes.component';
+import { ReporteFormalizadorComponent } from './reports/reporte-formalizador/reporte-formalizador.component';
 @NgModule({
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [ 
@@ -35,7 +37,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     ReportsComponent,
     SeleccionarModuloComponent,
     ChartsSectionComponentComponent,
-    AtenderCitaComponent
+    AtenderCitaComponent,
+    ReporteAdminPasaportesComponent,
+    ReporteFormalizadorComponent
   ],
   exports:[ 
     PagesComponent,

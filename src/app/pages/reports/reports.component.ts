@@ -36,6 +36,7 @@ export class ReportsComponent implements AfterViewInit {
   startDate: Date = new Date(); // Comenzar en el mes actual
   defaultDate: Date = new Date();
   selectedAnio: number | null = null;
+  @ViewChild('paginatorGeneral') paginatorGeneral!: MatPaginator;
 
   displayedColumns: string[] = [
     'nombre',
@@ -433,9 +434,9 @@ export class ReportsComponent implements AfterViewInit {
           this.dataSourceGeneral = new MatTableDataSource(data);
   
           // Vincula el paginador si existe
-          if (this.paginator) {
-            this.dataSourceGeneral.paginator = this.paginator;
-          }
+          setTimeout(() => {
+            this.dataSourceGeneral.paginator = this.paginatorGeneral;
+          });
         } else {
           this.snackBar.open('No hay datos disponibles.', 'Cerrar', {
             duration: 3000,

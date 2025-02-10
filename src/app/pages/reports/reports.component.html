@@ -305,6 +305,7 @@
               </table>
 
               <mat-paginator
+              #paginatorGeneral
                 [pageSize]="5"
                 [pageSizeOptions]="[5, 10, 20]"
                 showFirstLastButtons
@@ -322,7 +323,10 @@
           </div>
         </mat-tab>
 
-        <mat-tab *ngIf="userRole === 'atencion_pasaporte'" label="Formalizadores">
+        <mat-tab
+          *ngIf="userRole === 'atencion_pasaporte'"
+          label="Formalizadores"
+        >
           <app-reporte-formalizador></app-reporte-formalizador>
         </mat-tab>
       </mat-tab-group>

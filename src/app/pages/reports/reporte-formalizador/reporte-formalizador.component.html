@@ -1,32 +1,51 @@
+<!-- Selector de tipo de reporte -->
 <mat-form-field appearance="fill">
-    <mat-label>Seleccionar Fecha</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="cedula">
-      <th mat-header-cell *matHeaderCellDef> Cédula </th>
-      <td mat-cell *matCellDef="let element"> {{element.cedula}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="fecha">
-      <th mat-header-cell *matHeaderCellDef> Fecha </th>
-      <td mat-cell *matCellDef="let element"> {{element.fecha}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="prioridad">
-      <th mat-header-cell *matHeaderCellDef> Prioridad </th>
-      <td mat-cell *matCellDef="let element"> {{element.prioridad ? 'Sí' : 'No'}} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-  
+  <mat-label>Seleccionar Reporte</mat-label>
+  <mat-select [(value)]="selectedReport" (selectionChange)="onReportChange()">
+    <mat-option *ngFor="let report of reportOptions" [value]="report.method">
+      {{ report.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Selector de fecha -->
+<mat-form-field appearance="fill" *ngIf="selectedReport">
+  <mat-label>{{ isMonthlyReport ? 'Seleccionar Mes y Año' : 'Seleccionar Fecha' }}</mat-label>
+  <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker [startView]="isMonthlyReport ? 'year' : 'month'" 
+                  (yearSelected)="isMonthlyReport ? chosenYearHandler($event) : null"
+                  (monthSelected)="isMonthlyReport ? chosenMonthHandler($event, picker) : null">
+  </mat-datepicker>
+</mat-form-field>
+
+<!-- Botón para generar reporte -->
+<button mat-raised-button color="primary" (click)="generarReporte()" [disabled]="!selectedReport || !fechaSeleccionada">
+  Generar Reporte
+</button>
+
+<!-- Mensaje de error si el usuario no ha seleccionado una fecha -->
+<p *ngIf="fechaError" style="color: red;">⚠️ Debes seleccionar una fecha válida.</p>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource.data.length > 0">
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="cedula">
+    <th mat-header-cell *matHeaderCellDef> Cédula </th>
+    <td mat-cell *matCellDef="let element"> {{element.cedula}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fecha_atencion">
+    <th mat-header-cell *matHeaderCellDef> Fecha atención </th>
+    <td mat-cell *matCellDef="let element"> {{element.fecha_atencion | date: 'EEEE, dd MMMM yyyy HH:mm:ss'}}  </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['nombre', 'cedula', 'fecha_atencion']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['nombre', 'cedula', 'fecha_atencion']"></tr>
+</table>
+
+<!-- Mensaje si no hay datos -->
+<p *ngIf="dataSource.data.length === 0 && reporteGenerado">No hay datos disponibles para el reporte seleccionado.</p>
+

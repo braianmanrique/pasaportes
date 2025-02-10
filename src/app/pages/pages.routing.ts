@@ -11,6 +11,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { RoleGuard } from '../guards/role.guard';
 import { SeleccionarModuloComponent } from './seleccionar-modulo/seleccionar-modulo.component';
 import { AtenderCitaComponent } from './atender-cita/atender-cita.component';
+import { VisorComponent } from './visor/visor/visor.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,12 @@ const routes: Routes = [
         path: 'reportes',
         component: ReportsComponent,
         data: { roles: [ 'administrador_pasaportes','administrador_juntas','administrador_sistema','atencion_pasaporte'] },
+      },
+      {
+        path: 'visor',
+        component: VisorComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['visor'] }, // Solo accesible para el rol "visor"
       },
     ],
   },

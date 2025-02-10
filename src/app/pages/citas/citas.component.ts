@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AsignarCitaModuloDialogComponentTsComponent } from '../../shared/componets/dialog/asignar-cita-modulo-dialog.component.ts/asignar-cita-modulo-dialog.component.ts.component';
 import { UsuarioService } from '../../services/usuario.service';
 import { EditarDatoCiudadanoComponent } from '../../shared/componets/dialog/editar-dato-ciudadano/editar-dato-ciudadano.component';
+import { VisorWebsocketService } from '../../services/visor-websocket/visor-websocket.service';
 
 export interface UserData {
   id: string;
@@ -65,7 +66,8 @@ dataSourcePrioritarias = new MatTableDataSource<any>([]);
   constructor(
     private citasService: CitasService,
     private dialog: MatDialog,
-    private usarioService: UsuarioService
+    private usarioService: UsuarioService,
+    private wsService: VisorWebsocketService
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +76,13 @@ dataSourcePrioritarias = new MatTableDataSource<any>([]);
       this.cargarCitasPrioritarias();
     }
     this.cargarCitas();
+
+    this.wsService.connect('wss://backend-auth-log-project.onrender.com/ws/citas/');
+
+    this.wsService.getMessages().subscribe((data: any) => {
+      console.log('🔄 Actualizando citas:', data);
+      this.dataSource.data = data.citas || [];
+    });
   }
 
 

@@ -118,7 +118,7 @@ openConfirmDialog(oficina: any) {
 
   atenderCita(cita: any): void {
     this.citasService
-      .actualizarEstadoCita(cita.id_cita, 'D' )
+      .actualizarEstadoCita(cita.id_cita, 'A' )
       .subscribe({
         next: () => {
           this.snackBar.open(`La cita ${cita.id_cita} está siendo atendida.`, 'Cerrar', {

@@ -23,6 +23,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReporteAdminPasaportesComponent } from './reports/reporte-admin-pasaportes/reporte-admin-pasaportes.component';
 import { ReporteFormalizadorComponent } from './reports/reporte-formalizador/reporte-formalizador.component';
+import { VisorComponent } from './visor/visor/visor.component';
 @NgModule({
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [ 
@@ -39,7 +40,8 @@ import { ReporteFormalizadorComponent } from './reports/reporte-formalizador/rep
     ChartsSectionComponentComponent,
     AtenderCitaComponent,
     ReporteAdminPasaportesComponent,
-    ReporteFormalizadorComponent
+    ReporteFormalizadorComponent,
+    VisorComponent
   ],
   exports:[ 
     PagesComponent,

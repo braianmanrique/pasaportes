@@ -35,4 +35,10 @@ export const navbarData = [
       label: 'Reportes',
       roles: ['administrador_pasaportes', 'administrador_ganadero', 'administrador_juntas','administrador_discapacidad','administrador_sistema', 'atencion_pasaporte'],
     },
+    {
+      routeLink: 'visor',
+      icon: 'bi bi-people',
+      label: 'Visor',
+      roles: ['visor'],
+    },
   ];

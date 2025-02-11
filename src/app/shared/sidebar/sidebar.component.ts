@@ -40,7 +40,7 @@ export class SidebarComponent {
     }
   }
   screenWidth = 0;
-  collapsed = false;
+  collapsed = true;
   navData = navbarData;
   userRole: string = '';
 
@@ -88,6 +88,13 @@ export class SidebarComponent {
         }
         this.filterMenuItems(); // Filtramos las opciones del menú según el rol
       },
+    });
+
+    this.collapsed = true; // ✅ Asegura que el menú inicie abierto
+    this.updateBodyClass(); 
+    this.onToggleSideNav.emit({
+      collapsed: this.collapsed,
+      screenWidth: this.screenWidth,
     });
   }
 

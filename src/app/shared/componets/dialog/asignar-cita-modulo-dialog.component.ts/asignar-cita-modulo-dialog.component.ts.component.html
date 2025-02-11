@@ -1,19 +1,38 @@
-<h2 mat-dialog-title>Actualizar Estado de Cita</h2>
-<mat-dialog-content>
-  <p><strong>Ciudadano:</strong> {{ data.cita.nombre_citizen }}</p>
-<p><strong>Fecha:</strong> {{ data.cita.fec_registro || data.cita.fecha_cita | date:'longDate' }}</p>
+<mat-dialog-content class="custom-dialog-content">
+  <mat-card>
+    <mat-card-title>Dar ingreso</mat-card-title>
+    <mat-card-content>
+      <mat-divider></mat-divider>
+      <p><strong>Ciudadano:</strong> {{ data.cita.nombre_citizen }}</p>
+      <p>
+        <strong>Fecha:</strong>
+        {{ data.cita.fec_registro || (data.cita.fecha_cita | date:'dd/MM/yyyy hh:mm a' ) }}
+      </p>
+      <p><strong>Hora:</strong> {{ data.cita.hora }}</p>
 
-<p><strong>Hora:</strong> {{ data.cita.hora }}</p>
+      <mat-divider></mat-divider>
 
-  <mat-form-field>
-    <mat-label>Estado de Ingreso</mat-label>
-    <mat-select [(value)]="estadoIngreso">
-      <mat-option value="I">Ingresado</mat-option>
-        </mat-select>
-  </mat-form-field>
+      <!-- <div *ngIf="estadoOptions.length > 1; else soloOpcion">
+        <mat-form-field appearance="outline">
+          <mat-label>Estado de Ingreso</mat-label>
+          <mat-select [(value)]="estadoIngreso">
+            <mat-option *ngFor="let estado of estadoOptions" [value]="estado.value">
+              {{ estado.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> -->
+
+      <!-- Mostrar solo como texto si hay una sola opción -->
+      <!-- <ng-template #soloOpcion>
+        <p><strong>Estado de Ingreso:</strong> {{ estadoOptions[0].label }}</p>
+        <input type="hidden" [(ngModel)]="estadoIngreso" [value]="estadoOptions[0].value">
+      </ng-template> -->
+    </mat-card-content>
+  </mat-card>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-raised-button color="primary" [disabled]="!estadoIngreso" (click)="onSave()">Guardar</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Ingresar</button>
 </mat-dialog-actions>

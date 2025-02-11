@@ -52,7 +52,6 @@ export class CitasComponent {
     'turn_desc',
     'atendida',
     'cedula',
-    'celular',
     'nombre_citizen',
     'action',
   ];
@@ -60,7 +59,7 @@ export class CitasComponent {
 
   @ViewChild(MatSort) sort!: MatSort;
 
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource = new MatTableDataSource<any>([]);
 dataSourcePrioritarias = new MatTableDataSource<any>([]);
   constructor(
@@ -77,15 +76,13 @@ dataSourcePrioritarias = new MatTableDataSource<any>([]);
     }
     this.cargarCitas();
 
-    this.wsService.connect('wss://backend-auth-log-project.onrender.com/ws/citas/');
-
-    this.wsService.getMessages().subscribe((data: any) => {
-      console.log('🔄 Actualizando citas:', data);
-      this.dataSource.data = data.citas || [];
-    });
+  
   }
 
-
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
   cargarCitas(): void {
     this.userRole = this.usarioService.getUserRole();
     if (this.userRole === 'asignador') {
@@ -98,7 +95,8 @@ dataSourcePrioritarias = new MatTableDataSource<any>([]);
               (cita: Cita) => cita.atendida && cita.atendida !== 'S'
             );
             this.dataSource = new MatTableDataSource(data.citas);
-            // this.dataSource.paginator = this.paginator;
+            this.dataSource.data = data.citas;
+            this.dataSource.paginator = this.paginator; 
             this.dataSource.sort = this.sort;
           } else {
             console.error('El formato de los datos no es válido:', data);
@@ -173,14 +171,14 @@ dataSourcePrioritarias = new MatTableDataSource<any>([]);
 
     if (this.userRole === 'atencion_ganadero') {
       dialogRef = this.dialog.open(CitaDialogComponent, {
-        width: '600px',
+        width: '800px',
         data: { cita },
       });
     } else {
       dialogRef = this.dialog.open(
         AsignarCitaModuloDialogComponentTsComponent,
         {
-          width: '600px',
+          width: '800px',
           data: { cita, tipo },
         }
       );

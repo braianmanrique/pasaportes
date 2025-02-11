@@ -5,6 +5,7 @@ import { CitasService } from '../../services/citas/citas.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CitaDialogComponent } from '../../shared/componets/dialog/cita-dialog/cita-dialog.component';
 import { Router } from '@angular/router';
+import { VisorWebsocketService } from '../../services/visor-websocket/visor-websocket.service';
 
 export interface Cita {
   id_turn: string;
@@ -27,10 +28,13 @@ export class SeleccionarModuloComponent implements OnInit {
     private dialog: MatDialog,
     private citasService: CitasService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private wsService : VisorWebsocketService
   ) {}
   oficinaSeleccionada: any = null;
   mpleadoCitaActual: any = null;
+  atendiendoCitaId: number | null = null; // Almacena el ID de la cita que está siendo atendida
+
   oficinas = [
     { id: 1, nombre: 'Modulo 1', estado: 'libre' },
     { id: 2, nombre: 'Modulo 2', estado: 'ocupado' },
@@ -44,48 +48,99 @@ export class SeleccionarModuloComponent implements OnInit {
     { id: 10, nombre: 'Modulo 10', estado: 'ocupado' },
   ];
   citasPrioritarias: any[] = [];
-  citas = [];
+  citas : any;
   displayedColumns: string[] = [
     'nombre_citizen',
     'fec_registro',
-    'hora',
+    'modulo',
     'atendida',
     'action',
   ];
 
-  ngOnInit(){
-    this.liberarModulo()
+  ngOnInit() {
+    // this.liberarModulo();
+
+    const storedModulo = localStorage.getItem('moduloSeleccionado');
+    if (storedModulo) {
+      this.oficinaSeleccionada = JSON.parse(storedModulo);
+      this.cargarCitas(); // Carga las citas normales
+      this.cargarPrioritarias(); // Carga las citas prioritarias
+      console.log('✅ Módulo recuperado de localStorage:', this.oficinaSeleccionada);
+    }
+
+    
+    this.wsService.connect(
+      'wss://backend-auth-log-project.onrender.com/ws/citas/'
+    );
+
+    this.wsService.getMessages().subscribe((data: any) => {
+      debugger
+      console.log('🔄 Actualizando citas:', data);
+      if (data.id_cita && data.nuevo_estado) {
+        this.actualizarEstadoCita(data.id_cita, data.nuevo_estado);
+      }
+      // this.dataSource.data = data.citas || [];
+      // this.dataSource = new MatTableDataSource(data.citas || []);
+    });
   }
 
-openConfirmDialog(oficina: any) {
-  const dialogRef = this.dialog.open(
-    ConfirmaModuloDialogComponentTsComponent,
-    { data: oficina }
-  );
-
-
-
-  dialogRef.afterClosed().subscribe((result) => {
-    if (result) {
-      this.citasService.seleccionarCaja(oficina.id).subscribe({
-        next: () => {
-          this.oficinaSeleccionada = oficina; // Actualiza la oficina seleccionada
-          this.cargarCitas(); // Carga las citas normales
-          this.cargarPrioritarias(); // Carga las citas prioritarias
-        },
-        error: (err) => {
-          console.error('Error al seleccionar la caja', err);
-          this.snackBar.open(err.error.error, 'Cerrar', { duration: 3000 });
-        },
-      });
+  actualizarEstadoCita(idCita: number, nuevoEstado: string) {
+    let citaEncontrada = false;
+  
+    // 🔄 Buscar y actualizar en la lista de citas normales
+    this.citas = this.citas.map((cita:any) => {
+      if (cita.id_cita === idCita) {
+        citaEncontrada = true;
+        return { ...cita, atendida: nuevoEstado };
+      }
+      return cita;
+    });
+  
+    // 🔄 Buscar y actualizar en la lista de citas prioritarias
+    this.citasPrioritarias = this.citasPrioritarias.map(cita => {
+      if (cita.id_cita === idCita) {
+        citaEncontrada = true;
+        return { ...cita, atendida: nuevoEstado };
+      }
+      return cita;
+    });
+  
+    if (citaEncontrada) {
+      console.log(`✅ Estado actualizado de la cita ${idCita} a ${nuevoEstado}`);
+    } else {
+      console.warn(`⚠️ No se encontró la cita con ID ${idCita} para actualizar.`);
     }
-  });
-}
+  }
+
+  openConfirmDialog(oficina: any) {
+    const dialogRef = this.dialog.open(
+      ConfirmaModuloDialogComponentTsComponent,
+      { data: oficina }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.citasService.seleccionarCaja(oficina.id).subscribe({
+          next: () => {
+            this.oficinaSeleccionada = oficina; // Actualiza la oficina seleccionada
+            localStorage.setItem('moduloSeleccionado', JSON.stringify(oficina));
+            this.cargarCitas(); // Carga las citas normales
+            this.cargarPrioritarias(); // Carga las citas prioritarias
+          },
+          error: (err) => {
+            console.error('Error al seleccionar la caja', err);
+            this.snackBar.open(err.error.error, 'Cerrar', { duration: 3000 });
+          },
+        });
+      }
+    });
+  }
 
   liberarModulo() {
     this.citasService.liberarCaja().subscribe({
       next: (response) => {
         this.oficinaSeleccionada = null;
+        localStorage.removeItem('moduloSeleccionado'); 
         this.snackBar.open(`${response.mensaje}`, 'Cerrar', {
           duration: 3000,
           horizontalPosition: 'right',
@@ -109,59 +164,135 @@ openConfirmDialog(oficina: any) {
       return 'No atendida';
     } else if (value === 'S') {
       return 'Atendida';
-    } else if (value === 'C') {
+    } 
+    else if (value === 'D') {
+      return 'Atendiendo';
+    }
+    else if (value === 'C') {
       return 'Cancelada';
     }
     return 'Desconocido'; // Por si llega algún valor inesperado
   }
-  atendiendoCitaId: number | null = null; // Almacena el ID de la cita que está siendo atendida
 
   atenderCita(cita: any): void {
-    this.citasService
-      .actualizarEstadoCita(cita.id_cita, 'A' )
-      .subscribe({
-        next: () => {
-          this.snackBar.open(`La cita ${cita.id_cita} está siendo atendida.`, 'Cerrar', {
+    this.citasService.actualizarEstadoCita(cita.id_cita, 'D').subscribe({
+      next: () => {
+        this.snackBar.open(
+          `La cita ${cita.id_cita} está siendo atendida.`,
+          'Cerrar',
+          {
             duration: 3000,
             horizontalPosition: 'right',
             verticalPosition: 'top',
-          });
-  
-          this.atendiendoCitaId = cita.id_cita;;
-        },
-        error: (err) => {
-          this.snackBar.open('Error al atender la cita.', 'Cerrar', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-          });
-        },
-      });
+          }
+        );
+
+        this.wsService.sendMessage({
+          type: 'UPDATE_CITA',
+          cita: { ...cita, atendida: 'A' }
+        });
+
+        
+        this.atendiendoCitaId = cita.id_cita;
+      },
+      error: (err) => {
+        this.snackBar.open('Error al atender la cita.', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
+      },
+    });
   }
-  
+
+  llamarCita(cita: any): void {
+    this.citasService.actualizarEstadoCita(cita.id_cita, 'L').subscribe({
+      next: () => {
+        this.snackBar.open(
+          `La cita ${cita.id_cita} está siendo llamada.`,
+          'Cerrar',
+          {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          }
+        );
+
+        this.wsService.sendMessage({
+          type: 'UPDATE_CITA',
+          cita: { ...cita, atendida: 'A' }
+        });
+
+        
+        this.atendiendoCitaId = cita.id_cita;
+      },
+      error: (err) => {
+        this.snackBar.open('Error al atender la cita.', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
+      },
+    });
+  }
+
+  atenderCitaPrioritaria(cita: any): void {
+    this.citasService.actualizarEstadoCitaPrioritaria(cita.id_cita, 'A').subscribe({
+      next: () => {
+        this.snackBar.open(
+          `La cita ${cita.id_cita} está siendo atendida.`,
+          'Cerrar',
+          {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          }
+        );
+
+        this.wsService.sendMessage({
+          type: 'UPDATE_CITA',
+          cita: { ...cita, atendida: 'A' }
+        });
+
+        
+        this.atendiendoCitaId = cita.id_cita;
+      },
+      error: (err) => {
+        this.snackBar.open('Error al atender la cita.', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
+      },
+    });
+  }
+
 
   terminarCita(cita: any): void {
-    this.citasService
-      .actualizarEstadoCita(cita.id_cita , 'S' )
-      .subscribe({
-        next: () => {
-          this.snackBar.open(`La cita ${cita.id_cita} ha finalizado.`, 'Cerrar', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-          });
-          
-          this.atendiendoCitaId = null;
-        },
-        error: (err) => {
-          console.error('Error al terminar la cita:', err);
-          this.snackBar.open('Error al finalizar la cita.', 'Cerrar', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-          });
-        },
-      });
+    this.citasService.actualizarEstadoCita(cita.id_cita, 'A').subscribe({
+      next: () => {
+        this.snackBar.open(`La cita ${cita.id_cita} ha finalizado.`, 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
+
+        this.atendiendoCitaId = null;
+
+        this.wsService.sendMessage({
+          type: 'UPDATE_CITA',
+          cita: { ...cita, atendida: 'A' }
+        });
+      },
+      error: (err) => {
+        console.error('Error al terminar la cita:', err);
+        this.snackBar.open('Error al finalizar la cita.', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
+      },
+    });
   }
 
   openDialog(cita: Cita): void {

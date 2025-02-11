@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 import { LoadingService } from '../../services/shared/loading.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -25,16 +26,19 @@ export class LoginComponent {
     private router: Router,
     private fb: FormBuilder,
     private loginService: UsuarioService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private snackBar: MatSnackBar,
   ) {}
 
   onLogin() {
     if (this.loginForm.invalid) {
-      return; // No envía el formulario hasta que los campos sean válidos
+      return; 
     }
+    debugger
     const formData = this.loginForm.value; // Obtén los datos del formulario
     this.loginService.loginUsuario(formData).subscribe({
       next: (response: any) => {
+    
         this.loginService.setLoggedInUser(response);
         this.loadingService.hide();
         console.log('Login successful:', response);
@@ -48,6 +52,14 @@ export class LoginComponent {
       error: (error) => {
         console.error('Login failed:', error);
         this.errorMessage = 'Usuario o contraseña incorrectos';
+          
+        this.snackBar.open('Credenciales incorrectas.', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          panelClass: ['mat-primary'],
+        });
+      
         this.loadingService.hide(); 
       },
     });

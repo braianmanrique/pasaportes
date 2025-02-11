@@ -11,19 +11,24 @@ export class VisorWebsocketService {
   constructor() { }
 
   connect(url: string): void {
+    console.log('🔍 Intentando conectar al WebSocket en:', url);
     if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+      console.log('📡 Creando nueva conexión WebSocket...');
       this.socket = new WebSocket(url);
 
       this.socket.onopen = () => {
-        console.log('🔗 Conectado al WebSocket');
+        console.log('🔗 Conectado al WebSocket en:', url);
       };
 
       this.socket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log('📩 Mensaje recibido:', data);
-        this.messagesSubject.next(data);
+        console.log('📩 Mensaje recibido:', event.data);
+        try {
+          const data = JSON.parse(event.data);
+          this.messagesSubject.next(data);
+        } catch (error) {
+          console.error('❌ Error al parsear mensaje:', error);
+        }
       };
-
       this.socket.onerror = (error) => {
         console.error('❌ WebSocket error:', error);
       };
@@ -34,6 +39,16 @@ export class VisorWebsocketService {
       };
     }
   }
+
+  sendMessage(message: any): void {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      console.log('📤 Enviando mensaje:', message);
+      this.socket.send(JSON.stringify(message));
+    } else {
+      console.error('⚠️ No se pudo enviar el mensaje, WebSocket no conectado');
+    }
+  }
+
 
   getMessages(): Observable<any> {
     return this.messagesSubject.asObservable();

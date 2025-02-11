@@ -117,6 +117,8 @@ export class CitasService {
     );
   }
 
+
+
   ingresarCita(idCita: number, atendida: string): Observable<any> {
     const headers = this.getHeaders();
     const body = {
@@ -128,14 +130,29 @@ export class CitasService {
       { headers }
     );
   }
+
+  ingresarCitaPrioritaria(idCita: number, atendida: string): Observable<any> {
+    const headers = this.getHeaders();
+    const body = {
+      estado_ingreso: atendida,
+    };
+    return this.http.put(
+      `https://backend-auth-log-project.onrender.com/api/usuarios/update_estado_cita_prioritaria/${idCita}/`,
+      body,
+      { headers }
+    );
+  }
   private baseUrl =
     'https://backend-auth-log-project.onrender.com/api/usuarios/';
 
-  actualizarEstadoCitaPrioritaria(idCita: number, body: any): Observable<any> {
+  actualizarEstadoCitaPrioritaria(idCita: number, atendida: any): Observable<any> {
     const url = `${this.baseUrl}update_atendida_citaprioritaria_modulo/${idCita}/`;
     const headers = this.getHeaders();
+    const body = {
+      nuevo_estado: atendida,
+    };
 
-    return this.http.put<any>(url, body, { headers });
+    return this.http.post<any>(url, body, { headers });
   }
 
   actualizarCita(idCita: number, estado: string): Observable<any> {

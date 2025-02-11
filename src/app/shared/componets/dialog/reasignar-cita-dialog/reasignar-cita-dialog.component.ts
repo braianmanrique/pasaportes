@@ -7,23 +7,26 @@ import { CitasService } from '../../../../services/citas/citas.service';
 import { MatTableDataSource } from '@angular/material/table';
 import moment from 'moment';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-reasignar-cita-dialog',
   templateUrl: './reasignar-cita-dialog.component.html',
-  styleUrls: ['./reasignar-cita-dialog.component.scss']
+  styleUrls: ['./reasignar-cita-dialog.component.scss'],
+  providers: [DatePipe]
 })
 export class ReasignarCitaDialogComponent implements OnInit {
   reasignarForm: FormGroup;
   citas = new MatTableDataSource<any>(); // Cambiar el tipo a MatTableDataSource
-  selectedCitas: any[] = []; // Lista de citas seleccionad
-  
+  // selectedCitas: any[] = []; // Lista de citas seleccionad
+  selectedCitas: Set<any> = new Set();
   displayedColumns: string[] = ['checkbox', 'id_cita', 'nombre_citizen', 'turn_desc']; // Columnas de la tabla
   minDate: Date ;
   maxDate: Date;
+  allSelected: boolean = false;
  
   constructor(
+    private datePipe: DatePipe,
     private fb: FormBuilder,
     private http: HttpClient,
     private snackBar: MatSnackBar,
@@ -65,20 +68,27 @@ export class ReasignarCitaDialogComponent implements OnInit {
   }
 
 
-  toggleCitaSelection(cita: any, isChecked: boolean) {
-    if (isChecked) {
-      this.selectedCitas.push(cita);
+  toggleCitaSelection(cita: any, checked: boolean): void {
+    if (checked) {
+      this.selectedCitas.add(cita);
     } else {
-      this.selectedCitas = this.selectedCitas.filter((item) => item.id_cita !== cita.id_cita);
-      this.allSelected = false; // Si se desmarca una cita, deshabilitamos "Seleccionar Todos"
+      this.selectedCitas.delete(cita);
+    }
+  
+    // Verificar si todos están seleccionados o si hay una selección parcial
+    this.allSelected = this.selectedCitas.size === this.citas.data.length;
+  }
+
+  toggleAllCitas(checked: boolean): void {
+    this.allSelected = checked;
+    this.selectedCitas.clear();
+  
+    if (checked) {
+      this.citas.data.forEach((cita: any) => this.selectedCitas.add(cita));
     }
   }
-  allSelected: boolean = false;
-
-  toggleAllCitas(isChecked: boolean) {
-    this.allSelected = isChecked;
-    this.selectedCitas = isChecked ? [...this.citas.data] : [];
-  }
+  
+  
 
   reasignarCitas() {
     if (this.reasignarForm.valid) {
@@ -88,11 +98,13 @@ export class ReasignarCitaDialogComponent implements OnInit {
         return;
       }
       
+      const formattedDate = this.datePipe.transform(this.reasignarForm.value.fecha, 'dd/MM/yyyy');
+      const citasReasignadas = Array.from(this.selectedCitas);
       const payload = {
-        fecha: this.reasignarForm.value.fecha,
-        citas: this.selectedCitas
+        fecha: formattedDate,
+        citas: citasReasignadas
       };
-
+      debugger
      this.citasService.reasignarCitas(payload).subscribe({
           next: (response) => {
             this.snackBar.open('Citas reasignadas con éxito.', 'Cerrar', {

@@ -21,10 +21,18 @@
       <!-- Checkbox para seleccionar citas -->
       <ng-container matColumnDef="checkbox">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox (change)="toggleAllCitas($event.checked)">Seleccionar Todos</mat-checkbox>
+          <mat-checkbox 
+          (change)="toggleAllCitas($event.checked)" 
+          [checked]="allSelected"
+          [indeterminate]="selectedCitas.size > 0 && selectedCitas.size < citas.data.length">
+          Seleccionar Todos
+        </mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let cita">
-          <mat-checkbox (change)="toggleCitaSelection(cita, $event.checked)"></mat-checkbox>
+          <mat-checkbox 
+            (change)="toggleCitaSelection(cita, $event.checked)" 
+            [checked]="selectedCitas.has(cita)">
+          </mat-checkbox>
         </td>
       </ng-container>
 
@@ -43,7 +51,7 @@
       <!-- Descripción Turno -->
       <ng-container matColumnDef="turn_desc">
         <th mat-header-cell *matHeaderCellDef>Descripción Turno</th>
-        <td mat-cell *matCellDef="let cita">{{ cita.turn_desc }}</td>
+        <td mat-cell *matCellDef="let cita">{{ cita.fec_registro   | date:'dd/MM/yyyy hh:mm a'}}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

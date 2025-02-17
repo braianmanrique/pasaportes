@@ -20,7 +20,7 @@ export const navbarData = [
     {
       routeLink: 'citas-prioritarias',
       icon: 'bi bi-1-square-fill',
-      label: 'Citas Prioritarias',
+      label: 'Citas',
       roles: ['administrador_pasaportes'],
     },
     {

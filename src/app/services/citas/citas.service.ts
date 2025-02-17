@@ -6,29 +6,30 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CitasService {
-  private apiUrl =
-    'https://backend-auth-log-project.onrender.com/api/usuarios/listar_dates/';
+  private baseUrl = 'https://backend-auth-log-project.onrender.com/api/usuarios/';
 
-  private citasPrioritarias =
-    'https://backend-auth-log-project.onrender.com/api/usuarios/listar_citas_prioritarias_asig/';
-  private apiCitas_Ganadero =
-    'https://backend-auth-log-project.onrender.com/api/usuarios/listar_dates_carnet/';
+  private endpoints = {
+    listarCitas: 'listar_dates/',
+    listarCitasPrioritarias: 'listar_citas_prioritarias_asig/',
+    listarCitasCarnet: 'listar_dates_carnet/',
+    crearCitaPrioritaria: 'crear_cita_prioritaria/',
+    crearCiudadano: 'crear_ciudadano_prioritario/',
+    seleccionarCaja: 'seleccionar_caja/',
+    liberarCaja: 'liberar_caja/',
+    asignarModulo: 'asignar-modulo/',
+    listarCitasModulo: 'citas_modulo_caja/',
+    listarCitasPrioritariasModulo: 'listar_citasprioritarias_modulo/',
+    updateCitaModulo: 'update_atendida_cita_modulo/',
+    updateEstadoCita: 'update_estado_cita/',
+    updateEstadoCitaPrioritaria: 'update_estado_cita_prioritaria/',
+    updateEstadoCarnet: 'update_estado_carnet/',
+    actualizarUsuario: 'actualizar_info_usuario_ingreso/',
+    reagendarCitas: 'reagendar_citas/',
+    listarCitasLlamando: 'listar_citas_llamada_atendiendo_caja',
+    listarCitasVisor: 'listar_citas_visor/',
+    habilitarCitas: 'crear_turnos_citas/'
+  };
 
-  private apiCitaPrioritariaUrl =
-    'https://backend-auth-log-project.onrender.com/api/usuarios/crear_cita_prioritaria/';
-  private apiCiudadanoUrl =
-    'https://backend-auth-log-project.onrender.com/api/usuarios/crear_ciudadano_prioritario/';
-
-  private seleccionarCajaUrl =
-    'https://backend-auth-log-project.onrender.com/api/usuarios/seleccionar_caja/';
-  private citasModuloUrl =
-    'https://backend-auth-log-project.onrender.com/api/usuarios/citas_modulo_caja/';
-
-  private citasPrioritariasModuloUrl =
-    'https://backend-auth-log-project.onrender.com/api/usuarios/listar_citasprioritarias_modulo/';
-
-  private liberarCitasUrl =
-    'https://backend-auth-log-project.onrender.com/api/usuarios/liberar_caja/';
   constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
@@ -36,153 +37,107 @@ export class CitasService {
     return new HttpHeaders({ Authorization: `Token ${token}` });
   }
 
-  listarCitas(): Observable<any> {
+  private request<T>(
+    method: 'GET' | 'POST' | 'PUT',
+    endpoint: string,
+    body?: any
+  ): Observable<T> {
     const headers = this.getHeaders();
-    return this.http.get(this.apiUrl, { headers });
+    const url = `${this.baseUrl}${endpoint}`;
+
+    switch (method) {
+      case 'GET':
+        return this.http.get<T>(url, { headers });
+      case 'POST':
+        return this.http.post<T>(url, body, { headers });
+      case 'PUT':
+        return this.http.put<T>(url, body, { headers });
+      default:
+        throw new Error('Método HTTP no soportado');
+    }
+  }
+
+  listarCitas(): Observable<any> {
+    return this.request('GET', this.endpoints.listarCitas);
   }
 
   listarCitasPrioritarias(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get(this.citasPrioritarias, { headers });
+    return this.request('GET', this.endpoints.listarCitasPrioritarias);
   }
 
   listarCitasCarnet(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get(this.apiCitas_Ganadero, { headers });
+    return this.request('GET', this.endpoints.listarCitasCarnet);
+  }
+
+  crearCitaPrioritaria(citaData: any): Observable<any> {
+    return this.request('POST', this.endpoints.crearCitaPrioritaria, citaData);
   }
 
   crearCiudadano(ciudadanoData: any): Observable<any> {
-    const headers = this.getHeaders();
-
-    return this.http.post(this.apiCiudadanoUrl, ciudadanoData, { headers });
-  }
-
-  actualizarUsuario(idCiudadanoActual: string, data: any): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.put(
-      `${this.baseUrl}actualizar_info_usuario_ingreso/${idCiudadanoActual}/`,
-      data , {headers}
-    );
-  }
-  crearCitaPrioritaria(citaData: any): Observable<any> {
-    const headers = this.getHeaders();
-
-    return this.http.post(this.apiCitaPrioritariaUrl, citaData, { headers });
+    return this.request('POST', this.endpoints.crearCiudadano, ciudadanoData);
   }
 
   seleccionarCaja(numeroCaja: number): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.post(
-      this.seleccionarCajaUrl,
-      { numero_caja: numeroCaja },
-      { headers }
-    );
+    return this.request('POST', this.endpoints.seleccionarCaja, { numero_caja: numeroCaja });
   }
 
   liberarCaja(): Observable<any> {
-    const headers = this.getHeaders();
-
-    return this.http.post(this.liberarCitasUrl, {}, { headers });
+    return this.request('POST', this.endpoints.liberarCaja, {});
   }
 
-  signarModulo(idCita: number, numeroCaja: number): Observable<any> {
-    const headers = this.getHeaders();
-    const body = { numero_caja: numeroCaja };
-    return this.http.put(
-      `https://backend-auth-log-project.onrender.com/api/usuarios/asignar-modulo/${idCita}/`,
-      body,
-      { headers }
-    );
-  }
-
-  listarCitasPrioritariasFuncionario(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get(this.citasPrioritariasModuloUrl, { headers });
+  asignarModulo(idCita: number, numeroCaja: number): Observable<any> {
+    return this.request('PUT', `${this.endpoints.asignarModulo}${idCita}/`, { numero_caja: numeroCaja });
   }
 
   listarCitasPorCaja(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get(this.citasModuloUrl, { headers });
+    return this.request('GET', this.endpoints.listarCitasModulo);
   }
 
-  actualizarEstadoCita(idCita: number, atendida: string): Observable<any> {
-    const headers = this.getHeaders();
-    const body = {
-      nuevo_estado: atendida,
-    };
-    return this.http.post(
-      `https://backend-auth-log-project.onrender.com/api/usuarios/update_atendida_cita_modulo/${idCita}/`,
-      body,
-      { headers }
-    );
+  listarCitasPrioritariasFuncionario(): Observable<any> {
+    return this.request('GET', this.endpoints.listarCitasPrioritariasModulo);
   }
 
-
-
-  ingresarCita(idCita: number, atendida: string): Observable<any> {
-    const headers = this.getHeaders();
-    const body = {
-      estado_ingreso: atendida,
-    };
-    return this.http.put(
-      `https://backend-auth-log-project.onrender.com/api/usuarios/update_estado_cita/${idCita}/`,
-      body,
-      { headers }
-    );
-  }
-
-  ingresarCitaPrioritaria(idCita: number, atendida: string): Observable<any> {
-    const headers = this.getHeaders();
-    const body = {
-      estado_ingreso: atendida,
-    };
-    return this.http.put(
-      `https://backend-auth-log-project.onrender.com/api/usuarios/update_estado_cita_prioritaria/${idCita}/`,
-      body,
-      { headers }
-    );
-  }
-  private baseUrl =
-    'https://backend-auth-log-project.onrender.com/api/usuarios/';
-
-  actualizarEstadoCitaPrioritaria(idCita: number, atendida: any): Observable<any> {
-    const url = `${this.baseUrl}update_atendida_citaprioritaria_modulo/${idCita}/`;
-    const headers = this.getHeaders();
-    const body = {
-      nuevo_estado: atendida,
-    };
-
-    return this.http.post<any>(url, body, { headers });
+  actualizarEstadoCita(idCita: number, estado: string): Observable<any> {
+    return this.request('POST', `${this.endpoints.updateCitaModulo}${idCita}/`, { nuevo_estado: estado });
   }
 
   actualizarCita(idCita: number, estado: string): Observable<any> {
-    const headers = this.getHeaders();
-    const body = { nuevo_estado: estado };
-    return this.http.post(
-      `https://backend-auth-log-project.onrender.com/api/usuarios/update_atendida_cita_modulo/${idCita}/`,
-      body,
-      { headers }
-    );
+    return this.request('POST', `${this.endpoints.updateCitaModulo}${idCita}/`, { nuevo_estado: estado });
   }
 
   actualizarEstadoCitaCarnet(idCita: number, estado: string): Observable<any> {
-    const headers = this.getHeaders();
-    const body = { atendida: estado };
-    return this.http.put(
-      `https://backend-auth-log-project.onrender.com/api/usuarios/update_estado_carnet/${idCita}/`,
-      body,
-      { headers }
-    );
+    return this.request('PUT', `${this.endpoints.updateEstadoCarnet}${idCita}/`, { atendida: estado });
   }
 
-  reasignarCitas(payload: any) {
-    debugger;
-    const headers = this.getHeaders();
+  actualizarEstadoCitaPrioritaria(idCita: number, estado: any): Observable<any> {
+    return this.request('POST', `${this.endpoints.updateEstadoCitaPrioritaria}${idCita}/`, { nuevo_estado: estado });
+  }
 
-    return this.http.post(
-      'https://backend-auth-log-project.onrender.com/api/usuarios/reagendar_citas/',
-      payload,
-      { headers }
-    );
+  ingresarCita(idCita: number, atendida: string): Observable<any> {
+    return this.request('PUT', `${this.endpoints.updateEstadoCita}${idCita}/`, { estado_ingreso: atendida });
+  }
+
+  ingresarCitaPrioritaria(idCita: number, atendida: string): Observable<any> {
+    return this.request('PUT', `${this.endpoints.updateEstadoCitaPrioritaria}${idCita}/`, { estado_ingreso: atendida });
+  }
+
+  actualizarUsuario(idCiudadanoActual: string, data: any): Observable<any> {
+    return this.request('PUT', `${this.endpoints.actualizarUsuario}${idCiudadanoActual}/`, data);
+  }
+
+  reasignarCitas(payload: any): Observable<any> {
+    return this.request('POST', this.endpoints.reagendarCitas, payload);
+  }
+
+  listarCitasLlamando(): Observable<any> {
+    return this.request('GET', this.endpoints.listarCitasLlamando);
+  }
+
+  listarCitasVisor(): Observable<any> {
+    return this.request('GET', this.endpoints.listarCitasVisor);
+  }
+
+  habilitarCitas(fecha: any): Observable<any> {
+    return this.request('POST', this.endpoints.habilitarCitas, fecha);
   }
 }

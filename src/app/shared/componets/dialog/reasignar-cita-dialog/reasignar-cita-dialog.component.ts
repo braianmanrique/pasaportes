@@ -104,7 +104,6 @@ export class ReasignarCitaDialogComponent implements OnInit {
         fecha: formattedDate,
         citas: citasReasignadas
       };
-      debugger
      this.citasService.reasignarCitas(payload).subscribe({
           next: (response) => {
             this.snackBar.open('Citas reasignadas con éxito.', 'Cerrar', {

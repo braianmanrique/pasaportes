@@ -69,21 +69,22 @@ export class SidebarComponent {
         } else if (this.userRole === 'administrador_juntas') {
           this.title = 'Admi Juntas';
           this.sigla = 'J';
-        }else if( this.userRole === 'administrador_discapacidad'){
-          this.title = 'Salud'
-          this.sigla = 'S'
-        }
-        else if( this.userRole === 'atencion_ganadero'){
-          this.title = 'Carnet Ganadero'
-          this.sigla = 'C'
-        } else if( this.userRole === 'administrador_ganadero'){
-          this.title = 'Admin Carnet Ganadero'
-          this.sigla = 'C'
-        }else if(this.userRole === 'administrador_sistema'){
-          this.title = 'Administrador'
-          this.sigla = 'A'
-        }
-         else {
+        } else if (this.userRole === 'administrador_discapacidad') {
+          this.title = 'Salud';
+          this.sigla = 'S';
+        } else if (this.userRole === 'atencion_ganadero') {
+          this.title = 'Carnet Ganadero';
+          this.sigla = 'C';
+        } else if (this.userRole === 'administrador_ganadero') {
+          this.title = 'Admin Carnet Ganadero';
+          this.sigla = 'C';
+        } else if (this.userRole === 'administrador_sistema') {
+          this.title = 'Administrador';
+          this.sigla = 'A';
+        } else if (this.userRole === 'visor') {
+          this.title = 'Digiturno';
+          this.sigla = 'D';
+        } else {
           this.title = 'Panel de Usuario';
         }
         this.filterMenuItems(); // Filtramos las opciones del menú según el rol
@@ -91,7 +92,7 @@ export class SidebarComponent {
     });
 
     this.collapsed = true; // ✅ Asegura que el menú inicie abierto
-    this.updateBodyClass(); 
+    this.updateBodyClass();
     this.onToggleSideNav.emit({
       collapsed: this.collapsed,
       screenWidth: this.screenWidth,
@@ -160,9 +161,11 @@ export class SidebarComponent {
         return 'role-admin-salud';
       case 'atencion_ganadero':
       case 'administrador_ganadero':
-        return 'role_atencion_ganadero'
+        return 'role_atencion_ganadero';
       case 'administrador_sistema':
         return 'role-admin';
+      case 'visor':
+        return 'role-visor';
       default:
         return 'role-usuario';
     }

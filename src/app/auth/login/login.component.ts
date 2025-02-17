@@ -34,8 +34,8 @@ export class LoginComponent {
     if (this.loginForm.invalid) {
       return; 
     }
-    debugger
-    const formData = this.loginForm.value; // Obtén los datos del formulario
+    
+    const formData = this.loginForm.value;
     this.loginService.loginUsuario(formData).subscribe({
       next: (response: any) => {
     

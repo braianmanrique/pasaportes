@@ -11,6 +11,7 @@ import { ConfirmaModuloDialogComponentTsComponent } from './componets/dialog/con
 import { AsignarCitaModuloDialogComponentTsComponent } from './componets/dialog/asignar-cita-modulo-dialog.component.ts/asignar-cita-modulo-dialog.component.ts.component';
 import { ReasignarCitaDialogComponent } from './componets/dialog/reasignar-cita-dialog/reasignar-cita-dialog.component';
 import { EditarDatoCiudadanoComponent } from './componets/dialog/editar-dato-ciudadano/editar-dato-ciudadano.component';
+import { HabilitarCitasComponent } from './componets/dialog/habilitar-citas/habilitar-citas.component';
 
 
 
@@ -23,7 +24,8 @@ import { EditarDatoCiudadanoComponent } from './componets/dialog/editar-dato-ciu
     ConfirmaModuloDialogComponentTsComponent,
     AsignarCitaModuloDialogComponentTsComponent,
     ReasignarCitaDialogComponent,
-    EditarDatoCiudadanoComponent
+    EditarDatoCiudadanoComponent,
+    HabilitarCitasComponent
     
 
   ],

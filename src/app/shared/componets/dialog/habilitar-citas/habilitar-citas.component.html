@@ -1,0 +1,20 @@
+<h2 mat-dialog-title> Seleccionar Fecha</h2>
+<div mat-dialog-content>
+  <form [formGroup]="habilitarForm">
+    <!-- Campo para seleccionar la fecha -->
+    <mat-form-field>
+        <mat-label>Fecha del Turno</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fecha" [min]="minDate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      
+    <!-- Tabla para mostrar las citas -->
+
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="habilitarCitas()">  📅 Crear Turno de Cita</button>
+</div>

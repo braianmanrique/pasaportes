@@ -55,13 +55,15 @@ export class CitasComponent {
     'nombre_citizen',
     'action',
   ];
- 
 
   @ViewChild(MatSort) sort!: MatSort;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginatorPrioritarias!: MatPaginator;
+
   dataSource = new MatTableDataSource<any>([]);
-dataSourcePrioritarias = new MatTableDataSource<any>([]);
+  dataSourcePrioritarias = new MatTableDataSource<any>([]);
+
   constructor(
     private citasService: CitasService,
     private dialog: MatDialog,
@@ -75,28 +77,25 @@ dataSourcePrioritarias = new MatTableDataSource<any>([]);
       this.cargarCitasPrioritarias();
     }
     this.cargarCitas();
-
-  
+    this.cargarCitasPrioritarias();
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.dataSourcePrioritarias.paginator = this.paginatorPrioritarias;
     this.dataSource.sort = this.sort;
   }
+
   cargarCitas(): void {
     this.userRole = this.usarioService.getUserRole();
     if (this.userRole === 'asignador') {
       this.citasService.listarCitas().subscribe({
         next: (data) => {
-          console.log('Respuesta del servicio:', data);
-
           if (data && Array.isArray(data.citas)) {
-            const citasFiltradas = data.citas.filter(
-              (cita: Cita) => cita.atendida && cita.atendida !== 'S'
-            );
             this.dataSource = new MatTableDataSource(data.citas);
             this.dataSource.data = data.citas;
-            this.dataSource.paginator = this.paginator; 
+            this.dataSource.paginator = this.paginator;
+            this.dataSourcePrioritarias.paginator = this.paginatorPrioritarias;
             this.dataSource.sort = this.sort;
           } else {
             console.error('El formato de los datos no es válido:', data);
@@ -157,12 +156,19 @@ dataSourcePrioritarias = new MatTableDataSource<any>([]);
     }
   }
 
-  applyFilter(event: Event, dataSource: MatTableDataSource<any>) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value
+      .trim()
+      .toLowerCase();
 
-    if (dataSource.paginator) {
-      dataSource.paginator.firstPage();
+    this.dataSource.filter = filterValue;
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+
+    this.dataSourcePrioritarias.filter = filterValue;
+    if (this.dataSourcePrioritarias.paginator) {
+      this.dataSourcePrioritarias.paginator.firstPage();
     }
   }
 
@@ -217,5 +223,6 @@ dataSourcePrioritarias = new MatTableDataSource<any>([]);
 
   reloadCitas() {
     this.cargarCitas();
+    this.cargarCitasPrioritarias();
   }
 }

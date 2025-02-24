@@ -40,7 +40,7 @@ export class SidebarComponent {
     }
   }
   screenWidth = 0;
-  collapsed = true;
+  collapsed =  true;
   navData = navbarData;
   userRole: string = '';
 
@@ -91,7 +91,7 @@ export class SidebarComponent {
       },
     });
 
-    this.collapsed = true; // ✅ Asegura que el menú inicie abierto
+    this.collapsed = false; // ✅ Asegura que el menú inicie abierto
     this.updateBodyClass();
     this.onToggleSideNav.emit({
       collapsed: this.collapsed,

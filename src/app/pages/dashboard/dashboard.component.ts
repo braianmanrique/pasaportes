@@ -21,6 +21,7 @@ export class DashboardComponent {
   userData?:User ;
   selectedFuncionario: Funcionario | null = null;
   userName: string = '';
+  firstName: string = '';
   userRole: string = '';
   userUsername: string = '';
   funcionarios = [
@@ -45,7 +46,7 @@ export class DashboardComponent {
   ngOnInit(): void{
 
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
-    this.userName = `${userData.username}` ;
+    this.firstName = `${userData.first_name}`  || '...';
     this.userRole = userData.rol || 'Sin rol definido';
     this.userUsername = userData.username || 'Sin usuario';
     this.loadingService.hide(); 

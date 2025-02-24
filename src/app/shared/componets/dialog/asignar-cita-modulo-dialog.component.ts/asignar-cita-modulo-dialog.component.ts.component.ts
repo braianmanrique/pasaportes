@@ -33,7 +33,6 @@ export class AsignarCitaModuloDialogComponentTsComponent {
         .ingresarCita(this.data.cita.id_cita, ingresar)
         .subscribe({
           next: (res) => {
-            console.log('Cita ingresada con éxito:', res);
             this.snackBar.open('Cita ingresada con éxito', 'Cerrar', {
               duration: 3000,
               horizontalPosition: 'right',
@@ -55,7 +54,6 @@ export class AsignarCitaModuloDialogComponentTsComponent {
         .ingresarCitaPrioritaria(this.data.cita.id_cita, ingresar)
         .subscribe({
           next: (res) => {
-            console.log('Cita prioritaria ingresada con éxito:', res);
             this.snackBar.open('Cita ingresada con éxito', 'Cerrar', {
               duration: 3000,
               horizontalPosition: 'right',

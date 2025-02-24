@@ -1,5 +1,6 @@
 <div class="container">
-  <form class="form" >
+  <!-- Formulario principal con autocomplete deshabilitado -->
+  <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()" autocomplete="off">
     <img
       alt="logo"
       src="../../../assets/images/LogoGoberMeta1.png"
@@ -7,56 +8,51 @@
     />
 
     <div class="button-microsoft-container">
-      <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="onLogin()">
-        <div class="container-input">
-          <input
-            type="text"
-            class="p-inputtext-sm"
-            pInputText
-            placeholder="Ingresa tu usuario..."
-            formControlName="username"
-          />
-        </div>
+      <div class="container-input">
+        <input
+          type="text"
+          class="p-inputtext-sm"
+          pInputText
+          placeholder="Ingresa tu usuario..."
+          formControlName="username"
+          autocomplete="off"
+        />
+      </div>
 
-        <div class="container-input password-container">
-          <input [type]="hidePassword ? 'password' : 'text'" class="p-inputtext-sm" placeholder="Ingresa tu contraseña..."
-            formControlName="password" />
-          <button type="button" class="eye-icon" (click)="togglePasswordVisibility()">
-            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-        </div>
-        
-        <button
-          class="button-microsoft"
-          mat-raised-button
-          color="success" 
-          style="border: 1px solid rgb(51, 151, 28)"
-        >
-          <img alt="logo" src="../../../assets/images/icon.ico" />
-          <span> Ingresar</span>
+      <div class="container-input password-container">
+        <input
+          [type]="hidePassword ? 'password' : 'text'"
+          class="p-inputtext-sm"
+          placeholder="Ingresa tu contraseña..."
+          formControlName="password"
+          autocomplete="new-password"
+        />
+        <button type="button" class="eye-icon" (click)="togglePasswordVisibility()">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
+      </div>
+      
+      <button
+        class="button-microsoft"
+        mat-raised-button
+        color="success"
+        style="border: 1px solid rgb(51, 151, 28)"
+      >
+        <img alt="logo" src="../../../assets/images/icon.ico" />
+        <span> Ingresar</span>
+      </button>
 
-        <!-- Mensajes de error -->
-        <div>
-          <small
-            *ngIf="isValidField('username') && formSubmitted"
-            class="p-error"
-          >
-            - El usuario es requerido
-          </small>
-        </div>
-        <div>
-          <small
-            *ngIf="isValidField('password') && formSubmitted"
-            class="p-error"
-          >
-            - La contraseña es requerida
-          </small>
-        </div>
-      </form>
-
-      <br />
-      <hr />
+      <!-- Mensajes de error -->
+      <div>
+        <small *ngIf="isValidField('username') && formSubmitted" class="p-error">
+          - El usuario es requerido
+        </small>
+      </div>
+      <div>
+        <small *ngIf="isValidField('password') && formSubmitted" class="p-error">
+          - La contraseña es requerida
+        </small>
+      </div>
     </div>
   </form>
 

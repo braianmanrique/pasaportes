@@ -205,7 +205,6 @@ export class CitasComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // Encuentra la cita en la tabla y actualiza los datos
         const index = this.dataSource.data.findIndex(
           (c) => c.id_cita === result.id_cita
         );

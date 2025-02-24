@@ -8,9 +8,13 @@ import { WebSocketSubject } from 'rxjs/webSocket';
 export class VisorWebsocketService {
   private socket!: WebSocket;
   private messagesSubject = new Subject<any>();
+  private isConnected = false;
   constructor() { }
 
   connect(url: string): void {
+    if (this.isConnected) return; // 📌 No conectar si ya está conectado
+    this.isConnected = true;
+    
     console.log('🔍 Intentando conectar al WebSocket en:', url);
     if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
       console.log('📡 Creando nueva conexión WebSocket...');

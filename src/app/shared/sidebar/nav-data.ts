@@ -3,7 +3,7 @@ export const navbarData = [
       routeLink: 'dashboard',
       icon: 'bi bi-calendar-range',
       label: 'Dashboard',
-      roles: ['administrador_pasaportes', 'atencion_pasaporte', 'asignador','administrador_juntas', 'administrador_discapacidad', 'atencion_ganadero','administrador_ganadero','administrador_sistema'],  // Añadir roles
+      roles: ['administrador_pasaportes', 'atencion_pasaporte', 'asignador','administrador_juntas', 'administrador_discapacidad', 'atencion_ganadero','administrador_ganadero','administrador_sistema','visor'],  // Añadir roles
     },
     {
       routeLink: 'citas',

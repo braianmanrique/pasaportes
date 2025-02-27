@@ -24,6 +24,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReporteAdminPasaportesComponent } from './reports/reporte-admin-pasaportes/reporte-admin-pasaportes.component';
 import { ReporteFormalizadorComponent } from './reports/reporte-formalizador/reporte-formalizador.component';
 import { VisorComponent } from './visor/visor/visor.component';
+import { CitasCarnetComponent } from './citas-carnet/citas-carnet.component';
 @NgModule({
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [ 
@@ -41,7 +42,8 @@ import { VisorComponent } from './visor/visor/visor.component';
     AtenderCitaComponent,
     ReporteAdminPasaportesComponent,
     ReporteFormalizadorComponent,
-    VisorComponent
+    VisorComponent,
+    CitasCarnetComponent
   ],
   exports:[ 
     PagesComponent,

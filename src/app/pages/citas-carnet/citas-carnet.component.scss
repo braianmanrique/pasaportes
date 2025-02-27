@@ -1,0 +1,35 @@
+
+  
+  table {
+    margin-bottom: 2rem; // si la tabla agrega margen inferior, lo puedes reducir
+  }
+ 
+
+  .citas-container {
+    max-width: 90%;
+    margin: auto;
+  }
+  
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+  }
+  
+  .filter-input {
+    width: 300px;
+  }
+  
+  .card {
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+  
+  .styled-table {
+    width: 100%;
+  }
+  
+  .spacer {
+    flex: 1;
+  }
+  

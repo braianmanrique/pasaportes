@@ -77,7 +77,7 @@ export class CitasComponent {
       this.cargarCitasPrioritarias();
     }
     this.cargarCitas();
-    this.cargarCitasPrioritarias();
+    // this.cargarCitasPrioritarias();
   }
 
   ngAfterViewInit(): void {
@@ -88,7 +88,6 @@ export class CitasComponent {
 
   cargarCitas(): void {
     this.userRole = this.usarioService.getUserRole();
-    if (this.userRole === 'asignador') {
       this.citasService.listarCitas().subscribe({
         next: (data) => {
           if (data && Array.isArray(data.citas)) {
@@ -105,27 +104,7 @@ export class CitasComponent {
           console.error('Error al cargar citas:', err);
         },
       });
-    } else {
-      this.citasService.listarCitasCarnet().subscribe({
-        next: (data) => {
-          console.log('Respuesta del servicio:', data);
-
-          if (data && Array.isArray(data.citas)) {
-            const citasFiltradas = data.citas.filter(
-              (cita: Cita) => cita.atendida && cita.atendida !== 'S'
-            );
-            this.dataSource = new MatTableDataSource(citasFiltradas);
-            // this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-          } else {
-            console.error('El formato de los datos no es válido:', data);
-          }
-        },
-        error: (err) => {
-          console.error('Error al cargar citas:', err);
-        },
-      });
-    }
+    
   }
 
   cargarCitasPrioritarias() {

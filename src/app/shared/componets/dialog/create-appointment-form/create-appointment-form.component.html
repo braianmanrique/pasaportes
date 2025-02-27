@@ -2,6 +2,7 @@
   [formGroup]="appointmentForm"
   (ngSubmit)="onSubmit()"
   class="form-container"
+  autocomplete="off"
 >
   <div class="row">
     <!-- Nombre -->
@@ -31,7 +32,11 @@
     <!-- Número de Documento -->
     <mat-form-field appearance="outline" class="half-width">
       <mat-label>Número</mat-label>
-      <input matInput formControlName="identification" placeholder="Número de documento" />
+      <input
+        matInput
+        formControlName="identification"
+        placeholder="Número de documento"
+      />
       <mat-error *ngIf="appointmentForm.get('identification')?.invalid">
         Este campo es obligatorio
       </mat-error>
@@ -45,7 +50,6 @@
       <input matInput formControlName="phone" placeholder="Número de celular" />
     </mat-form-field>
 
-    <!-- Fecha -->
     <mat-form-field appearance="outline" class="half-width">
       <mat-label>Fecha</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="date" />
@@ -58,6 +62,19 @@
   </div>
 
   <div class="row">
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Hora</mat-label>
+      <input
+        matInput
+        formControlName="time"
+        placeholder="HH:mm"
+        pattern="^([0-1]\d|2[0-3]):([0-5]\d)$"
+      />
+      <mat-error *ngIf="appointmentForm.get('time')?.invalid">
+        Ingresa una hora válida
+      </mat-error>
+    </mat-form-field>
+
     <!-- Género -->
     <mat-form-field appearance="outline" class="half-width">
       <mat-label>Género</mat-label>
@@ -74,7 +91,10 @@
     <mat-form-field appearance="outline" class="half-width">
       <mat-label>Cualidades</mat-label>
       <mat-select formControlName="cualities">
-        <mat-option *ngFor="let cualidad of listaCualidades" [value]="cualidad.id">
+        <mat-option
+          *ngFor="let cualidad of listaCualidades"
+          [value]="cualidad.id"
+        >
           {{ cualidad.nombre }}
         </mat-option>
       </mat-select>
@@ -89,7 +109,10 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Comunidades</mat-label>
       <mat-select formControlName="comunity">
-        <mat-option *ngFor="let comunidad of listaComunidades" [value]="comunidad.id">
+        <mat-option
+          *ngFor="let comunidad of listaComunidades"
+          [value]="comunidad.id"
+        >
           {{ comunidad.nombre }}
         </mat-option>
       </mat-select>

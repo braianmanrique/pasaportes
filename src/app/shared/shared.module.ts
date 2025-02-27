@@ -12,8 +12,7 @@ import { AsignarCitaModuloDialogComponentTsComponent } from './componets/dialog/
 import { ReasignarCitaDialogComponent } from './componets/dialog/reasignar-cita-dialog/reasignar-cita-dialog.component';
 import { EditarDatoCiudadanoComponent } from './componets/dialog/editar-dato-ciudadano/editar-dato-ciudadano.component';
 import { HabilitarCitasComponent } from './componets/dialog/habilitar-citas/habilitar-citas.component';
-
-
+import { CitasLlamadasDialogComponent } from './componets/dialog/citas-llamadas-dialog/citas-llamadas-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,21 +24,16 @@ import { HabilitarCitasComponent } from './componets/dialog/habilitar-citas/habi
     AsignarCitaModuloDialogComponentTsComponent,
     ReasignarCitaDialogComponent,
     EditarDatoCiudadanoComponent,
-    HabilitarCitasComponent
-    
-
+    HabilitarCitasComponent,
+    CitasLlamadasDialogComponent,
   ],
   imports: [
     CommonModule,
     RouterModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
-    
+    FormsModule,
   ],
-  exports:[
-    HeaderComponent,
-    SidebarComponent,
-  ]
+  exports: [HeaderComponent, SidebarComponent],
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -14,13 +14,13 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { VisorWebsocketService } from './services/visor-websocket/visor-websocket.service';
 registerLocaleData(localeEs);
 @NgModule({
   declarations: [
     AppComponent,
     NopagefoundComponent,
-    LoadingComponent
-    
+    LoadingComponent    
   ],
   imports: [
     BrowserModule,
@@ -31,6 +31,7 @@ registerLocaleData(localeEs);
     ReactiveFormsModule
   ],
   providers: [
+    VisorWebsocketService,
     provideAnimationsAsync(),
     {
       provide: HTTP_INTERCEPTORS,

@@ -1,29 +1,136 @@
 <div class="welcome-section">
-  <h2 class="welcome-title">
-    <mat-icon class="welcome-icon">face</mat-icon>
-    Bienvenido, {{ firstName }}
-  </h2>
-  <p class="role-info">Tu rol: <span class="role-highlight">{{ userRole }}</span></p>
+  <h2 class="welcome-title">Bienvenido, {{ firstName }}</h2>
+  <p class="role-info">
+    Tu rol: <span class="role-highlight">{{ userRole }}</span>
+  </p>
 </div>
 
-<div  class="welcome-section">
+<div class="welcome-section"></div>
 
-</div>
+<mat-card
+  *ngIf="userRole === 'administrador_pasaportes' || userRole === 'asignador'"
+  class="dashboard-card"
+>
+  <h2>📅 Consultar Citas</h2>
+  <div class="dialog-content">
+    <form [formGroup]="reporteForm">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Seleccione el día</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="fecha"
+          required
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </form>
+  </div>
 
-  <mat-card *ngIf="userRole === 'administrador_pasaportes'" class="dashboard-card">
+  <div class="dialog-actions">
+    <button
+      mat-raised-button
+      style="background-color: #1e88e5"
+      (click)="consultarCitas()"
+      [disabled]="!reporteForm.get('fecha')?.value"
+    >
+      ✅ Consultar citas
+    </button>
+  </div>
+</mat-card>
+
+<div
+  class="results-container"
+  *ngIf="
+    reporteCitas &&
+    (userRole === 'administrador_pasaportes' || userRole === 'asignador')
+  "
+>
+  <mat-card class="stat-card">
     <mat-card-header>
-      <mat-card-title>
-        <mat-icon class="dashboard-icon">work</mat-icon>
-        Módulo de Reportes
-      </mat-card-title>
-      <mat-card-subtitle>Gestión y Control Simplificado</mat-card-subtitle>
+      <mat-card-title>Citas agendadas</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>
-        Accede al Módulo de reportes.
-      </p>
+      <h1 class="stat-number">{{ reporteCitas.total_citas_dia }}</h1>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="accent"   [routerLink]="'/dashboard/reportes'">Explorar Módulo</button>
-    </mat-card-actions>
   </mat-card>
+
+  <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
+    <mat-card-header>
+      <mat-card-title>Citas Normales para el Día</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <h1>{{ reporteCitas.citas_normales_dia }}</h1>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
+    <mat-card-header>
+      <mat-card-title>Citas Prioritarias para el Día</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <h1 class="stat-number">{{ reporteCitas.citas_prioritarias_dia }}</h1>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card">
+    <mat-card-header>
+      <mat-card-title>Citas Sin Ingresar</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <h1 class="stat-number">{{ reporteCitas.total_citas_sin_ingresar }}</h1>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
+    <mat-card-header>
+      <mat-card-title>Citas Normales Sin Ingresar</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <h1 class="stat-number">
+        {{ reporteCitas.num_citas_norm_sin_ingresar }}
+      </h1>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
+    <mat-card-header>
+      <mat-card-title>Citas Prioritarias Sin Ingresar</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <h1 class="stat-number">
+        {{ reporteCitas.num_citas_prioritaruas_sin_ingresar }}
+      </h1>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
+    <mat-card-header>
+      <mat-card-title>Citas Atendidas</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <h1 class="stat-number">{{ reporteCitas.total_citas_atendidas }}</h1>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
+    <mat-card-header>
+      <mat-card-title>Citas Normales Atendidas</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <h1 class="stat-number">{{ reporteCitas.citas_normales_atendidas }}</h1>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
+    <mat-card-header>
+      <mat-card-title>Citas Prioritarias Atendidas</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <h1 class="stat-number">
+        {{ reporteCitas.citas_prioritarias_atendidas }}
+      </h1>
+    </mat-card-content>
+  </mat-card>
+</div>

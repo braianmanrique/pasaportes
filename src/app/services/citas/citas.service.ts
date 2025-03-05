@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CitasService {
-  private baseUrl = 'https://backend-auth-log-project.onrender.com/api/usuarios/';
+  private baseUrl =
+    'https://backend-auth-log-project.onrender.com/api/usuarios/';
 
   private endpoints = {
     listarCitas: 'listar_dates/',
@@ -21,13 +22,19 @@ export class CitasService {
     listarCitasPrioritariasModulo: 'listar_citasprioritarias_modulo/',
     updateCitaModulo: 'update_atendida_cita_modulo/',
     updateEstadoCita: 'update_estado_cita/',
-    updateEstadoCitaPrioritaria: 'update_estado_cita_prioritaria/',
+    updateEstadoCitaPrioritaria: 'update_atendida_citaprioritaria_modulo/',
+    ingresarEstadoCitaPrioritaria: 'update_estado_cita_prioritaria/',
     updateEstadoCarnet: 'update_estado_carnet/',
     actualizarUsuario: 'actualizar_info_usuario_ingreso/',
     reagendarCitas: 'reagendar_citas/',
     listarCitasLlamando: 'listar_citas_llamada_atendiendo_caja',
+    listarCitasPrioritariasLlamando:
+      'listar_citas_llamada_atendiendo_prioritarias_caja',
     listarCitasVisor: 'listar_citas_visor/',
-    habilitarCitas: 'crear_turnos_citas/'
+    listarCitasPrioritariasVisor: 'listar_citas_prioritarias_llamando_visor',
+    habilitarCitas: 'crear_turnos_citas/',
+    habilitarCitasMediaJornada: 'crear_turnos_citas_media_jornada/',
+    listarHistoriaTurnos: 'listar_turnos_citas_habilitados_publico',
   };
 
   constructor(private http: HttpClient) {}
@@ -78,7 +85,9 @@ export class CitasService {
   }
 
   seleccionarCaja(numeroCaja: number): Observable<any> {
-    return this.request('POST', this.endpoints.seleccionarCaja, { numero_caja: numeroCaja });
+    return this.request('POST', this.endpoints.seleccionarCaja, {
+      numero_caja: numeroCaja,
+    });
   }
 
   liberarCaja(): Observable<any> {
@@ -86,7 +95,9 @@ export class CitasService {
   }
 
   asignarModulo(idCita: number, numeroCaja: number): Observable<any> {
-    return this.request('PUT', `${this.endpoints.asignarModulo}${idCita}/`, { numero_caja: numeroCaja });
+    return this.request('PUT', `${this.endpoints.asignarModulo}${idCita}/`, {
+      numero_caja: numeroCaja,
+    });
   }
 
   listarCitasPorCaja(): Observable<any> {
@@ -98,31 +109,75 @@ export class CitasService {
   }
 
   actualizarEstadoCita(idCita: number, estado: string): Observable<any> {
-    return this.request('POST', `${this.endpoints.updateCitaModulo}${idCita}/`, { nuevo_estado: estado });
+    return this.request(
+      'POST',
+      `${this.endpoints.updateCitaModulo}${idCita}/`,
+      { nuevo_estado: estado }
+    );
   }
 
   actualizarCita(idCita: number, estado: string): Observable<any> {
-    return this.request('POST', `${this.endpoints.updateCitaModulo}${idCita}/`, { nuevo_estado: estado });
+    return this.request(
+      'POST',
+      `${this.endpoints.updateCitaModulo}${idCita}/`,
+      { nuevo_estado: estado }
+    );
   }
 
-  actualizarEstadoCitaCarnet(idCita: number, estado: string): Observable<any> {
-    return this.request('PUT', `${this.endpoints.updateEstadoCarnet}${idCita}/`, { atendida: estado });
+  actualizarEstadoCitaPrioritaria(
+    idCita: number,
+    estado: any
+  ): Observable<any> {
+    return this.request(
+      'POST',
+      `${this.endpoints.updateEstadoCitaPrioritaria}${idCita}/`,
+      { nuevo_estado: estado }
+    );
   }
 
-  actualizarEstadoCitaPrioritaria(idCita: number, estado: any): Observable<any> {
-    return this.request('POST', `${this.endpoints.updateEstadoCitaPrioritaria}${idCita}/`, { nuevo_estado: estado });
+  getCitasEnEspera(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(`${this.baseUrl}listar_citas_espera_caja/`, {
+      headers: headers,
+    });
   }
 
-  ingresarCita(idCita: number, atendida: string): Observable<any> {
-    return this.request('PUT', `${this.endpoints.updateEstadoCita}${idCita}/`, { estado_ingreso: atendida });
+  getCitasPrioritariasEnEspera(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(
+      `${this.baseUrl}listar_citas_prioritarias_espera_caja/`,
+      { headers: headers }
+    );
   }
 
   ingresarCitaPrioritaria(idCita: number, atendida: string): Observable<any> {
-    return this.request('PUT', `${this.endpoints.updateEstadoCitaPrioritaria}${idCita}/`, { estado_ingreso: atendida });
+    return this.request(
+      'PUT',
+      `${this.endpoints.ingresarEstadoCitaPrioritaria}${idCita}/`,
+      { estado_ingreso: atendida }
+    );
+  }
+
+  actualizarEstadoCitaCarnet(idCita: number, estado: string): Observable<any> {
+    return this.request(
+      'PUT',
+      `${this.endpoints.updateEstadoCarnet}${idCita}/`,
+      { atendida: estado }
+    );
+  }
+
+  ingresarCita(idCita: number, atendida: string): Observable<any> {
+    return this.request('PUT', `${this.endpoints.updateEstadoCita}${idCita}/`, {
+      estado_ingreso: atendida,
+    });
   }
 
   actualizarUsuario(idCiudadanoActual: string, data: any): Observable<any> {
-    return this.request('PUT', `${this.endpoints.actualizarUsuario}${idCiudadanoActual}/`, data);
+    return this.request(
+      'PUT',
+      `${this.endpoints.actualizarUsuario}${idCiudadanoActual}/`,
+      data
+    );
   }
 
   reasignarCitas(payload: any): Observable<any> {
@@ -133,11 +188,31 @@ export class CitasService {
     return this.request('GET', this.endpoints.listarCitasLlamando);
   }
 
+  listarCitasPrioritariaLlamando(): Observable<any> {
+    return this.request('GET', this.endpoints.listarCitasPrioritariasLlamando);
+  }
+
   listarCitasVisor(): Observable<any> {
     return this.request('GET', this.endpoints.listarCitasVisor);
   }
 
+  listarPrioritariasCitasVisor(): Observable<any> {
+    return this.request('GET', this.endpoints.listarCitasPrioritariasVisor);
+  }
+
   habilitarCitas(fecha: any): Observable<any> {
     return this.request('POST', this.endpoints.habilitarCitas, fecha);
+  }
+
+  habilitarCitasMediaJornada(fecha: any): Observable<any> {
+    return this.request(
+      'POST',
+      this.endpoints.habilitarCitasMediaJornada,
+      fecha
+    );
+  }
+
+  listarTurnosCitasHabilitados(): Observable<any> {
+    return this.request('GET', this.endpoints.listarHistoriaTurnos);
   }
 }

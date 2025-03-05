@@ -1,20 +1,65 @@
-<h2 mat-dialog-title> Seleccionar Fecha</h2>
-<div mat-dialog-content>
-  <form [formGroup]="habilitarForm">
-    <!-- Campo para seleccionar la fecha -->
-    <mat-form-field>
-        <mat-label>Fecha del Turno</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="fecha" [min]="minDate" required>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-      
-    <!-- Tabla para mostrar las citas -->
+<h2 mat-dialog-title>📅 Habilitar Citas</h2>
 
+<div mat-dialog-content class="dialog-content">
+  <form [formGroup]="habilitarForm">
+    <mat-form-field class="full-width">
+      <mat-label>Fecha del Turno</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="fecha"
+        [min]="minDate"
+        required
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+   
+    <div class="toggle-container">
+      <mat-checkbox formControlName="habilitarMediaJornada">
+        Habilitar citas por media jornada
+      </mat-checkbox>
+    </div>
   </form>
+
+  <hr />
+
+  <h3 class="titulo-turnos">Turnos Habilitados Recientemente</h3>
+
+  <div
+    class="turnos-container"
+    *ngIf="turnosHabilitados.length > 0; else noTurnos"
+  >
+    <mat-card *ngFor="let turno of turnosHabilitados" class="turno-card">
+      <mat-card-header class="turno-header">
+        <mat-icon class="turno-icon">person</mat-icon>
+        <mat-card-title>{{ turno.usuario }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="turno-content">
+        <p>
+          📅 <strong>Fecha Habilitada:</strong> {{ turno.fecha_solicitada }}
+        </p>
+        <p>
+          ⏳ <strong>Cuando fue habilitado:</strong> {{ turno.fecha_ejecucion }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <ng-template #noTurnos>
+    <p class="mensaje-no-turnos">No hay turnos habilitados recientemente.</p>
+  </ng-template>
 </div>
 
-<div mat-dialog-actions>
+<div mat-dialog-actions class="dialog-actions">
   <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-raised-button color="primary" (click)="habilitarCitas()">  📅 Crear Turno de Cita</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="habilitarCitas()"
+    [disabled]="!habilitarForm.valid"
+  >
+    📅 Habilitar día para turnos
+  </button>
 </div>

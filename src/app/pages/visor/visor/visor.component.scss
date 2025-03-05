@@ -1,27 +1,411 @@
-.visor-container {
-    text-align: center;
-    padding: 20px;
-  }
+
   
-  .nombre-llamado {
-    background: #f1f1f1;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .nombre-voz {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #1976d2;
-  }
-  
-  .tabla-container {
-    max-width: 800px;
-    margin: auto;
-  }
-  
+
   button {
     margin-top: 10px;
   }
+
+  @keyframes fadeIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0.8;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
   
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      color: #004aad;
+    }
+    50% {
+      transform: scale(1.1);
+      color: #00c6ff;
+    }
+    100% {
+      transform: scale(1);
+      color: #00ad45;
+    }
+  }
+  
+  /* 🖥️ Responsivo */
+  @media (max-width: 768px) {
+    .nombre-voz {
+      font-size: 2rem;
+    }
+  
+    .tabla-container {
+      width: 100%;
+    }
+  }
+  
+
+// ✨ Animación de llamado
+.animacion-llamado {
+  animation: parpadeo 1s infinite alternate;
+}
+
+@keyframes parpadeo {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+
+
+th {
+  background-color: #424242;
+  color: white; // Amarillo brillante
+  font-weight: bold;
+  padding: 12px;
+}
+
+
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mat-row {
+  transition: background-color 0.3s ease-in-out;
+}
+
+.mat-row:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 📌 Contenedor principal */
+.visor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  background: white;
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  justify-content: flex-start;
+}
+
+/* 🔊 Sección de llamado */
+.nombre-llamado {
+  width: 100%;
+  max-width: 90%;
+  background-color: #000 !important; 
+  color: white;
+  text-align: center;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+  margin-bottom: 40px;
+}
+
+.titulo-llamado {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+@keyframes blink {
+  0% { color: #fff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); }
+  100% { color: #fdd835; text-shadow: 0 0 25px rgba(253, 216, 53, 1); }
+}
+
+@keyframes blink {
+  from { opacity: 1; }
+  to { opacity: 0.9; }
+}
+
+
+/* 🖥️ Estilos para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: black; /* ✅ Fondo negro */
+  color: white;
+  font-size: 2.2rem;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.4); /* ✅ Borde gris claro */
+}
+
+
+th {
+  background-color: #222;
+  color: rgb(251, 251, 251);
+  font-weight: bold;
+  padding: 20px;
+  text-transform: uppercase;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4); /* ✅ Línea divisoria */
+  font-size: 2rem;
+  height: 6rem; /* 🔹 Más altura a las filas */
+
+}
+td {
+  padding: 18px;
+  font-size: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* ✅ Línea divisoria más tenue */
+  color: white;
+  font-size: 2rem;
+  height: 6rem; /* Más altura a las filas */
+}
+
+th:first-child,
+td:first-child {
+  border-left: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mat-row {
+  transition: background-color 0.3s ease-in-out;
+}
+
+.mat-row:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+th:last-child,
+td:last-child {
+  border-right: 2px solid rgba(255, 255, 255, 0.4);
+}
+@media (max-width: 768px) {
+  .tabla-container {
+    width: 100%;
+  }
+
+  th, td {
+    font-size: 1.8rem;
+    padding: 15px;
+  }
+}
+
+
+.imagen-gober{
+  position: absolute;
+  top: 4%;  
+  left: 0%; 
+}
+
+.imagen-container {
+  position: fixed;
+  bottom: 3rem;  
+  right: 1rem; 
+  z-index: 1000;
+}
+
+
+.imagen-llamada {
+  width: 15rem; 
+  height: auto;
+  border-radius: 1rem;
+  display: block;
+}
+
+.imagen-llamada-gober{
+  width: 15rem; /* ✅ Tamaño adecuado */
+  height: auto;
+  border-radius: 1rem;
+  display: block;
+}
+
+
+@keyframes pulseEffect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); } /* Crece solo un poco */
+  100% { transform: scale(1); }
+}
+
+.animacion-nombre {
+  animation: pulseEffect 3s infinite alternate ease-in-out; /* ✅ Animación más lenta */
+}
+.puesto-texto {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 5rem; /* ✅ Tamaño más pequeño */
+  color: white;
+  background-color: #008f39; /* ✅ Fondo verde */
+  padding: 2.5rem 10.7rem;
+  border-radius: .5rem;
+  margin-top: 0.5rem; /* ✅ Separación del nombre */
+  white-space: nowrap; /* ✅ Evita que se divida */
+}
+
+.titulo-espera {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.6rem;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.4);
+}
+
+.nombre-texto-tabla{
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+  font-weight: bold;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.tabla-container {
+  width: 95%;
+  max-width: 90%;
+  background: white; 
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(0, 0, 0, 0.2); 
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.tabla-llamados {
+  font-family: 'Montserrat', sans-serif;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 3rem;
+  width: 100%;
+  max-width: 75%;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+th, td {
+  font-family: 'Montserrat', sans-serif;
+
+  text-align: center;
+  font-size: 3rem; 
+  white-space: nowrap;
+  color: black; 
+  padding: 20px 25px; 
+  height: 5rem; 
+}
+
+.nombre-columna {
+  font-family: 'Montserrat', sans-serif;
+
+  display: flex;
+  align-items: center; 
+  gap: 1rem; 
+  max-width: 700px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  font-weight: bold;
+  padding-left: 1rem;
+  line-height: 1.2;
+}
+
+.puesto-numero {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  background: #008f39; 
+  padding: 2rem 4rem;
+  border-radius: 8px;
+  display: inline-block;
+  min-width: 120px;
+  text-align: center;
+}
+
+
+.fila-animada {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 1024px) {
+  .nombre-voz {
+    font-size: 7rem;
+  }
+
+  .tabla-container {
+    width: 90%;
+  }
+
+  th, td {
+    font-size: 4rem;
+    padding: 30px;
+  }
+
+  .puesto-numero {
+    font-size: 4rem;
+    min-width: 180px;
+  }
+}
+
+.nombre-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 25vh; 
+  max-height: 35vh;
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 90%;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.nombre-voz {
+  font-family: 'Montserrat', 'Poppins', sans-serif;
+  font-size: 6rem;
+  font-weight: 700;
+  color: black;
+  margin-left: 13rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0.61rem 2px 8px rgba(0, 0, 0, 0.3);
+  
+  display: block; 
+  text-align: center;
+  width: 90%;
+  max-width: 90%;
+  height: auto; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 1400px) {
+  .nombre-voz {
+    font-size: 7rem; 
+  }
+}

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ReportesService } from '../../../services/reportes/reportes.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-reporte-formalizador',
@@ -10,18 +11,14 @@ import { ReportesService } from '../../../services/reportes/reportes.service';
 export class ReporteFormalizadorComponent {
   fechaSeleccionada: string = new Date().toISOString().split('T')[0];
   displayedColumns: string[] = ['nombre', 'cedula', 'fecha', 'prioridad'];
-  // dataSource: any[] = [];
   selectedDate: string = '';
   selectedReport: string = '';
   reporteGenerado = false;
   fechaError = false;
   isMonthlyReport = false; 
   reportOptions = [
-    { name: 'Citas Prioritarias Atendidas en el Día', method: 'getCitasPrioritariasDia', type: 'daily' },
     { name: 'Citas Atendidas en el Día', method: 'getCitasAtendidasDia', type: 'daily' },
-    { name: 'Citas Prioritarias Atendidas en el Mes', method: 'getCitasPrioritariasMes', type: 'monthly' },
     { name: 'Citas Atendidas en el Mes', method: 'getCitasAtendidasMes', type: 'monthly' },
-    { name: 'Citas Atendidas en el Mes', method: 'getCitasAtendidasMes', type: 'monthly' }
 
   ];
   dataSource = new MatTableDataSource<any>([]);
@@ -29,15 +26,14 @@ export class ReporteFormalizadorComponent {
   constructor(private reporteService: ReportesService) {}
   onDateChange(event: any) {
     if (event.value) {
-      this.fechaSeleccionada = event.value.toISOString().split('T')[0]; // YYYY-MM-DD
-      console.log('Fecha seleccionada:', this.fechaSeleccionada);
+      this.fechaSeleccionada = event.value.toISOString().split('T')[0];
     }
   }
 
   onReportChange() {
     const reporteSeleccionado = this.reportOptions.find(r => r.method === this.selectedReport);
     this.isMonthlyReport = reporteSeleccionado?.type === 'monthly';
-    this.fechaSeleccionada = '';  // Reiniciar la fecha cuando se cambia el reporte
+    this.fechaSeleccionada = ''; 
   }
 
   chosenYearHandler(normalizedYear: Date) {
@@ -52,6 +48,8 @@ export class ReporteFormalizadorComponent {
     datepicker.close(); // Cierra el selector de fecha
   }
 
+  
+  
   generarReporte(): void {
     if (!this.selectedReport) {
       alert('Selecciona un reporte');
@@ -62,20 +60,16 @@ export class ReporteFormalizadorComponent {
       alert('Selecciona una fecha para generar el reporte');
       return;
     }
-  
-    console.log(`Generando reporte: ${this.selectedReport} con fecha ${this.fechaSeleccionada}`);
-  
+    
     const reporteSeleccionado = this.reportOptions.find(r => r.method === this.selectedReport);
   
     if (reporteSeleccionado) {
       (this.reporteService as any)[this.selectedReport](this.fechaSeleccionada)
         .subscribe({
           next: (data: any) => {
-            console.log('Datos del reporte recibidos:', data);
-            debugger
   
             if (data && data.ciudadanos && Array.isArray(data.ciudadanos)) {
-              this.dataSource.data = data.ciudadanos; // Asigna los datos correctamente
+              this.dataSource.data = data.ciudadanos;
             } else {
               this.dataSource.data = [];
               console.warn('El reporte no tiene datos disponibles.');
@@ -91,15 +85,45 @@ export class ReporteFormalizadorComponent {
         });
     }
   }
+
+  exportarExcel(){
+    const columnasFiltradas = this.dataSource.data.map(({fec_atencion	, formalizador, ...restoInfo})=> restoInfo);
+    const resumen = this.calcularResumenPorTipoDocumento(columnasFiltradas);
+
+    const hojaDeTrabajo = XLSX.utils.json_to_sheet(columnasFiltradas);
+    const hojaResumen = XLSX.utils.json_to_sheet(resumen);
+
+
+    
+    // const hojaDeTrabajo = XLSX.utils.json_to_sheet(this.dataSource.data);
+    const libroDeTrabajo: XLSX.WorkBook = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(libroDeTrabajo, hojaDeTrabajo, 'Reporte');
+    XLSX.utils.book_append_sheet(libroDeTrabajo, hojaDeTrabajo, 'Reporte');
+    XLSX.utils.book_append_sheet(libroDeTrabajo, hojaResumen, 'Resumen');
+
+    const fechaActual = new Date().toISOString().split('T')[0];
+    XLSX.writeFile(libroDeTrabajo, `Reporte_Ciudadanos_${fechaActual}.xlsx`);
+
+    
+  }
   
+  calcularResumenPorTipoDocumento(datos: any[]) {
+    const conteo: { [key: string]: number } = {};
   
-  // loadReportes() {
-  //   this.reporteService.getCitasAtendidasDia(this.fechaSeleccionada).subscribe({
-  //     next: (data) => {
-  //       this.dataSource = new MatTableDataSource(data);
-  //     },
-  //     error: (err) => console.error('Error cargando reporte:', err),
-  //   });
-  // }
+    datos.forEach(({ tipo_documento }) => {
+      if (!conteo[tipo_documento]) {
+        conteo[tipo_documento] = 0;
+      }
+      conteo[tipo_documento]++;
+    });
+  
+    return Object.entries(conteo).map(([tipo_documento, cantidad]) => ({
+      tipo_documento,
+      cantidad,
+    }));
+  }
+  
+
+  
 
 }

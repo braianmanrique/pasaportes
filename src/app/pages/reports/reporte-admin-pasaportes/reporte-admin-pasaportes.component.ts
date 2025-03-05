@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UsuarioService } from '../../../services/usuario.service';
 import { ReportesService } from '../../../services/reportes/reportes.service';
 import { MatPaginator } from '@angular/material/paginator';
-
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-reporte-admin-pasaportes',
   templateUrl: './reporte-admin-pasaportes.component.html',
@@ -20,11 +20,19 @@ export class ReporteAdminPasaportesComponent {
   @Input() colorScheme!: any;
   @Input() totalCitas: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  minDate: Date = new Date(new Date().getFullYear(), 0, 1); // Enero del año actual
-  maxDate: Date = new Date(new Date().getFullYear(), 11, 31); // Diciembre del año actual
-  startDate: Date = new Date(); // Comenzar en el mes actual
-  exportarExcel() {
-    console.log('Exportando datos...');
+  minDate: Date = new Date(new Date().getFullYear(), 0, 1); 
+  maxDate: Date = new Date(new Date().getFullYear(), 11, 31);
+  startDate: Date = new Date(); 
+ 
+  exportarExcel(): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.ciudadanos);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Reporte': worksheet }, SheetNames: ['Reporte'] };
+    XLSX.writeFile(workbook, 'Reporte_Ciudadanos.xlsx');
+    this.snackBar.open('Excel generado con éxito.', 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top'
+    });
   }
   
   constructor(
@@ -55,10 +63,8 @@ export class ReporteAdminPasaportesComponent {
           this.dataSource = new MatTableDataSource(this.ciudadanos);
 
           this.dataSource.paginator = this.paginator; // Vincula el paginador
-          console.log('Datos asignados al dataSource:', this.dataSource.data);
           if (this.paginator) {
             this.dataSource.paginator = this.paginator; // Vincula el paginador
-            console.log('Paginator asignado correctamente:', this.paginator);
           }
         } else {
           this.snackBar.open('No hay información.', 'Cerrar', {
@@ -83,7 +89,6 @@ export class ReporteAdminPasaportesComponent {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    // Si estás filtrando, asegúrate de que la página regrese al inicio
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

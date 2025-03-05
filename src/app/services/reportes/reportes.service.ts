@@ -136,4 +136,17 @@ export class ReportesService {
       { headers: this.getHeaders() }
     );
   }
+
+
+  getReporteCitasDia(fecha: string): Observable<any> {
+    return this.http.get(
+      `${this.baseUrl}/reporte_seguimiento_citas/?fecha=${fecha}`,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  getReportePorRango(url: string): Observable<any> {
+    return this.http.get<any>(url,    { headers: this.getHeaders() });
+  }
+
 }

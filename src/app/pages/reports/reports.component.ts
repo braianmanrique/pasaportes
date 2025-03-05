@@ -5,6 +5,8 @@ import * as XLSX from 'xlsx';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -14,7 +16,8 @@ export class ReportsComponent implements AfterViewInit {
   constructor(
     private loginService: UsuarioService,
     private reportesService: ReportesService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private fb: FormBuilder
   ) {}
 
   totalCitas: number | null = null;
@@ -37,6 +40,10 @@ export class ReportsComponent implements AfterViewInit {
   defaultDate: Date = new Date();
   selectedAnio: number | null = null;
   @ViewChild('paginatorGeneral') paginatorGeneral!: MatPaginator;
+
+  fechaFormReport!: FormGroup;
+
+  resumenDatos: any = null;
 
   displayedColumns: string[] = [
     'nombre',
@@ -62,18 +69,21 @@ export class ReportsComponent implements AfterViewInit {
   dataSource = new MatTableDataSource<any>();
 
   dataSourceGeneral = new MatTableDataSource<any>();
-  
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatPaginator) set paginatorSetter(paginator: MatPaginator) {
     if (paginator) {
       this.dataSource.paginator = paginator; // Vincula el paginator
     }
   }
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit(): void {
-    console.log('Paginator vinculado en AfterViewInit:', this.paginator);
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;
+    }
+    if (this.sort) {
+      this.dataSource.sort = this.sort;
     }
   }
 
@@ -101,6 +111,19 @@ export class ReportsComponent implements AfterViewInit {
     ) {
       this.showDataCarnet();
     }
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'fecha_registro':
+          return new Date(item.fecha_registro).getTime();
+        default:
+          return item[property]?.toString().toLowerCase();
+      }
+    };
+    this.fechaFormReport = this.fb.group({
+      fechaInicio: [null],
+      fechaFin: [null],
+    });
   }
 
   onTabChange(event: any): void {
@@ -358,12 +381,15 @@ export class ReportsComponent implements AfterViewInit {
           this.ciudadanos = data.ciudadanos;
           this.dataSource = new MatTableDataSource(this.ciudadanos);
 
-          this.dataSource.paginator = this.paginator; // Vincula el paginador
-          console.log('Datos asignados al dataSource:', this.dataSource.data);
+          this.dataSource.paginator = this.paginator;
           if (this.paginator) {
-            this.dataSource.paginator = this.paginator; // Vincula el paginador
-            console.log('Paginator asignado correctamente:', this.paginator);
+            this.dataSource.paginator = this.paginator;
           }
+
+          setTimeout(() => {
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          });
         } else {
           this.snackBar.open('No hay información.', 'Cerrar', {
             duration: 3000,
@@ -371,7 +397,7 @@ export class ReportsComponent implements AfterViewInit {
             verticalPosition: 'top',
           });
 
-          this.dataSource = new MatTableDataSource(['']); // Crea nueva instancia
+          this.dataSource = new MatTableDataSource(['']);
         }
       },
       error: (err) => {
@@ -392,8 +418,6 @@ export class ReportsComponent implements AfterViewInit {
     XLSX.writeFile(libroDeTrabajo, `Reporte_Ciudadanos_${fechaActual}.xlsx`);
   }
 
-  
-
   onMonthSelected(event: Date, datepicker: any): void {
     const formattedDate = `${event.getFullYear()}-${String(
       event.getMonth() + 1
@@ -407,17 +431,19 @@ export class ReportsComponent implements AfterViewInit {
     const formattedDate = `${event.getFullYear()}-${String(
       event.getMonth() + 1
     ).padStart(2, '0')}`;
-    datepicker.close(); 
+    datepicker.close();
     this.loadCiudadanosPorFechaGeneral(formattedDate);
   }
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event, column: string) {
+    const filterValue = (event.target as HTMLInputElement).value
+      .trim()
+      .toLowerCase();
 
-    // Si estás filtrando, asegúrate de que la página regrese al inicio
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      return data[column].toLowerCase().includes(filter);
+    };
+
+    this.dataSource.filter = filterValue;
   }
 
   loadReporteInfoGeneral(fecha: string): void {
@@ -429,10 +455,10 @@ export class ReportsComponent implements AfterViewInit {
             horizontalPosition: 'right',
             verticalPosition: 'top',
           });
-  
+
           // Asigna los datos al MatTableDataSource
           this.dataSourceGeneral = new MatTableDataSource(data);
-  
+
           // Vincula el paginador si existe
           setTimeout(() => {
             this.dataSourceGeneral.paginator = this.paginatorGeneral;
@@ -444,7 +470,6 @@ export class ReportsComponent implements AfterViewInit {
             verticalPosition: 'top',
           });
           this.dataSourceGeneral = new MatTableDataSource<any>([]);
-
         }
       },
       error: (err) => {
@@ -456,7 +481,7 @@ export class ReportsComponent implements AfterViewInit {
         });
       },
     });
-  } 
+  }
 
   onDateChange(event: any): void {
     const fechaSeleccionada = event.value.toISOString().split('T')[0]; // Convierte la fecha seleccionada
@@ -466,5 +491,66 @@ export class ReportsComponent implements AfterViewInit {
   onDateChangeGeneral(event: any): void {
     const fechaSeleccionada = event.value.toISOString().split('T')[0]; // Convierte la fecha seleccionada
     this.loadReporteInfoGeneral(fechaSeleccionada); // Llama al método con la fecha seleccionada
+  }
+
+  onDateReportAdmiChange() {
+    const fechaInicio = this.fechaFormReport.value.fechaInicio;
+    const fechaFin = this.fechaFormReport.value.fechaFin;
+    if (fechaInicio && fechaFin) {
+      console.log('Consulta con:', fechaInicio, fechaFin);
+      const fechaInicioFormat = this.formatDate(fechaInicio);
+      const fechaFinFormat = this.formatDate(fechaFin);
+
+          const url = `https://backend-auth-log-project.onrender.com/api/usuarios/reporte_general_admin_rango/?fecha_inicio=${fechaInicioFormat}&fecha_fin=${fechaFinFormat}`;
+
+      this.reportesService.getReportePorRango(url).subscribe({
+        next: (data) => {
+              this.resumenDatos = data;
+              console.log(data,'cc')
+              this.snackBar.open('Consulta realizada con éxito.', 'Cerrar', {
+                duration: 3000,
+                horizontalPosition: 'right',
+                verticalPosition: 'top',
+              });
+            },
+            error: (err) => {
+              console.error('Error al obtener el reporte:', err);
+              this.snackBar.open('Error al obtener el reporte.', 'Cerrar', {
+                duration: 3000,
+                horizontalPosition: 'right',
+                verticalPosition: 'top',
+              });
+            },
+      })
+    }
+  }
+
+  filtrarPorRango(): void {
+    // if (!this.fechaInicio || !this.fechaFin) return;
+    // const fechaInicioFormat = this.formatDate(this.fechaInicio);
+    // const fechaFinFormat = this.formatDate(this.fechaFin);
+    // const url = `https://backend-auth-log-project.onrender.com/api/usuarios/reporte_general_admin_rango/?fecha_inicio=${fechaInicioFormat}&fecha_fin=${fechaFinFormat}`;
+    // this.reportesService.getReportePorRango(url).subscribe({
+    //   next: (data) => {
+    //     this.resumenDatos = data;
+    //     this.snackBar.open('Consulta realizada con éxito.', 'Cerrar', {
+    //       duration: 3000,
+    //       horizontalPosition: 'right',
+    //       verticalPosition: 'top',
+    //     });
+    //   },
+    //   error: (err) => {
+    //     console.error('Error al obtener el reporte:', err);
+    //     this.snackBar.open('Error al obtener el reporte.', 'Cerrar', {
+    //       duration: 3000,
+    //       horizontalPosition: 'right',
+    //       verticalPosition: 'top',
+    //     });
+    //   },
+    // });
+  }
+
+  private formatDate(date: Date): string {
+    return date.toISOString().split('T')[0];
   }
 }

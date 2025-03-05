@@ -12,6 +12,7 @@ import { RoleGuard } from '../guards/role.guard';
 import { SeleccionarModuloComponent } from './seleccionar-modulo/seleccionar-modulo.component';
 import { AtenderCitaComponent } from './atender-cita/atender-cita.component';
 import { VisorComponent } from './visor/visor/visor.component';
+import { CitasCarnetComponent } from './citas-carnet/citas-carnet.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,13 @@ const routes: Routes = [
         path: 'citas',
         component: CitasComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['asignador','atencion_ganadero'] },
+        data: { roles: ['asignador', 'administrador_pasaportes'] },
+      },
+      {
+        path: 'citas-carnet',
+        component: CitasCarnetComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['atencion_ganadero'] },
       },
       {
         path: 'citas-modulo',
@@ -45,13 +52,20 @@ const routes: Routes = [
       {
         path: 'reportes',
         component: ReportsComponent,
-        data: { roles: [ 'administrador_pasaportes','administrador_juntas','administrador_sistema','atencion_pasaporte'] },
+        data: {
+          roles: [
+            'administrador_pasaportes',
+            'administrador_juntas',
+            'administrador_sistema',
+            'atencion_pasaporte',
+          ],
+        },
       },
       {
         path: 'visor',
         component: VisorComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['visor'] }, // Solo accesible para el rol "visor"
+        data: { roles: ['visor'] },
       },
     ],
   },

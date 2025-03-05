@@ -25,6 +25,7 @@ import { ReporteAdminPasaportesComponent } from './reports/reporte-admin-pasapor
 import { ReporteFormalizadorComponent } from './reports/reporte-formalizador/reporte-formalizador.component';
 import { VisorComponent } from './visor/visor/visor.component';
 import { CitasCarnetComponent } from './citas-carnet/citas-carnet.component';
+import { MatSortModule } from '@angular/material/sort';
 @NgModule({
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [ 
@@ -59,6 +60,7 @@ import { CitasCarnetComponent } from './citas-carnet/citas-carnet.component';
     BrowserAnimationsModule,
     MatPaginatorModule,
     MatTableModule,
+    MatSortModule
     
   ],
   providers: [MatDatepickerModule],

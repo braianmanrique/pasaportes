@@ -2,10 +2,9 @@ import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { CitasService } from '../../services/citas/citas.service';
 import { UsuarioService } from '../../services/usuario.service';
-import { Cita } from '../citas/citas.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { CitaDialogComponent } from '../../shared/componets/dialog/cita-dialog/cita-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-citas-carnet',
@@ -28,6 +27,7 @@ export class CitasCarnetComponent {
     private citasService: CitasService,
     private usarioService: UsuarioService,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -36,9 +36,9 @@ export class CitasCarnetComponent {
 
   getAtendidaLabel(value: string): string {
     if (value === 'N') {
-      return 'No ingresado';
+      return 'No atendida';
     } else {
-      return 'Ingresado';
+      return 'Atendida';
     }
   }
 
@@ -51,13 +51,8 @@ export class CitasCarnetComponent {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-
-
   }
 
-  reloadCitas() {
-    this.cargarCitas();
-  }
   cargarCitas(): void {
     this.userRole = this.usarioService.getUserRole();
     {
@@ -65,12 +60,8 @@ export class CitasCarnetComponent {
         next: (data) => {
           console.log('Respuesta del servicio:', data);
           if (data && Array.isArray(data.citas)) {
-            // const citasFiltradas = data.citas.filter(
-            //   (cita: Cita) => cita.atendida && cita.atendida !== 'S'
-            // );
             this.dataSource = new MatTableDataSource(data.citas);
             this.dataSource.paginator = this.paginator;
-
           } else {
             console.error('El formato de los datos no es válido:', data);
           }
@@ -82,19 +73,38 @@ export class CitasCarnetComponent {
     }
   }
 
-  openDialog(cita: Cita): void {
-    let dialogRef;
+  atenderCita(cita: any) {
+    const idCita = cita.id_cita;
 
-      dialogRef = this.dialog.open(CitaDialogComponent, {
-        width: '800px',
-        data: { cita },
-      });
-    
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.reloadCitas();
-      }
+    this.citasService.actualizarEstadoCitaCarnet(idCita, 'A').subscribe({
+      next: (res) => {
+        this.handleSuccess(res, 'estado');
+      },
+      error: (err) => {
+        this.handleError(err);
+      },
     });
   }
 
+  private handleSuccess(res: any, estado: string): void {
+    this.snackBar.open('Cita actualizada con éxito', 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+    });
+    this.cargarCitas();
+  }
+
+  private handleError(err: any): void {
+    console.error('Error al actualizar el estado:', err);
+    this.snackBar.open(
+      'Error al actualizar la cita. Intenta nuevamente.',
+      'Cerrar',
+      {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      }
+    );
+  }
 }

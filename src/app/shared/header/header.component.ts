@@ -4,16 +4,16 @@ import { UsuarioService } from '../../services/usuario.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  constructor(private usuarioService: UsuarioService){
-
-
-  } 
-
-  logout(){
-    this.usuarioService.logoutUsuario();
+  userRole: string = '';
+  constructor(private usuarioService: UsuarioService) {}
+  ngOnInit(): void {
+    this.userRole = this.usuarioService.getUserRole();
   }
 
+  logout() {
+    this.usuarioService.logoutUsuario();
+  }
 }

@@ -1,0 +1,102 @@
+<mat-dialog-content>
+  <h3 class="cita-tipo" *ngIf="isPrioritaria"> Cita Prioritaria</h3>
+  <h3 class="cita-tipo" *ngIf="!isPrioritaria"> Cita Regular</h3>
+
+  <mat-divider></mat-divider>
+  <mat-card
+  *ngFor="let cita of citasEnLlamada; trackBy: trackByCita"
+  class="cita-card"
+  [ngClass]="{
+    'cita-en-curso': cita.atendida === 'A',
+    'cita-finalizada': cita.atendida === 'D',
+    'cita-no-atendida': cita.atendida === 'N',
+    'cita-en-espera': cita.atendida === 'E',
+    'cita-en-llamada': cita.atendida === 'L'
+  }"
+>
+  <mat-card-header>
+    <mat-card-title>
+      🧑 {{ cita.nombre_citizen }} -
+      <span class="estado">{{ getAtendidaLabel(cita.atendida) }}</span>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p><strong>📍 Módulo:</strong> {{ cita.puesto }}</p>
+  </mat-card-content>
+
+  <mat-card-actions class="botones-acciones">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="atenderCita(cita)"
+      [disabled]="cita.atendida !== 'L'"
+    >
+      ✔ Atender
+    </button>
+
+    <button
+      mat-raised-button
+      color="warn"
+      class="no-atender-btn"
+      (click)="noAtenderCita(cita)"
+      matTooltip="Finalizará el flujo sin atención, el ciudadano deberá reiniciar el proceso."
+      aria-label="No atender cita"
+      style="margin-left: 1rem"
+    >
+      ❌ No atender o liberar cita
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="esEsperaCita(cita)"
+      [disabled]="cita.atendida === 'L'"
+      style="margin-left: 1rem"
+    >
+      ⏳ Poner en espera
+    </button>
+
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="terminarCita(cita)"
+      style="margin-left: 1rem"
+      [disabled]="cita.atendida === 'L'"
+    >
+      ⏹ Finalizar Proceso
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-divider></mat-divider>
+
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-card-title>📌 ¿Cómo gestionar las citas?</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+         <strong>Atender:</strong> Cuando el ciudadano se encuentre en el
+        módulo, darle en atender para parar el llamado.
+      </p>
+      <p>
+         <strong>Poner en espera:</strong> Mantiene la cita en espera hasta
+        que pueda ser retomada, permitiendo llamar a otra persona.
+      </p>
+      <p>
+         <strong>No atender:</strong> Finaliza el proceso sin atención, la persona deberá reiniciar todo el proceso de nuevo.
+      </p>
+      <p>
+         <strong>Finalizar:</strong> Da por terminada la cita y te permite
+        atender nuevas solicitudes.
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+
+  
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <!-- <button mat-button (click)="closeDialog()">Cerrar</button> -->
+</mat-dialog-actions>

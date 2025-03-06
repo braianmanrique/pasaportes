@@ -1,0 +1,78 @@
+.dialog-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.cita-tipo {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #28a745;
+}
+
+.mensaje-no-citas {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #666;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.info-card {
+  background: #f8f9fa;
+  border-left: 6px solid #28a745;
+  padding: 1rem;
+  margin-bottom: 20px;
+}
+
+.cita-card {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+.cita-en-curso { border-left: 5px solid #007bff; } 
+.cita-finalizada { border-left: 5px solid #28a745; } 
+.cita-no-atendida { border-left: 5px solid #dc3545; } 
+.cita-en-espera { border-left: 5px solid #ffc107; } 
+.cita-en-llamada { border-left: 5px solid #17a2b8; } 
+
+.botones-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.estado {
+  font-weight: bold;
+  color: #333;
+}
+
+.no-atender-btn {
+  font-weight: bold;
+  background: #d9534f;
+  color: white;
+}
+
+.no-atender-btn:hover {
+  background: #c9302c;
+}
+
+@media (max-width: 768px) {
+  .dialog-title {
+    font-size: 2rem;
+  }
+  
+  .cita-tipo {
+    font-size: 1.6rem;
+  }
+
+  .botones-acciones {
+    flex-direction: column;
+  }
+}

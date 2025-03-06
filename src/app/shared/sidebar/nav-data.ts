@@ -36,7 +36,7 @@ export const navbarData = [
   {
     routeLink: 'citas-prioritarias',
     icon: 'bi bi-calendar-check',
-    label: 'Citas',
+    label: 'Gestionar Citas',
     roles: ['administrador_pasaportes'],
   },
   {

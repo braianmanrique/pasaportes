@@ -1,22 +1,22 @@
 
   .card {
-    margin-top: 1rem; // O menos
+    margin-top: 0rem;
   }
   
   .card-body {
-    padding: 0.5rem; // Reducir padding interno
+    padding: 0.5rem; 
   }
   
   mat-form-field {
-    margin: 0.5rem 0 !important; // reducir el margen vertical
+    margin: 0.5rem 0 !important; 
   }
   
   .mat-elevation-z8 {
-    margin-top: 0.5rem; // si necesitas reducir espacio entre el formulario y la tabla
+    margin-top: 0.5rem; 
   }
   
   table {
-    margin-bottom: 0; // si la tabla agrega margen inferior, lo puedes reducir
+    margin-bottom: 0; 
   }
   .total-records {
     font-weight: bold;
@@ -37,6 +37,7 @@
   
   .filter-input {
     width: 300px;
+    margin-bottom: 0 !important;
   }
   
   .card {
@@ -52,3 +53,124 @@
     flex: 1;
   }
   
+  .dashboard-card {
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+  }
+
+.table-responsive {
+  overflow-x: auto;  
+  border-radius: 12px;
+}
+
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+}
+
+.mat-row:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.mat-row:nth-child(odd) {
+  background-color: #ffffff; 
+}
+
+.mat-header-cell, .mat-cell {
+  padding: 12px;
+  font-size: 14px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.mat-header-cell:first-child,
+.mat-cell:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+.mat-header-cell:last-child,
+.mat-cell:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+.mat-paginator {
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+
+@media (max-width: 768px) {
+  .mat-header-cell, .mat-cell {
+    font-size: 12px;
+    padding: 8px; 
+  }
+
+  .mat-table {
+    font-size: 12px; 
+  }
+  
+  .mat-row:nth-child(even) {
+    background-color: #f0f0f0;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2; 
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff; 
+}
+
+th {
+  background-color: #007bff; 
+  color: rgb(17, 5, 5);
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+th:first-child, td:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+th:last-child, td:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.mat-paginator {
+  border-radius: 8px;
+  margin-top: 12px;
+  background: white;
+  padding: 8px;
+}
+
+@media (max-width: 768px) {
+  th, td {
+    font-size: 12px;
+    padding: 8px;
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+    display: block;
+  }
+}

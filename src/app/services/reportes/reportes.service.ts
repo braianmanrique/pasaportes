@@ -145,6 +145,13 @@ export class ReportesService {
     );
   }
 
+  getReporteInfoCitasPasaportes(fecha: string): Observable<any> {
+    return this.http.get(
+      `${this.baseUrl}/reporte_info_citas_pasaportes_admin/?fecha=${fecha}`,
+      { headers: this.getHeaders() }
+    );
+  }
+
   getReportePorRango(url: string): Observable<any> {
     return this.http.get<any>(url,    { headers: this.getHeaders() });
   }

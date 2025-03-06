@@ -2,7 +2,7 @@
   <mat-toolbar color="primary" class="toolbar">
     <span class="spacer"></span>
     <mat-form-field class="filter-input">
-      <mat-label>Buscar Cita</mat-label>
+      <mat-label>Consultar </mat-label>
       <input
         matInput
         (keyup)="applyFilter($event)"
@@ -15,25 +15,26 @@
   </mat-toolbar>
 
   <!-- Tabla de Citas Prioritarias -->
-  <mat-card class="card">
+
+  <mat-card
+    class="card-table"
+    *ngIf="userRole === 'asignador' || userRole === 'administrador_pasaportes'"
+  >
     <mat-card-title>Citas Prioritarias</mat-card-title>
-    <mat-divider></mat-divider>
     <div class="mat-elevation-z8">
       <table
         mat-table
         [dataSource]="dataSourcePrioritarias"
         matSort
-        class="styled-table"
+        class="mat-elevation-z8"
       >
-        <!-- Turno -->
         <ng-container matColumnDef="turn_desc">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Turno</th>
           <td mat-cell *matCellDef="let row">
-            {{ row.fecha_cita | date : "dd/MM/yyyy hh:mm a" }}
+            {{ row.fecha_cita | date : "EEEE, dd MMMM  hh:mm a" }}
           </td>
         </ng-container>
 
-        <!-- Estado -->
         <ng-container matColumnDef="atendida">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
           <td mat-cell *matCellDef="let element">
@@ -46,17 +47,16 @@
           <td mat-cell *matCellDef="let row">{{ row.cedula }}</td>
         </ng-container>
 
-        <!-- Nombre ciudadano -->
         <ng-container matColumnDef="nombre_citizen">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
           <td mat-cell *matCellDef="let row">{{ row.nombre_citizen }}</td>
         </ng-container>
 
-        <!-- Acción -->
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Acción</th>
           <td mat-cell *matCellDef="let row">
             <button
+              *ngIf="userRole === 'asignador'"
               mat-icon-button
               color="primary"
               (click)="openEditDialog(row)"
@@ -64,6 +64,7 @@
               <mat-icon>edit</mat-icon>
             </button>
             <button
+              *ngIf="userRole === 'asignador'"
               mat-icon-button
               color="accent"
               (click)="openDialog(row, 'prioritarias')"
@@ -79,51 +80,50 @@
           <td class="mat-cell" colspan="4">No hay citas prioritarias.</td>
         </tr>
       </table>
-      <!-- <mat-paginator
+      <mat-paginator
+        #paginatorPrioritarias
         [pageSizeOptions]="[5, 10, 20]"
         showFirstLastButtons
-      ></mat-paginator> -->
+      ></mat-paginator>
     </div>
   </mat-card>
 
   <!-- Tabla de Citas Normales -->
-  <mat-card class="card">
-    <mat-card-title>Citas por Atender</mat-card-title>
+  <mat-card class="card-table" style="margin-top: 2rem;">
+    <mat-card-title>Citas</mat-card-title>
     <mat-divider></mat-divider>
-    <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource" matSort class="styled-table">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!-- Turno -->
         <ng-container matColumnDef="turn_desc">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Turno</th>
+          <th mat-header-cell *matHeaderCellDef>Turno</th>
           <td mat-cell *matCellDef="let row">
-            {{ row.fec_registro | date : "dd/MM/yyyy hh:mm a" }}
+            {{ row.fec_registro | date : "EEEE, dd MMMM hh:mm a" }}
           </td>
         </ng-container>
 
-        <!-- Estado -->
         <ng-container matColumnDef="atendida">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
           <td mat-cell *matCellDef="let element">
             {{ getAtendidaLabel(element.estado_ingreso) }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="cedula">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cédula</th>
+          <th mat-header-cell *matHeaderCellDef>Cédula</th>
           <td mat-cell *matCellDef="let row">{{ row.cedula }}</td>
         </ng-container>
 
-        <!-- Nombre ciudadano -->
         <ng-container matColumnDef="nombre_citizen">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
           <td mat-cell *matCellDef="let row">{{ row.nombre_citizen }}</td>
         </ng-container>
 
-        <!-- Acción -->
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Acción</th>
           <td mat-cell *matCellDef="let row">
             <button
+              *ngIf="userRole === 'asignador'"
               mat-icon-button
               color="primary"
               (click)="openEditDialog(row)"
@@ -131,6 +131,7 @@
               <mat-icon>edit</mat-icon>
             </button>
             <button
+              *ngIf="userRole === 'asignador'"
               mat-icon-button
               color="accent"
               (click)="openDialog(row, 'normales')"
@@ -147,6 +148,103 @@
         </tr>
       </table>
       <mat-paginator
+        #paginator
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card>
+</div>
+
+<mat-card
+  *ngIf="userRole === 'administrador_pasaportes'"
+  class="dashboard-card"
+>
+  <h2>Consultar datos de Citas</h2>
+  <div class="dialog-content">
+    <form [formGroup]="reporteForm">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Seleccione el día</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="fecha"
+          required
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div class="dialog-actions">
+    <button
+      mat-raised-button
+      style="background-color: #1e88e5"
+      (click)="consultarCitas()"
+      [disabled]="!reporteForm.get('fecha')?.value"
+    >
+      ✅ Consultar citas
+    </button>
+  </div>
+</mat-card>
+<hr />
+
+<div class="citas-container">
+  <mat-card class="card" *ngIf="showInfo">
+    <div
+      class="mat-elevation-z8"
+      *ngIf="userRole === 'administrador_pasaportes'"
+    >
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Buscar Cita</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilterInfoCitas($event)"
+          placeholder="Buscar por nombre, cédula o celular"
+        />
+      </mat-form-field>
+
+      <table
+        mat-table
+        [dataSource]="dataSourceInfoCitas"
+        matSort
+        class="styled-table"
+      >
+        <ng-container matColumnDef="turn_desc">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Turno</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.fec_registro | date : "EEEE, dd MMMM  hh:mm a" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cedula">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cédula</th>
+          <td mat-cell *matCellDef="let row">{{ row.cedula }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre_citizen">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let row">{{ row.nombre_citizen }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="celular">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Celular</th>
+          <td mat-cell *matCellDef="let row">{{ row.celular }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsInfoCitas"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumnsInfoCitas"
+        ></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No hay citas disponibles.</td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        #paginatorInfoCitas
         [pageSizeOptions]="[5, 10, 20]"
         showFirstLastButtons
       ></mat-paginator>

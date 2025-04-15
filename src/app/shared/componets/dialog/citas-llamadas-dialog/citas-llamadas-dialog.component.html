@@ -1,6 +1,6 @@
 <mat-dialog-content>
   <h3 class="cita-tipo" *ngIf="isPrioritaria"> Cita Prioritaria</h3>
-  <h3 class="cita-tipo" *ngIf="!isPrioritaria"> Cita Regular</h3>
+  <h3 class="cita-tipo" *ngIf="!isPrioritaria"> Cita</h3>
 
   <mat-divider></mat-divider>
   <mat-card
@@ -21,9 +21,6 @@
     </mat-card-title>
   </mat-card-header>
 
-  <mat-card-content>
-    <p><strong>📍 Módulo:</strong> {{ cita.puesto }}</p>
-  </mat-card-content>
 
   <mat-card-actions class="botones-acciones">
     <button
@@ -40,7 +37,7 @@
       color="warn"
       class="no-atender-btn"
       (click)="noAtenderCita(cita)"
-      matTooltip="Finalizará el flujo sin atención, el ciudadano deberá reiniciar el proceso."
+      matTooltip="Esta acción finalizará el proceso sin atención. El ciudadano deberá volver a anunciarse."
       aria-label="No atender cita"
       style="margin-left: 1rem"
     >
@@ -76,19 +73,16 @@
     </mat-card-header>
     <mat-card-content>
       <p>
-         <strong>Atender:</strong> Cuando el ciudadano se encuentre en el
-        módulo, darle en atender para parar el llamado.
+         <strong>Atender:</strong> Marcar la cita como atendida una vez que el ciudadano llegue al módulo.
       </p>
       <p>
-         <strong>Poner en espera:</strong> Mantiene la cita en espera hasta
-        que pueda ser retomada, permitiendo llamar a otra persona.
+         <strong>Poner en espera:</strong> Permite mantener la cita en espera para ser retomada más tarde, mientras se atiende a otra persona. 
       </p>
       <p>
-         <strong>No atender:</strong> Finaliza el proceso sin atención, la persona deberá reiniciar todo el proceso de nuevo.
+         <strong>No atender:</strong> Finaliza el proceso sin atención, la persona deberá volver a anunciarse.
       </p>
       <p>
-         <strong>Finalizar:</strong> Da por terminada la cita y te permite
-        atender nuevas solicitudes.
+         <strong>Finalizar:</strong> Dar por terminada la atención de la cita.
       </p>
     </mat-card-content>
   </mat-card>

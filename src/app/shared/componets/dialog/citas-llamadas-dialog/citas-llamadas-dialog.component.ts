@@ -107,7 +107,7 @@ export class CitasLlamadasDialogComponent {
 
     actualizarEstado.subscribe({
       next: () => {
-        this.snackBar.open(`La cita ${cita.id_cita} ha finalizado.`, 'Cerrar', {
+        this.snackBar.open(`La cita ha finalizado.`, 'Cerrar', {
           duration: 3000,
           horizontalPosition: 'right',
           verticalPosition: 'top',
@@ -133,7 +133,7 @@ export class CitasLlamadasDialogComponent {
     actualizarEstado.subscribe({
       next: () => {
         this.snackBar.open(
-          `La cita ${cita.id_cita} no será atendida.`,
+          `${cita.nombre_citizen} no será atendida.`,
           'Cerrar',
           {
             duration: 3000,

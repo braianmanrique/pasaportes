@@ -88,13 +88,11 @@
     </div>
   </mat-card>
 
-  <!-- Tabla de Citas Normales -->
-  <mat-card class="card-table" style="margin-top: 2rem;">
+  <mat-card class="card-table" style="margin-top: 2rem">
     <mat-card-title>Citas</mat-card-title>
     <mat-divider></mat-divider>
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <!-- Turno -->
         <ng-container matColumnDef="turn_desc">
           <th mat-header-cell *matHeaderCellDef>Turno</th>
           <td mat-cell *matCellDef="let row">
@@ -160,7 +158,7 @@
   *ngIf="userRole === 'administrador_pasaportes'"
   class="dashboard-card"
 >
-  <h2>Consultar datos de Citas</h2>
+  <h2 style="margin: auto">Consultar datos de Citas</h2>
   <div class="dialog-content">
     <form [formGroup]="reporteForm">
       <mat-form-field appearance="fill" class="full-width">
@@ -180,7 +178,7 @@
   <div class="dialog-actions">
     <button
       mat-raised-button
-      style="background-color: #1e88e5"
+      style="background-color: #0eb31b"
       (click)="consultarCitas()"
       [disabled]="!reporteForm.get('fecha')?.value"
     >

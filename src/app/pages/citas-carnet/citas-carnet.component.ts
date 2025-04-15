@@ -3,7 +3,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CitasService } from '../../services/citas/citas.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -14,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CitasCarnetComponent {
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
+  dataCitas: any;
   userRole: string = '';
   displayedColumns: string[] = [
     'turn_desc',
@@ -26,7 +25,6 @@ export class CitasCarnetComponent {
   constructor(
     private citasService: CitasService,
     private usarioService: UsuarioService,
-    private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
 

@@ -12,7 +12,7 @@ div{
   .welcome-section h2 {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #1E88E5; 
+    color: darkgreen; 
   }
   
   .welcome-section .role-info {
@@ -32,16 +32,6 @@ div{
   .welcome-section {
     text-align: center;
     margin-bottom: 30px;
-  }
-  
-  .welcome-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    color: #2b6cb0;
   }
   
   .welcome-icon {
@@ -117,6 +107,9 @@ div{
   }
   
   .welcome-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: darkgreen;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -133,7 +126,7 @@ div{
   
   .role-highlight {
     font-weight: bold;
-    color: #1E88E5;
+    color: darkgreen;
   }
   
   .dashboard-card {
@@ -193,7 +186,8 @@ div{
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: linear-gradient(135deg, #2196F3, #1E88E5);
+    background: linear-gradient(135deg, darkgreen, darkgreen);
+    margin-bottom: 2rem;
     color: white;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);

@@ -11,7 +11,7 @@
   *ngIf="userRole === 'administrador_pasaportes' || userRole === 'asignador'"
   class="dashboard-card"
 >
-  <h2>📅 Consultar Citas</h2>
+  <h2 style="margin: auto">📅 Consultar Citas</h2>
   <div class="dialog-content">
     <form [formGroup]="reporteForm">
       <mat-form-field appearance="fill" class="full-width">
@@ -31,7 +31,7 @@
   <div class="dialog-actions">
     <button
       mat-raised-button
-      style="background-color: #1e88e5"
+      style="background-color: #0eb31b"
       (click)="consultarCitas()"
       [disabled]="!reporteForm.get('fecha')?.value"
     >
@@ -58,7 +58,7 @@
 
   <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
     <mat-card-header>
-      <mat-card-title>Citas Normales para el Día</mat-card-title>
+      <mat-card-title>Citas para el Día</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <h1>{{ reporteCitas.citas_normales_dia }}</h1>
@@ -85,7 +85,7 @@
 
   <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
     <mat-card-header>
-      <mat-card-title>Citas Normales Sin Ingresar</mat-card-title>
+      <mat-card-title>Citas sin Ingresar</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <h1 class="stat-number">
@@ -116,7 +116,7 @@
 
   <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
     <mat-card-header>
-      <mat-card-title>Citas Normales Atendidas</mat-card-title>
+      <mat-card-title>Citas Atendidas</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <h1 class="stat-number">{{ reporteCitas.citas_normales_atendidas }}</h1>

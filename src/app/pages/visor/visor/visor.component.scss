@@ -248,10 +248,9 @@ td:last-child {
 
 .nombre-texto-tabla{
   display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
+  white-space: normal;
+  overflow: visible;
   text-overflow: ellipsis;
-  max-width: 250px;
   font-weight: bold;
 }
 
@@ -312,7 +311,6 @@ th, td {
   display: flex;
   align-items: center; 
   gap: 1rem; 
-  max-width: 700px; 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; 
@@ -381,7 +379,7 @@ th, td {
   margin-bottom: 2rem;
   width: 90%;
   padding: 1rem;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .nombre-voz {
@@ -389,19 +387,20 @@ th, td {
   font-size: 6rem;
   font-weight: 700;
   color: black;
-  margin-left: 13rem;
   text-transform: uppercase;
   letter-spacing: 2px;
   text-shadow: 0.61rem 2px 8px rgba(0, 0, 0, 0.3);
   
   display: block; 
   text-align: center;
-  width: 90%;
-  max-width: 90%;
+  width: 100%;
+  max-width: 100%;
   height: auto; 
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis;
+  white-space: normal; 
+  overflow: visible; 
+  word-wrap: break-word; 
+  line-height: 1; 
+  margin-bottom: .4rem; 
 }
 
 @media (min-width: 1400px) {

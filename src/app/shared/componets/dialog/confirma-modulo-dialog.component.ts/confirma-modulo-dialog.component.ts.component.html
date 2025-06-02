@@ -1,8 +1,22 @@
-<h1 mat-dialog-title>Confirmar selección</h1>
-    <div mat-dialog-content>
-      ¿Desea seleccionar el módulo: <strong>{{data.nombre}}</strong>?
-    </div>
-    <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">Cancelar</button>
-      <button mat-button color="primary" (click)="onConfirm()">Confirmar</button>
-    </div>
+
+
+<div class="dialog-container">
+  <div class="dialog-header">
+    <mat-icon class="dialog-icon">check_circle</mat-icon>
+    <h2 class="dialog-title">Confirmar Módulo</h2>
+  </div>
+  <div class="dialog-content">
+    <p>
+      ¿Desea seleccionar el módulo:
+      <strong>{{ data.nombre }}</strong>?
+    </p>
+  </div>
+  <div class="dialog-actions" align="end">
+    <button mat-stroked-button  (click)="onNoClick()">
+      Cancelar
+    </button>
+    <button mat-raised-button class="green-button" (click)="onConfirm()">
+      Confirmar
+    </button>
+  </div>
+</div>

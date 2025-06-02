@@ -156,4 +156,18 @@ export class ReportesService {
     return this.http.get<any>(url,    { headers: this.getHeaders() });
   }
 
+  getReporteCitasAtendidas(url: string): Observable<any> {
+  
+    return this.http.get<any>(url,    { headers: this.getHeaders() });
+  }
+
+  getReporteCitasAtendidasRangoFechas(url: string): Observable<any> {
+  
+    return this.http.get<any>(url,    { headers: this.getHeaders() });
+  }
+
+  getInfoPorCedula(url: string): Observable<any> {
+  
+    return this.http.get<any>(url,    { headers: this.getHeaders() });
+  }
 }

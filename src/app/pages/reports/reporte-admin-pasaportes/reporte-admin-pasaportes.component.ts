@@ -5,6 +5,8 @@ import { UsuarioService } from '../../../services/usuario.service';
 import { ReportesService } from '../../../services/reportes/reportes.service';
 import { MatPaginator } from '@angular/material/paginator';
 import * as XLSX from 'xlsx';
+import moment from 'moment';
+
 @Component({
   selector: 'app-reporte-admin-pasaportes',
   templateUrl: './reporte-admin-pasaportes.component.html',
@@ -19,10 +21,55 @@ export class ReporteAdminPasaportesComponent {
   @Input() comunidades!: any[];
   @Input() colorScheme!: any;
   @Input() totalCitas: any;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  reporteDiario: any[] = [];
+
+  dataSourceDiario!: MatTableDataSource<any>;
+  displayedColumnsDiario: string[] = [
+    'nombre_ciudadano',
+    'tipo_documento',
+    'numero_documento',
+    'formalizador',
+    'fecha_atencion',
+  ];
+
+  @ViewChild('paginatorDiario', { static: false })
+  paginatorDiario!: MatPaginator;
+  @ViewChild('paginator', { static: false }) paginator!: MatPaginator;
+
   minDate: Date = new Date(new Date().getFullYear(), 0, 1);
   maxDate: Date = new Date(new Date().getFullYear(), 11, 31);
   startDate: Date = new Date();
+  userRole: string;
+  constructor(
+    private reportesService: ReportesService,
+    private snackBar: MatSnackBar,
+    private loginService: UsuarioService
+  ) {
+    this.userRole = this.loginService.getUserRole();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+      this.dataSourceDiario.paginator = this.paginatorDiario;
+    });
+  }
+
+  exportarReporteDiario(): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
+      this.reporteDiario
+    );
+    const workbook: XLSX.WorkBook = {
+      Sheets: { Reporte: worksheet },
+      SheetNames: ['Reporte'],
+    };
+    XLSX.writeFile(workbook, 'Reporte.xlsx');
+    this.snackBar.open('Excel generado con éxito.', 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+    });
+  }
 
   exportarExcel(): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.ciudadanos);
@@ -38,11 +85,16 @@ export class ReporteAdminPasaportesComponent {
     });
   }
 
-  constructor(
-    private reportesService: ReportesService,
-    private snackBar: MatSnackBar
-  ) {}
   onMonthSelected(event: Date, datepicker: any): void {
+    const formattedDate = `${event.getFullYear()}-${String(
+      event.getMonth() + 1
+    ).padStart(2, '0')}`;
+    console.log(`Mes seleccionado: ${formattedDate}`);
+    datepicker.close();
+    this.loadCiudadanosPorFecha(formattedDate);
+  }
+
+  onDateSelected(event: Date, datepicker: any): void {
     const formattedDate = `${event.getFullYear()}-${String(
       event.getMonth() + 1
     ).padStart(2, '0')}`;
@@ -94,5 +146,114 @@ export class ReporteAdminPasaportesComponent {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  applyFilterAtendido(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourceDiario.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSourceDiario.paginator) {
+      this.dataSourceDiario.paginator.firstPage();
+    }
+  }
+
+  fechaInicio: Date | null = null;
+  fechaFin: Date | null = null;
+
+  buscarPorFechas() {
+    const inicio = this.fechaInicio
+      ? moment(this.fechaInicio).format('YYYY-MM-DD')
+      : null;
+    const fin = this.fechaFin
+      ? moment(this.fechaFin).format('YYYY-MM-DD')
+      : null;
+
+    if (inicio && fin && moment(fin).isBefore(inicio)) {
+      this.snackBar.open(
+        'La fecha final no puede ser menor a la inicial.',
+        'Cerrar',
+        {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        }
+      );
+      return;
+    }
+
+    if (inicio && fin) {
+      const url = `https://backend-auth-log-project.onrender.com/api/usuarios/reporte_citas_atendidas_rango_pasaportes/?fecha_inicio=${inicio}&fecha_fin=${fin}`;
+      this.reportesService.getReporteCitasAtendidasRangoFechas(url).subscribe({
+        next: (data) => {
+          this.reporteDiario = data.citas;
+          this.dataSourceDiario = new MatTableDataSource(this.reporteDiario);
+          setTimeout(() => {
+            if (this.paginatorDiario)
+              this.dataSourceDiario.paginator = this.paginatorDiario;
+          });
+          this.snackBar.open(
+            'Datos cargados correctamente (rango).',
+            'Cerrar',
+            { duration: 3000 }
+          );
+        },
+        error: (err) => {
+          console.error('Error en búsqueda por rango:', err);
+          this.snackBar.open('Error al cargar los datos.', 'Cerrar', {
+            duration: 3000,
+          });
+        },
+      });
+    } else if (inicio) {
+      const url = `https://backend-auth-log-project.onrender.com/api/usuarios/reporte_citas_atendidas_pasaportes/?fecha=${inicio}`;
+      this.reportesService.getReporteCitasAtendidas(url).subscribe({
+        next: (data) => {
+          this.reporteDiario = data.citas;
+          this.dataSourceDiario = new MatTableDataSource(this.reporteDiario);
+          setTimeout(() => {
+            if (this.paginatorDiario)
+              this.dataSourceDiario.paginator = this.paginatorDiario;
+          });
+          this.snackBar.open(
+            'Datos cargados correctamente (una fecha).',
+            'Cerrar',
+            { duration: 3000 }
+          );
+        },
+        error: (err) => {
+          console.error('Error en búsqueda por fecha:', err);
+          this.snackBar.open('Error al cargar los datos.', 'Cerrar', {
+            duration: 3000,
+          });
+        },
+      });
+    } else {
+      this.snackBar.open('Por favor selecciona al menos una fecha.', 'Cerrar', {
+        duration: 3000,
+      });
+    }
+  }
+
+  clearFecha(tipo: 'inicio' | 'fin') {
+    if (tipo === 'inicio') {
+      this.fechaInicio = null;
+    } else {
+      this.fechaFin = null;
+    }
+
+    if (!this.fechaInicio && !this.fechaFin) {
+      this.reporteDiario = [];
+      this.dataSourceDiario = new MatTableDataSource<any, MatPaginator>();
+
+      this.snackBar.open('Fechas limpiadas y tabla reiniciada.', 'Cerrar', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+    } else {
+      this.buscarPorFechas();
+    }
+
+    this.buscarPorFechas();
   }
 }

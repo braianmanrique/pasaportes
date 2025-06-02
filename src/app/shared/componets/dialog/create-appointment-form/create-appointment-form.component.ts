@@ -72,14 +72,13 @@ export class CreateAppointmentFormComponent {
       nombre: formValue.name,
       celular: formValue.phone || '0000000000',
       mail: formValue.email || 'sin_correo@example.com',
-      documentType: formValue.documentType,
+      tipo_documento: formValue.documentType,
       cedula: Number(formValue.identification),
       genero: formValue.gender,
       cualidades: formValue.cualities,
       comunidad: formValue.comunity,
       fec_cita: fechaCita,
     };
-
     this.citasService.crearCiudadano(ciudadanoData).subscribe({
       next: (res: any) => {
         const citaData = {
@@ -97,12 +96,12 @@ export class CreateAppointmentFormComponent {
             this.dialogRef.close(true);
           },
           error: (err) => {
-            console.error('Error al crear la cita prioritaria', err);
+            console.error('Error', err);
           },
         });
       },
       error: (err) => {
-        console.error('Error al crear el ciudadano prioritario', err);
+        console.error('Error', err);
       },
     });
   }

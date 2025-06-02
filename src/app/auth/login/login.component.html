@@ -1,5 +1,5 @@
 <div class="container">
-  <!-- Formulario principal con autocomplete deshabilitado -->
+  <!-- Columna del formulario -->
   <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()" autocomplete="off">
     <img
       alt="logo"
@@ -56,5 +56,8 @@
     </div>
   </form>
 
-  <div class="side"></div>
+  <!-- Columna con la imagen -->
+  <div class="side">
+    <img src="../../../assets/images/fondocat.png" alt="Catira" class="catira-img" />
+  </div>
 </div>

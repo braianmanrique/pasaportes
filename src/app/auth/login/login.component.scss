@@ -97,15 +97,6 @@ input{
 }
 
 
-.side{
-    
-  display: flex;
-  width: 80%;
-  background-image: url('../../../assets/fondo.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 .p-inputtext-sm{
   background-color: rgba($color: gray, $alpha: .4);
   padding-left: 20px;
@@ -325,11 +316,29 @@ input{
 
 .side {
   display: flex;
-  width: 80%;
-  background-image: url('../../../assets/fondo.jpg');
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+  padding: 2rem;
+  background-color: #85ac8c; 
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain; 
+  background-position: center;
+  box-shadow: 0 10px 20px rgba(29, 191, 121, 0.08);
+  border-radius: 20px;
+  
 }
+
+
+.catira-img {
+  max-width: 65%;
+  max-height: 70vh;
+  object-fit: contain;
+  box-shadow: 0 10px 20px rgba(62, 65, 63, 0.45); 
+  border-radius: 8px;
+}
+
+
 
 .p-inputtext-sm {
   background-color: rgba(gray, 0.4);

@@ -5,40 +5,117 @@
   </p>
 </div>
 
-<div class="welcome-section"></div>
+<div class="card-grid">
+  <mat-card
+    class="dashboard-card"
+    *ngIf="userRole === 'administrador_pasaportes' || userRole === 'asignador'"
+  >
+    <h2 style="margin: auto">Buscar por Número de documento</h2>
 
-<mat-card
-  *ngIf="userRole === 'administrador_pasaportes' || userRole === 'asignador'"
-  class="dashboard-card"
->
-  <h2 style="margin: auto">📅 Consultar Citas</h2>
-  <div class="dialog-content">
-    <form [formGroup]="reporteForm">
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Seleccione el día</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          formControlName="fecha"
-          required
-        />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-    </form>
-  </div>
+    <div class="dialog-content">
+      <form [formGroup]="buscarCedulaForm" (ngSubmit)="buscarPorCedula()">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Ingrese la cédula</mat-label>
+          <input matInput formControlName="cedula" required  (keydown.enter)="buscarPorCedula()" 
+          />
+        </mat-form-field>
+        <mat-error
+          *ngIf="buscarCedulaForm.get('cedula')?.hasError('minlength')"
+        >
+          Mínimo 5 dígitos requeridos
+        </mat-error>
 
-  <div class="dialog-actions">
-    <button
-      mat-raised-button
-      style="background-color: #0eb31b"
-      (click)="consultarCitas()"
-      [disabled]="!reporteForm.get('fecha')?.value"
-    >
-      ✅ Consultar citas
-    </button>
-  </div>
-</mat-card>
+        <div class="dialog-actions">
+          <button
+            mat-raised-button
+            style="color: white; font-weight: bold"
+            [disabled]="buscarCedulaForm.invalid" 
+           type="submit"
+            [ngClass]="{
+              'btn-habilitado': buscarCedulaForm.valid && cedula.value!.length >= 5,
+              'btn-deshabilitado':
+                buscarCedulaForm.invalid || cedula.value!.length < 5
+            }"
+          >
+            Consultar documento
+          </button>
+    
+          <button
+            mat-stroked-button
+            color="warn"
+            style="margin-left: 1rem"
+          
+          >
+            Limpiar
+          </button>
+        </div>
+      </form>
+    </div>
+
+   
+    <div *ngIf="resultadoBusqueda.length > 0" class="resultados-scroll">
+      <div *ngFor="let cita of resultadoBusqueda" class="resultado-item">
+        <p><strong>Nombre:</strong> {{ cita.nombre }}</p>
+        <p><strong> Cédula:</strong> {{ cita.cedula }}</p>
+        <p><strong> Tipo Documento:</strong> {{ cita.tipoide }}</p>
+        <p>
+          <strong> Programada: </strong>
+          <span> Para el {{ cita.fec_cita | date : "fullDate" }} </span>
+        </p>
+
+        <p>
+          <strong> Estado:</strong>
+          <span *ngIf="cita.atendida === 'A'">
+            Atendida el {{ cita.fec_atencion | date : "fullDate" }} a las
+            {{ cita.fec_atencion | date : "shortTime" }}
+          </span>
+          <span *ngIf="cita.atendida === 'N'"> No se presento</span>
+        </p>
+        <hr />
+      </div>
+    </div>
+
+    <p *ngIf="yaBusco && resultadoBusqueda.length === 0" class="no-resultados">
+      No se encontraron citas para esta cédula.
+    </p>
+  </mat-card>
+
+  <mat-card
+    *ngIf="userRole === 'administrador_pasaportes' || userRole === 'asignador'"
+    class="dashboard-card"
+  >
+    <h2 style="margin: auto">📅 Consultar estadísticas</h2>
+    <div class="dialog-content">
+      <form [formGroup]="reporteForm">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Seleccione el día</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="fecha"
+            required
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div class="dialog-actions">
+      <button
+        mat-raised-button
+        style="background-color: #0eb31b; color: white; font-weight: bold"
+        (click)="consultarCitas()"
+        [disabled]="!reporteForm.get('fecha')?.value"
+      >
+        Consultar
+      </button>
+    </div>
+  </mat-card>
+</div>
 
 <div
   class="results-container"
@@ -76,7 +153,9 @@
 
   <mat-card class="stat-card">
     <mat-card-header>
-      <mat-card-title>Citas Sin Ingresar</mat-card-title>
+      <mat-card-title
+        >Total de Citas con prioritarias sin Ingresar</mat-card-title
+      >
     </mat-card-header>
     <mat-card-content>
       <h1 class="stat-number">{{ reporteCitas.total_citas_sin_ingresar }}</h1>
@@ -107,7 +186,7 @@
 
   <mat-card class="stat-card" *ngIf="userRole === 'administrador_pasaportes'">
     <mat-card-header>
-      <mat-card-title>Citas Atendidas</mat-card-title>
+      <mat-card-title>Total de citas Atendidas</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <h1 class="stat-number">{{ reporteCitas.total_citas_atendidas }}</h1>

@@ -55,6 +55,7 @@ export class CitasComponent {
 
   displayedColumnsInfoCitas: string[] = [
     'turn_desc',
+    'estado',
     'cedula',
     'nombre_citizen',
       'celular'

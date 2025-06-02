@@ -55,18 +55,18 @@
         <mat-tab
           *ngIf="
             userRole === 'administrador_pasaportes' ||
-            userRole === 'administrador_sistema'
+            userRole === 'administrador_sistema' || userRole === 'asignador'
           "
           label="Pasaportes"
         >
           <div class="tab-content">
-            <mat-card class="dash-card">
+            <mat-card class="dash-card" *ngIf="userRole !== 'asignador'">
               <mat-card-header>
                 <mat-card-title>
                   <mat-icon class="header-icon">event</mat-icon>
-                  Total de Consultas Pasaportes
+                  TOTAL DE CITAS
                 </mat-card-title>
-                <mat-card-subtitle>Información actualizada</mat-card-subtitle>
+                <mat-card-subtitle>Información actualizada al día de hoy</mat-card-subtitle>
               </mat-card-header>
               <mat-card-content>
                 <div class="total-citas-display">
@@ -77,7 +77,6 @@
                   </div>
                   <div class="info-container">
                     <span class="total-citas-number">{{ totalCitas }}</span>
-                    <!-- <p class="description">Citas realizadas este mes</p> -->
                   </div>
                 </div>
               </mat-card-content>
@@ -193,7 +192,6 @@
 
         <mat-tab *ngIf="userRole === 'administrador_sistema'" label="General">
           <div class="tab-content">
-
             <div>
               <h2>Consultar el numero de interacciones por tipo de servicio</h2>
               <form [formGroup]="fechaFormReport">
@@ -273,10 +271,10 @@
                 </mat-card>
               </div>
             </div>
-            <hr>
+            <hr />
 
             <mat-form-field appearance="fill" style="width: 100%">
-              <h2>Reporte de </h2>
+              <h2>Reporte de</h2>
               <mat-label>Seleccionar Mes</mat-label>
               <input
                 matInput
@@ -396,13 +394,16 @@
               ></mat-paginator>
             </div>
             <div class="button-container" *ngIf="ciudadanos.length > 0">
-              <button mat-raised-button (click)="exportarExcel()" style="background-color: green; color: white;">
+              <button
+                mat-raised-button
+                (click)="exportarExcel()"
+                style="background-color: green; color: white"
+              >
                 Descargar Excel
               </button>
             </div>
 
             <hr />
-       
           </div>
         </mat-tab>
 

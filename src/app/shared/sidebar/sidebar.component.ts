@@ -55,7 +55,7 @@ export class SidebarComponent {
       next: (userLoginOn) => {
         this.userLoginOn = userLoginOn;
 
-        this.userRole = this.loginService.getUserRole(); // Aquí deberías obtener el rol del servicio de usuario
+        this.userRole = this.loginService.getUserRole(); 
 
         if (this.userRole === 'administrador_pasaportes') {
           this.title = 'Admi pasaportes';

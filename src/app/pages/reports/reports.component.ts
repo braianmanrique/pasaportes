@@ -31,12 +31,12 @@ export class ReportsComponent implements AfterViewInit {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
   };
   selectedFecha: Date | null = null;
-  userRole = 'administrador_pasaportes'; // Cambiar según tu lógica de usuario
+  userRole = 'administrador_pasaportes';
   ciudadanosPorMes: any[] = [];
 
-  minDate: Date = new Date(new Date().getFullYear(), 0, 1); // Enero del año actual
-  maxDate: Date = new Date(new Date().getFullYear(), 11, 31); // Diciembre del año actual
-  startDate: Date = new Date(); // Comenzar en el mes actual
+  minDate: Date = new Date(new Date().getFullYear(), 0, 1);
+  maxDate: Date = new Date(new Date().getFullYear(), 11, 31); 
+  startDate: Date = new Date();
   defaultDate: Date = new Date();
   selectedAnio: number | null = null;
   @ViewChild('paginatorGeneral') paginatorGeneral!: MatPaginator;
@@ -47,6 +47,7 @@ export class ReportsComponent implements AfterViewInit {
 
   displayedColumns: string[] = [
     'nombre',
+    'tipo_identificacion',
     'cedula',
     'fecha_registro',
     'genero',

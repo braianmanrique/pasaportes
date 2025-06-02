@@ -56,6 +56,7 @@ export const navbarData = [
       'administrador_discapacidad',
       'administrador_sistema',
       'atencion_pasaporte',
+      'asignador'
     ],
   },
   {

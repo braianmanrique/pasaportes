@@ -16,8 +16,6 @@ export interface UserData {
   progress: string;
   email: string;
 }
-const STATE: string[] = ['Activo', 'Descanso', 'Ausente'];
-const NAMES: string[] = [];
 
 @Component({
   selector: 'app-formalizadores',
@@ -25,11 +23,19 @@ const NAMES: string[] = [];
   styleUrl: './formalizadores.component.scss',
 })
 export class FormalizadoresComponent {
-  displayedColumns: string[] = ['id', 'username', 'email', 'role'];
+  displayedColumns: string[] = ['username','first_name', 'email', 'role'];
   dataSource: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(
+    private _dialog: MatDialog,
+    private formalizadoService: FormalizadoresService,
+    private snackBar: MatSnackBar
+  ) {
+    this.dataSource = new MatTableDataSource();
+  }
 
   ngOnInit(): void {
     this.loadFormalizadores();
@@ -48,14 +54,6 @@ export class FormalizadoresComponent {
         });
       },
     });
-  }
-
-  constructor(
-    private _dialog: MatDialog,
-    private formalizadoService: FormalizadoresService,
-    private snackBar: MatSnackBar
-  ) {
-    this.dataSource = new MatTableDataSource(); // Inicializar vacío
   }
 
   openAddFormalizador() {

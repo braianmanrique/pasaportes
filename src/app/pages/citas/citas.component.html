@@ -55,7 +55,7 @@
           <th mat-header-cell *matHeaderCellDef>Acción</th>
           <td mat-cell *matCellDef="let row">
             <button
-              *ngIf="userRole === 'asignador'"
+              *ngIf="userRole === 'asignador' || userRole === 'administrador_pasaportes'"
               mat-icon-button
               color="primary"
               (click)="openEditDialog(row)"
@@ -63,7 +63,7 @@
               <mat-icon>edit</mat-icon>
             </button>
             <button
-              *ngIf="userRole === 'asignador'"
+              *ngIf="userRole === 'asignador' || userRole === 'administrador_pasaportes'"
               mat-icon-button
               color="accent"
               (click)="openDialog(row, 'prioritarias')"
@@ -120,7 +120,7 @@
           <th mat-header-cell *matHeaderCellDef>Acción</th>
           <td mat-cell *matCellDef="let row">
             <button
-              *ngIf="userRole === 'asignador'"
+              *ngIf="userRole === 'asignador' || userRole === 'administrador_pasaportes'"
               mat-icon-button
               color="primary"
               (click)="openEditDialog(row)"
@@ -128,7 +128,7 @@
               <mat-icon>edit</mat-icon>
             </button>
             <button
-              *ngIf="userRole === 'asignador'"
+              *ngIf="userRole === 'asignador' || userRole === 'administrador_pasaportes'"
               mat-icon-button
               color="accent"
               (click)="openDialog(row, 'normales')"

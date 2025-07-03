@@ -60,7 +60,7 @@
         <p><strong> Tipo Documento:</strong> {{ cita.tipoide }}</p>
         <p>
           <strong> Programada: </strong>
-          <span> Para el {{ cita.fec_cita | date : "fullDate" }} </span>
+          <span> Para el {{ cita.fec_cita | date : "fullDate" }} a las {{ cita.fec_cita | date : "shortTime" }} </span>
         </p>
 
         <p>

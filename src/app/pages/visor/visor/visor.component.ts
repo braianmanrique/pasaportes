@@ -185,13 +185,13 @@ export class VisorComponent implements OnInit {
   }
 
   reproducirSonidoArpa(callback?: () => void): void {
-    const arpaAudio = new Audio('assets/sounds/arpa.mp3');
+    const arpaAudio = new Audio('assets/sounds/sound.mpeg');
 
     arpaAudio
       .play()
-      .then(() => console.log('🎶 Sonido de arpa reproducido correctamente.'))
+      .then(() => console.log('Sonido de arpa reproducido correctamente.'))
       .catch((err) =>
-        console.error('❌ Error al reproducir el sonido de arpa:', err)
+        console.error('Error al reproducir el sonido de arpa:', err)
       );
 
     arpaAudio.onended = () => {
@@ -224,7 +224,7 @@ export class VisorComponent implements OnInit {
       };
 
       utterance.onerror = (error) => {
-        console.error('❌ Error en la síntesis de voz:', error);
+        console.error('Error en la síntesis de voz:', error);
         this.estaHablando = false;
         if (callback) callback();
       };
@@ -276,13 +276,13 @@ export class VisorComponent implements OnInit {
           this.actualizarListaCitas();
         } else {
           console.warn(
-            '⚠️ Respuesta inesperada en citas prioritarias',
+            'Respuesta inesperada en citas prioritarias',
             response
           );
         }
       },
       (error) => {
-        console.error('❌ Error al recuperar citas prioritarias:', error);
+        console.error('Error al recuperar citas prioritarias:', error);
       }
     );
   }
@@ -301,11 +301,11 @@ export class VisorComponent implements OnInit {
 
           this.actualizarListaCitas();
         } else {
-          console.warn('⚠️ Estructura inesperada en las citas', response);
+          console.warn('Estructura inesperada en las citas', response);
         }
       },
       (error) => {
-        console.error('❌ Error al recuperar citas en espera:', error);
+        console.error('Error al recuperar citas en espera:', error);
       }
     );
   }
